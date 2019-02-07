@@ -13,6 +13,10 @@ inputs = (
 def perform(level, box, options):
 	for x in range(box.minx, box.maxx):
 		for z in range(box.minz, box.maxz):
-			utilityFunctions.setBlock(level, (options["Top Material"].ID, 0), x, box.maxy - 1, z)
-			utilityFunctions.setBlock(level, (options["Middle Material"].ID, 0), x, box.maxy - 2, z)
-			utilityFunctions.setBlock(level, (options["Bottom Material"].ID, 0), x, box.maxy - 3, z)
+			for y in range(box.miny, box.maxy):
+				if(y == box.miny):
+					utilityFunctions.setBlock(level, (options["Bottom Material"].ID, 0), x, y, z)
+				elif(y == box.maxy - 1):
+					utilityFunctions.setBlock(level, (options["Top Material"].ID, 0), x, y, z)
+				else:
+					utilityFunctions.setBlock(level, (options["Middle Material"].ID, 0), x, y, z)
