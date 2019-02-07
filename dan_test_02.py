@@ -29,9 +29,9 @@ class Section:
 def getSections(box, maxHeight):
 	sections = []
 	currentminx = box.minx
-	currentmaxx = box.maxx
+	currentmaxx = box.maxx if (box.maxx - box.minx) % 2 == 1 else box.maxx - 1
 	currentminz = box.minz
-	currentmaxz = box.maxz
+	currentmaxz = box.maxz if (box.maxz - box.minz) % 2 == 1 else box.maxz - 1
 	currentminy = box.miny + 1
 	currentmaxy = box.miny + 4
 	while(currentmaxy <= maxHeight and currentmaxx - currentminx >= 3 and currentmaxz - currentminz >= 3):
@@ -45,7 +45,14 @@ def getSections(box, maxHeight):
 	return sections
 
 def generateFloor(level, box):
-	fillArea(level, (4, 0), box.minx, box.maxx, box.minz, box.maxz, box.miny, box.miny + 1)
+	fillArea(level, (4, 0), 
+		box.minx, 
+		box.maxx if (box.maxx - box.minx) % 2 == 1 else box.maxx - 1, 
+		box.minz, 
+		box.maxz if (box.maxz - box.minz) % 2 == 1 else box.maxz - 1, 
+		box.miny, 
+		box.miny + 1
+	)
 
 def generateSections(level, sections):
 	for section in sections:
