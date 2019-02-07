@@ -57,7 +57,17 @@ def generateFloor(level, box):
 def generateSections(level, sections):
 	for section in sections:
 		clearSection(level, section)
-		fillArea(level, (43, 5), section.minx, section.maxx, section.minz, section.maxz, section.miny, section.maxy)
+		generatePillars(level, section)
+		generateCeilings(level, section)
+
+def generatePillars(level, section):
+	for x in range(section.minx, section.maxx, 2):
+		for z in range(section.minz, section.maxz, 2):
+			utilityFunctions.setBlock(level, (43, 5), x, section.miny, z)
+			utilityFunctions.setBlock(level, (43, 5), x, section.miny + 1, z)
+
+def generateCeilings(level, section):
+	fillArea(level, (43, 5), section.minx, section.maxx, section.minz, section.maxz, section.maxy - 1, section.maxy)
 
 def clearSection(level, section):
 	clearArea(level, section.minx, section.maxx, section.minz, section.maxz, section.miny, section.maxy)
