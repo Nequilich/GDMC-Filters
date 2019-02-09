@@ -5,7 +5,7 @@ def perform(level, box, options):
 	for x in range(box.minx, box.maxx):
 		for z in range(box.minz, box.maxz):
 			surfaceIsFound = False
-			y = box.maxy - 1
+			y = level.Height
 			while (not surfaceIsFound):
 				if (level.blockAt(x, y, z) != 0):
 					surfaceIsFound = True
