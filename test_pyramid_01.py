@@ -86,7 +86,8 @@ def generateCeilings(level, section):
 			section.maxx,
 			section.minz,
 			section.maxz,
-			section.maxy - 1, section.maxy))
+			section.maxy - 1,
+			section.maxy))
 
 
 def clearSection(level, section):
