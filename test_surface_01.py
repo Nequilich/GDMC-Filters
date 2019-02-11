@@ -1,14 +1,22 @@
-#level.blockAt(x, y, z)
-#level.setBlockAt(x, y, z, id)
-
 def perform(level, box, options):
 	for x in range(box.minx, box.maxx):
 		for z in range(box.minz, box.maxz):
 			surfaceIsFound = False
 			y = level.Height
 			while (not surfaceIsFound):
-				if (level.blockAt(x, y, z) != 0):
+				if (isSurfaceBlock(level, x, y, z)):
 					surfaceIsFound = True
 				else:
 					y -= 1
-			level.setBlockAt(x, y + 1, z, 20)
+			setBlock(level, x, y + 1, z, 20)
+
+aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
+def isSurfaceBlock(level, x, y, z):
+		for block in aboveSurfaceBlocks:
+			if (level.blockAt(x, y, z) == block):
+				return False
+		return True
+
+def setBlock(level, x, y, z, block, data = 0):
+	level.setBlockAt(x, y, z, block)
+	level.setBlockDataAt(x, y, z, data)
