@@ -38,15 +38,20 @@ def getSurfaceBlockHeightViaStartPoint(level, x, z, suggestedHeight):
 
 def getSurface(level, box):
 	surface = []
+	surfaceExtra = []
 	for x in range(box.minx, box.maxx):
 		row = []
+		rowExtra = []
 		for z in range(box.minz, box.maxz):
 			row.append(Block(0))
+			rowExtra.append(BlockExtra(0))
 		surface.append(row)
+		surfaceExtra.append(rowExtra)
 	
 	surfacePoints = deque()
 	xMid = int(box.minx + (box.maxx - box.minx) / 2)
 	zMid = int(box.minz + (box.maxz - box.minz) / 2)
+	surfaceExtra[xMid - box.minx][zMid - box.minz].suggestedHeight = level.Height
 	surfacePoints.append(SurfacePoint(xMid, zMid, level.Height))
 
 	while (surfacePoints):
@@ -58,13 +63,17 @@ def getSurface(level, box):
 		block = surface[x - box.minx][z - box.minz]
 		if (block.height < height):
 			block.height = height
-			if (x + 1 < box.maxx and surface[x + 1 - box.minx][z - box.minz].height < height):
+			if (x + 1 < box.maxx and surface[x + 1 - box.minx][z - box.minz].height < height and surfaceExtra[x + 1 - box.minx][z - box.minz].suggestedHeight < height):
+				surfaceExtra[x + 1 - box.minx][z - box.minz].suggestedHeight = height
 				surfacePoints.append(SurfacePoint(x + 1, z, height))
-			if (x - 1 >= box.minx and surface[x - 1 - box.minx][z - box.minz].height < height):
+			if (x - 1 >= box.minx and surface[x - 1 - box.minx][z - box.minz].height < height and surfaceExtra[x - 1 - box.minx][z - box.minz].suggestedHeight < height):
+				surfaceExtra[x - 1 - box.minx][z - box.minz].suggestedHeight = height
 				surfacePoints.append(SurfacePoint(x - 1, z, height))
-			if (z + 1 < box.maxz and surface[x - box.minx][z + 1 - box.minz].height < height):
+			if (z + 1 < box.maxz and surface[x - box.minx][z + 1 - box.minz].height < height and surfaceExtra[x - box.minx][z + 1 - box.minz].suggestedHeight < height):
+				surfaceExtra[x - box.minx][z + 1 - box.minz].suggestedHeight = height
 				surfacePoints.append(SurfacePoint(x, z + 1, height))
-			if (z - 1 >= box.minz and surface[x - box.minx][z - 1 - box.minz].height < height):
+			if (z - 1 >= box.minz and surface[x - box.minx][z - 1 - box.minz].height < height and surfaceExtra[x - box.minx][z - 1 - box.minz].suggestedHeight < height):
+				surfaceExtra[x - box.minx][z - 1 - box.minz].suggestedHeight = height
 				surfacePoints.append(SurfacePoint(x, z - 1, height))
 	return surface
 
@@ -73,6 +82,11 @@ class Block:
 	def __init__(self, height, steepness = 0):
 		self.height = height
 		self.steepness = steepness
+
+class BlockExtra:
+
+	def __init__(self, suggestedHeight):
+		self.suggestedHeight = suggestedHeight
 
 class SurfacePoint:
 
