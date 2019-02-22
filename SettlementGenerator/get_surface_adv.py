@@ -1,41 +1,5 @@
 from collections import deque
 
-def perform(level, box, options):
-	surface = getSurface(level, box)
-	for x in range(0, box.maxx - box.minx):
-		for z in range(0, box.maxz - box.minz):
-			setBlock(level, x + box.minx, surface[x][z].height + 1, z + box.minz, 20)
-
-def setBlock(level, x, y, z, block, data = 0):
-	level.setBlockAt(x, y, z, block)
-	level.setBlockDataAt(x, y, z, data)
-
-aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
-def isSurfaceBlock(level, x, y, z):
-		for block in aboveSurfaceBlocks:
-			if (level.blockAt(x, y, z) == block):
-				return False
-		return True
-
-def getSurfaceBlockHeightViaStartPoint(level, x, z, suggestedHeight):
-	isAboveSurface = not isSurfaceBlock(level, x, suggestedHeight, z)
-	surfaceIsFound = False
-	y = suggestedHeight
-	if (isAboveSurface):
-		while (not surfaceIsFound):
-			if (isSurfaceBlock(level, x, y, z)):
-				surfaceIsFound = True
-			else:
-				y -= 1
-		return y
-	else:
-		while (not surfaceIsFound):
-			if (isSurfaceBlock(level, x, y, z)):
-				y += 1
-			else:
-				surfaceIsFound = True
-		return y - 1
-
 def getSurface(level, box):
 	surface = []
 	surfaceExtra = []
@@ -77,11 +41,40 @@ def getSurface(level, box):
 				surfacePoints.append(SurfacePoint(x, z - 1, height))
 	return surface
 
+def setBlock(level, x, y, z, block, data = 0):
+	level.setBlockAt(x, y, z, block)
+	level.setBlockDataAt(x, y, z, data)
+
+aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
+def isSurfaceBlock(level, x, y, z):
+		for block in aboveSurfaceBlocks:
+			if (level.blockAt(x, y, z) == block):
+				return False
+		return True
+
+def getSurfaceBlockHeightViaStartPoint(level, x, z, suggestedHeight):
+	isAboveSurface = not isSurfaceBlock(level, x, suggestedHeight, z)
+	surfaceIsFound = False
+	y = suggestedHeight
+	if (isAboveSurface):
+		while (not surfaceIsFound):
+			if (isSurfaceBlock(level, x, y, z)):
+				surfaceIsFound = True
+			else:
+				y -= 1
+		return y
+	else:
+		while (not surfaceIsFound):
+			if (isSurfaceBlock(level, x, y, z)):
+				y += 1
+			else:
+				surfaceIsFound = True
+		return y - 1
+
 class Block:
 
-	def __init__(self, height, steepness = 0):
+	def __init__(self, height):
 		self.height = height
-		self.steepness = steepness
 
 class BlockExtra:
 
