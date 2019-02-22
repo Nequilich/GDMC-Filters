@@ -10,7 +10,7 @@ def perform(level, box, options):
 					y -= 1
 			setBlock(level, x, y + 1, z, 20)
 
-aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
+aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
 def isSurfaceBlock(level, x, y, z):
 		for block in aboveSurfaceBlocks:
 			if (level.blockAt(x, y, z) == block):
