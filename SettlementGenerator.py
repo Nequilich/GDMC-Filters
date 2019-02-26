@@ -1,8 +1,9 @@
-from GetSurface import getSurface
+from GetSurfaceAdv import getSurface
 from Common import setBlock
 
 def perform(level, box, options):
 	surface = getSurface(level, box)
+
 	for x in range(surface.x):
 		for z in range(surface.z):
 			y = surface.surface[x][z].height

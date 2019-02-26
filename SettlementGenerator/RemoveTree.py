@@ -1,6 +1,4 @@
-def setBlock(level, x, y, z, block, data = 0):
-	level.setBlockAt(x, y, z, block)
-	level.setBlockDataAt(x, y, z, data)
+from Common import setBlock
 
 treeBlocks = [17, 18, 99, 100, 161, 162]
 def isTreeBlock(level, x, y, z):
@@ -11,8 +9,12 @@ def isTreeBlock(level, x, y, z):
 
 def removeTree(level, x, y, z):
 	setBlock(level, x, y, z, 0)
-	if (level.blockAt(x, y + 1, z) == 78): #Removes snow layer
+
+	#Removes snow layer
+	if (level.blockAt(x, y + 1, z) == 78):
 		setBlock(level, x, y + 1, z, 0)
+
+	#Checks if neighbor blocks are parts of the tree
 	neighborBlocks = [Block(x + 1, y, z), Block(x - 1, y, z), Block(x, y + 1, z), Block(x, y - 1, z), Block(x, y, z + 1), Block(x, y, z - 1)]
 	for block in neighborBlocks:
 		if (isTreeBlock(level, block.x, block.y, block.z)):
