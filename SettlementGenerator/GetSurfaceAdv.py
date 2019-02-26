@@ -37,22 +37,19 @@ def isSurfaceBlock(level, x, y, z):
 
 def getSurfaceSpotHeight(level, x, z, suggestedHeight):
 	isAboveSurface = not isSurfaceBlock(level, x, suggestedHeight, z)
-	heightIsFound = False
 	y = suggestedHeight + 2
 	if (isAboveSurface):
-		while (not heightIsFound):
+		while (True):
 			if (isSurfaceBlock(level, x, y, z)):
-				heightIsFound = True
+				return y
 			else:
 				y -= 1
-		return y
 	else:
-		while (not heightIsFound):
+		while (True):
 			if (isSurfaceBlock(level, x, y, z)):
 				y += 1
 			else:
-				heightIsFound = True
-		return y - 1
+				return y - 1
 
 def tryAddSurfaceSpotToQueue(box, x, z, suggestedHeight, surface, surfaceExtra, unresolvedSurfaceSpots):
 	#Checks if surface spot is within surface border
