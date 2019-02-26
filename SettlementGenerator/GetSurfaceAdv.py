@@ -22,10 +22,10 @@ def getSurface(level, box):
 		#Returns if calculated is not higher than previous recorded height
 		if (surface.surface[x][z].height < height):
 			surface.surface[x][z].height = height
-			tryAddSurfaceSpotToQueue(box, x + 1, z, height, surface, surfaceExtra, unresolvedSurfaceSpots)
-			tryAddSurfaceSpotToQueue(box, x - 1, z, height, surface, surfaceExtra, unresolvedSurfaceSpots)
-			tryAddSurfaceSpotToQueue(box, x, z + 1, height, surface, surfaceExtra, unresolvedSurfaceSpots)
-			tryAddSurfaceSpotToQueue(box, x, z - 1, height, surface, surfaceExtra, unresolvedSurfaceSpots)
+			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x + 1, z, height)
+			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x - 1, z, height)
+			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x, z + 1, height)
+			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x, z - 1, height)
 	return surface
 
 aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
@@ -36,22 +36,20 @@ def isSurfaceBlock(level, x, y, z):
 		return True
 
 def getSurfaceSpotHeight(level, x, z, suggestedHeight):
-	isAboveSurface = not isSurfaceBlock(level, x, suggestedHeight, z)
-	y = suggestedHeight + 2
+	y = suggestedHeight + 1
+	isAboveSurface = not isSurfaceBlock(level, x, y, z)
 	if (isAboveSurface):
-		while (True):
-			if (isSurfaceBlock(level, x, y, z)):
-				return y
-			else:
-				y -= 1
+		y -= 1
+		while (not isSurfaceBlock(level, x, y, z)):
+			y -= 1
+		return y
 	else:
-		while (True):
-			if (isSurfaceBlock(level, x, y, z)):
-				y += 1
-			else:
-				return y - 1
+		y += 1
+		while (isSurfaceBlock(level, x, y, z)):
+			y += 1
+		return y - 1
 
-def tryAddSurfaceSpotToQueue(box, x, z, suggestedHeight, surface, surfaceExtra, unresolvedSurfaceSpots):
+def tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x, z, suggestedHeight):
 	#Checks if surface spot is within surface border
 	if (x + box.minx < box.minx or x + box.minx >= box.maxx or z + box.minz < box.minz or z + box.minz >= box.maxz):
 		return
