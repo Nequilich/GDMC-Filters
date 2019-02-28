@@ -1,15 +1,20 @@
 from collections import deque
 from Classes import Surface
 
-def getSurface(level, box):
-	surface = Surface(box.maxx - box.minx, box.maxz - box.minz)
-	surfaceExtra = Surface(box.maxx - box.minx, box.maxz - box.minz) #Contains suggested heights
+def getSurface(level, xStart, zStart, xEnd, zEnd):
+	surface = Surface(xStart, zStart, xEnd, zEnd)
+	suggestedHeights = []
+	for x in range(surface.xLength):
+		row = []
+		for z in range(surface.zLength):
+			row.append(0)
+		suggestedHeights.append(row)
 	unresolvedSurfaceSpots = deque() #Surface spots which surface height needs to be calculate
 
 	#Adds the center surfacespot as the first unresolved surface spot
-	xCenter = int((box.maxx - box.minx) / 2)
-	zCenter = int((box.maxz - box.minz) / 2)
-	surfaceExtra.surface[xCenter][zCenter].height = level.Height
+	xCenter = int((surface.xLength) / 2)
+	zCenter = int((surface.zLength) / 2)
+	suggestedHeights[xCenter][zCenter] = level.Height
 	unresolvedSurfaceSpots.append(Arg(xCenter, zCenter, level.Height))
 
 	while (unresolvedSurfaceSpots):
@@ -17,17 +22,17 @@ def getSurface(level, box):
 		x = nextSurfaceSpot.x
 		z = nextSurfaceSpot.z
 		suggestedHeight = nextSurfaceSpot.suggestedHeight
-		if (suggestedHeight < surfaceExtra.surface[x][z].height):
+		if (suggestedHeight < suggestedHeights[x][z]):
 			continue
-		height = getSurfaceSpotHeight(level, x + box.minx, z + box.minz, suggestedHeight)
+		height = getSurfaceSpotHeight(level, x + surface.xStart, z + surface.zStart, suggestedHeight)
 
 		#Returns if calculated is not higher than previous recorded height
 		if (surface.surface[x][z].height < height):
 			surface.surface[x][z].height = height
-			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x + 1, z, height)
-			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x - 1, z, height)
-			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x, z + 1, height)
-			tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x, z - 1, height)
+			tryAddSurfaceSpotToQueue(surface, suggestedHeights, unresolvedSurfaceSpots, x + 1, z, height)
+			tryAddSurfaceSpotToQueue(surface, suggestedHeights, unresolvedSurfaceSpots, x - 1, z, height)
+			tryAddSurfaceSpotToQueue(surface, suggestedHeights, unresolvedSurfaceSpots, x, z + 1, height)
+			tryAddSurfaceSpotToQueue(surface, suggestedHeights, unresolvedSurfaceSpots, x, z - 1, height)
 	return surface
 
 aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
@@ -51,15 +56,15 @@ def getSurfaceSpotHeight(level, x, z, suggestedHeight):
 			y += 1
 		return y - 1
 
-def tryAddSurfaceSpotToQueue(box, surfaceExtra, unresolvedSurfaceSpots, x, z, suggestedHeight):
+def tryAddSurfaceSpotToQueue(surface, suggestedHeights, queue, x, z, suggestedHeight):
 	#Checks if surface spot is within surface border
-	if (x + box.minx < box.minx or x + box.minx >= box.maxx or z + box.minz < box.minz or z + box.minz >= box.maxz):
+	if (x < 0 or x >= surface.xLength or z < 0 or z >= surface.zLength):
 		return
 
 	#Checks if this height has been suggested before
-	if (surfaceExtra.surface[x][z].height < suggestedHeight):
-		surfaceExtra.surface[x][z].height = suggestedHeight
-		unresolvedSurfaceSpots.append(Arg(x, z, suggestedHeight))
+	if (suggestedHeights[x][z] < suggestedHeight):
+		suggestedHeights[x][z] = suggestedHeight
+		queue.append(Arg(x, z, suggestedHeight))
 
 class Arg:
 

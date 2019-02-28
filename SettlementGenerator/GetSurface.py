@@ -1,10 +1,10 @@
 from Classes import Surface
 
-def getSurface(level, box):
-	surface = Surface(box.maxx - box.minx, box.maxz - box.minz)
-	for x in range(surface.x):
-		for z in range(surface.z):
-			height = getSurfaceSpotHeight(level, x + box.minx, z + box.minz)
+def getSurface(level, xStart, zStart, xEnd, zEnd):
+	surface = Surface(xStart, zStart, xEnd, zEnd)
+	for x in range(surface.xLength):
+		for z in range(surface.zLength):
+			height = getSurfaceSpotHeight(level, x + surface.xStart, z + surface.zStart)
 			surface.surface[x][z].height = height
 	return surface
 

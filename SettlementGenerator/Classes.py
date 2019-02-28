@@ -1,22 +1,26 @@
 class Surface:
 
-	def __init__(self, x, z):
-		self.x = x
-		self.z = z
+	def __init__(self, xStart, zStart, xEnd, zEnd):
+		self.xStart = xStart
+		self.zStart = zStart
+		self.xEnd = xEnd
+		self.zEnd = zEnd
+		self.xLength = xEnd - xStart
+		self.zLength = zEnd - zStart
 		self.surface = self.getNewSurface()
 
 	def getNewSurface(self):
 		surface = []
-		for x in range(self.x):
+		for x in range(self.xLength):
 			row = []
-			for z in range(self.z):
+			for z in range(self.zLength):
 				row.append(SurfaceSpot())
 			surface.append(row)
 		return surface
 
 	def setSteepness(self):	
-		for x in range(self.x):
-			for z in range(self.z):
+		for x in range(self.xLength):
+			for z in range(self.zLength):
 				self.surface[x][z].steepness = self.getSteepness(x, z)
 
 	def getSteepness(self, x, z):
