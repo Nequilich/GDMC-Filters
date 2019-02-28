@@ -2,6 +2,8 @@ import utilityFunctions as utilityFunctions
 
 
 def createPyramid(level, minx, maxx, minz, maxz, baseHeight):
+	maxx = minx + 3 if maxx - minx < 3 else maxx
+	maxz = minz + 3 if maxz - minz < 3 else maxz
 	sections = getSections(minx, maxx, minz, maxz, baseHeight, level.Height)
 	generateFloor(level, minx, maxx, minz, maxz, baseHeight)
 	generateSections(level, sections)
