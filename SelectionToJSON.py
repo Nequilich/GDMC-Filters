@@ -1,8 +1,10 @@
 import json
 
 inputs = (
-  ("Write selection to file", "label"),
+  ("Create JSON file of selection", "label"),
+  ("Path: GDMC/stock-filters/selection_dump.json", "label"),
   ("Include air blocks", False),
+  ("JSON Indents:", 2),
   ("Creator: Daniel Lundin", "label"),
 )
 
@@ -11,7 +13,7 @@ def perform(level, box, options):
   layers = readSelection(level, box)
   blocks = getBlocks(layers, options['Include air blocks'])
 
-  writeToJSONFile('./', 'test_write_selection_to_file_01_dump', blocks)
+  writeToJSONFile('./stock-filters', 'selection_dump', blocks, options)
 
 
 def readSelection(level, box):
@@ -37,7 +39,7 @@ def getBlocks(layers, includeAir):
   return blocks
 
 
-def writeToJSONFile(path, fileName, data):
-    filePath = path + '/' + fileName + '.json'
-    with open(filePath, 'w') as f:
-        json.dump(data, f, indent=2)
+def writeToJSONFile(path, fileName, data, options):
+  filePath = path + '/' + fileName + '.json'
+  with open(filePath, 'w') as f:
+    json.dump(data, f, indent=options['JSON Indents:'])
