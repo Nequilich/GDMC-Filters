@@ -1,4 +1,5 @@
 from GetSurfaceAdv import getSurface
+from GetArea import getArea
 from Common import setBlock
 
 def perform(level, box, options):
@@ -9,12 +10,4 @@ def perform(level, box, options):
 			y = surface.surface[x][z].height
 			setBlock(level, x + box.minx, y + 1, z + box.minz, 20)
 
-	surface.setSteepness()
-	printSurfaceSteepness(surface)
-
-def printSurfaceSteepness(surface):
-	for x in range(surface.x):
-		s = ""
-		for z in range(surface.z):
-			s += str(surface.surface[x][z].steepness) + " "
-		print(s)
+	area = getArea(surface, int(surface.x / 2), int(surface.z / 2))
