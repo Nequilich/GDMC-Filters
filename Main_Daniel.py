@@ -21,4 +21,4 @@ def perform(level, box, options):
 	for a, area in enumerate(flatAreas):
 		for point in area:
 			y = surface.surface[point[0]][point[1]].height
-			setBlock(level, surface.xStart + point[0], y + 1, surface.zStart + point[1], 95, 3)
+			setBlock(level, surface.xStart + point[0], y + 1, surface.zStart + point[1], 95, a % 16)
