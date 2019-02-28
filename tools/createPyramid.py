@@ -1,22 +1,8 @@
 import utilityFunctions as utilityFunctions
 
-inputs = (
-	("Daniel Test Filter 2", "label"),
-	("Only build within selection", False),
-	("Creator: Daniel Lundin", "label"),
-)
-
-
-def perform(level, box, options):
-	if (box.maxx - box.minx < 3 or box.maxz - box.minz < 3
-			or box.maxy - box.miny < 4):
-		raise ValueError("Selection must be of size 3*3*4 (x*z*y) or bigger")
-	sections = []
-	if (options["Only build within selection"]):
-		sections = getSections(box, box.maxy)
-	else:
-		sections = getSections(box, level.Height)
-	generateFloor(level, box)
+def createPyramid(level, minx, maxx, minz, maxz, baseHeight):
+	sections = getSections(minx, maxx, minz, maxz, baseHeight, level.Height)
+	generateFloor(level, minx, maxx, minz, maxz, baseHeight)
 	generateSections(level, sections)
 
 
@@ -30,15 +16,15 @@ class Section:
 		self.maxy = maxy
 
 
-def getSections(box, maxHeight):
+def getSections(minx, maxx, minz, maxz, baseHeight, maxHeight):
 	sections = []
 	currentSection = Section(
-		box.minx,
-		box.maxx if (box.maxx - box.minx) % 2 == 1 else box.maxx - 1,
-		box.minz,
-		box.maxz if (box.maxz - box.minz) % 2 == 1 else box.maxz - 1,
-		box.miny + 1,
-		box.miny + 4)
+		minx,
+		maxx if (maxx - minx) % 2 == 1 else maxx - 1,
+		minz,
+		maxz if (maxz - minz) % 2 == 1 else maxz - 1,
+		baseHeight + 1,
+		baseHeight + 4)
 	while (currentSection.maxy <= maxHeight
 		   and currentSection.maxx - currentSection.minx >= 3
 		   and currentSection.maxz - currentSection.minz >= 3):
@@ -53,16 +39,16 @@ def getSections(box, maxHeight):
 	return sections
 
 
-def generateFloor(level, box):
+def generateFloor(level, minx, maxx, minz, maxz, baseHeight):
 	fillSection(
 		level, (4, 0),
 		Section(
-			box.minx,
-			box.maxx if (box.maxx - box.minx) % 2 == 1 else box.maxx - 1,
-			box.minz,
-			box.maxz if (box.maxz - box.minz) % 2 == 1 else box.maxz - 1,
-			box.miny,
-			box.miny + 1))
+			minx,
+			maxx if (maxx - minx) % 2 == 1 else maxx - 1,
+			minz,
+			maxz if (maxz - minz) % 2 == 1 else maxz - 1,
+			baseHeight,
+			baseHeight + 1))
 
 
 def generateSections(level, sections):
