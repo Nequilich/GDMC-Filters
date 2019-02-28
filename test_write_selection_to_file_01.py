@@ -1,5 +1,4 @@
 import json
-import utilityFunctions as utilityFunctions
 
 inputs = (
   ("Write selection to file", "label"),
@@ -10,9 +9,9 @@ inputs = (
 
 def perform(level, box, options):
   layers = readSelection(level, box)
-  blocks = getBlocks(layers)
+  blocks = getBlocks(layers, options['Include air blocks'])
 
-  writeToJSONFile('./', 'test_write_selection_to_file_01-dump', blocks)
+  writeToJSONFile('./', 'test_write_selection_to_file_01_dump', blocks)
 
 
 def readSelection(level, box):
@@ -28,12 +27,12 @@ def readSelection(level, box):
   return layers
 
 
-def getBlocks(layers):
+def getBlocks(layers, includeAir):
   blocks = []
   for y, layer in enumerate(layers):
     for x, line in enumerate(layer):
       for z, block in enumerate(line):
-        if(block[0] != 0):
+        if(includeAir or block[0] != 0):
           blocks.append({'id': 0 + block[0], 'data': 0 + block[1], 'x': 0 + x, 'y': 0 + y, 'z': 0 + z})
   return blocks
 
