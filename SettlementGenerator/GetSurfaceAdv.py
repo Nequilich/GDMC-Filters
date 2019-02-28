@@ -15,13 +15,13 @@ def getSurface(level, xStart, zStart, xEnd, zEnd):
 	xCenter = int((surface.xLength) / 2)
 	zCenter = int((surface.zLength) / 2)
 	suggestedHeights[xCenter][zCenter] = level.Height
-	unresolvedSurfaceSpots.append(Arg(xCenter, zCenter, level.Height))
+	unresolvedSurfaceSpots.append((xCenter, zCenter, level.Height))
 
 	while (unresolvedSurfaceSpots):
 		nextSurfaceSpot = unresolvedSurfaceSpots.popleft()
-		x = nextSurfaceSpot.x
-		z = nextSurfaceSpot.z
-		suggestedHeight = nextSurfaceSpot.suggestedHeight
+		x = nextSurfaceSpot[0]
+		z = nextSurfaceSpot[1]
+		suggestedHeight = nextSurfaceSpot[2]
 		if (suggestedHeight < suggestedHeights[x][z]):
 			continue
 		height = getSurfaceSpotHeight(level, x + surface.xStart, z + surface.zStart, suggestedHeight)
@@ -64,11 +64,4 @@ def tryAddSurfaceSpotToQueue(surface, suggestedHeights, queue, x, z, suggestedHe
 	#Checks if this height has been suggested before
 	if (suggestedHeights[x][z] < suggestedHeight):
 		suggestedHeights[x][z] = suggestedHeight
-		queue.append(Arg(x, z, suggestedHeight))
-
-class Arg:
-
-	def __init__(self, x, z, suggestedHeight):
-		self.x = x
-		self.z = z
-		self.suggestedHeight = suggestedHeight
+		queue.append((x, z, suggestedHeight))

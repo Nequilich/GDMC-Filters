@@ -17,8 +17,8 @@ def getArea(surface, x, z):
 
 class Area:
 
-	def __init__(self, x1, z1, x2, z2):
-		self.x1 = x1
-		self.z1 = z1
-		self.x2 = x2
-		self.z2 = z2
+	def __init__(self, xStart, zStart, xEnd, zEnd):
+		self.xStart = xStart
+		self.zStart = zStart
+		self.xEnd = xEnd
+		self.zEnd = zEnd
