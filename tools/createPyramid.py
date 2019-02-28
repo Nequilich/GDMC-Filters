@@ -1,5 +1,6 @@
 import utilityFunctions as utilityFunctions
 
+
 def createPyramid(level, minx, maxx, minz, maxz, baseHeight):
 	sections = getSections(minx, maxx, minz, maxz, baseHeight, level.Height)
 	generateFloor(level, minx, maxx, minz, maxz, baseHeight)
