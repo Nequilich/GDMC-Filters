@@ -17,6 +17,8 @@ def getSurface(level, box):
 		x = nextSurfaceSpot.x
 		z = nextSurfaceSpot.z
 		suggestedHeight = nextSurfaceSpot.suggestedHeight
+		if (suggestedHeight < surfaceExtra.surface[x][z].height):
+			continue
 		height = getSurfaceSpotHeight(level, x + box.minx, z + box.minz, suggestedHeight)
 
 		#Returns if calculated is not higher than previous recorded height
@@ -36,7 +38,7 @@ def isSurfaceBlock(level, x, y, z):
 		return True
 
 def getSurfaceSpotHeight(level, x, z, suggestedHeight):
-	y = suggestedHeight + 1
+	y = suggestedHeight
 	isAboveSurface = not isSurfaceBlock(level, x, y, z)
 	if (isAboveSurface):
 		y -= 1
