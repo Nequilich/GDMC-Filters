@@ -1,6 +1,6 @@
-from GetSurfaceAdv import getSurface
-from GetRectangle import getRectangle
 from Common import setBlock
+from GetRectangle import getRectangle
+from GetSurfaceAdv import getSurface
 
 def perform(level, box, options):
 	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
