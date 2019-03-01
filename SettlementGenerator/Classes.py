@@ -45,6 +45,7 @@ class Surface:
 
 class SurfaceSpot:
 
-	def __init__(self, height = 0, steepness = 0):
+	def __init__(self, height = 0):
 		self.height = height
-		self.steepness = steepness
+		self.steepness = 0
+		self.isOccupied = False
