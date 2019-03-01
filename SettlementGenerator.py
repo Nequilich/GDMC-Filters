@@ -38,8 +38,7 @@ def perform(level, box, options):
 		i = randint(0, length - 1)
 		x = combinedArea[i][0]
 		z = combinedArea[i][1]
-		print("x: " + str(x) + ", z: " + str(z))
-		rec = getRectangle(surface, x, z, 2)
+		rec = getRectangle(surface, x, z, 1)
 		if (not isValidRectangle(rec)):
 			continue
 		counter += 1

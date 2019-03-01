@@ -5,44 +5,40 @@ def getRectangle(surface, xFirst, zFirst, heightRange):
 	continueRight = True
 	continueDown = True
 	continueLeft = True
-	while(continueUp or continueRight or continueDown or continueLeft):
-		if (continueUp):
-			if (rec.zEnd == surface.zLength):
-				continueUp = False
-			else:
-				for x in range(rec.xStart, rec.xEnd):
-					if (surface.surface[x][rec.zEnd].height < height or surface.surface[x][rec.zEnd].height > height - 1 + heightRange):
-						continueUp = False
-				if (continueUp):
-					rec.zEnd += 1
-		if (continueRight):
-			if (rec.xEnd == surface.xLength):
-				continueRight = False
-			else:
-				for z in range(rec.zStart, rec.zEnd):
-					if (surface.surface[rec.xEnd][z].height < height or surface.surface[rec.xEnd][z].height > height - 1 + heightRange):
-						continueRight = False
-				if (continueRight):
-					rec.xEnd += 1
-		if (continueDown):
-			if (rec.zStart == 0):
-				continueDown = False
-			else:
-				for x in range(rec.xStart, rec.xEnd):
-					if (surface.surface[x][rec.zStart - 1].height < height or surface.surface[x][rec.zStart - 1].height > height - 1 + heightRange):
-						continueDown = False
-				if (continueDown):
-					rec.zStart -= 1
-		if (continueLeft):
-			if (rec.xStart == 0):
-				continueLeft = False
-			else:
-				for z in range(rec.zStart, rec.zEnd):
-					if (surface.surface[rec.xStart - 1][z].height < height or surface.surface[rec.xStart - 1][z].height > height - 1 + heightRange):
-						continueLeft = False
-				if (continueLeft):
-					rec.xStart -= 1
+	while continueUp or continueRight or continueDown or continueLeft:
+		if continueUp:
+			continueUp = isValidHorizontalArea(surface, rec.xStart, rec.xEnd, rec.zEnd, surface.zLength, height, heightRange)
+			if continueUp:
+				rec.zEnd += 1
+		if continueRight:
+			continueRight = isValidVerticalArea(surface, rec.zStart, rec.zEnd, rec.xEnd, surface.xLength, height, heightRange)
+			if continueRight:
+				rec.xEnd += 1
+		if continueDown:
+			continueDown = isValidHorizontalArea(surface, rec.xStart, rec.xEnd, rec.zStart, 0, height, heightRange)
+			if continueDown:
+				rec.zStart -= 1
+		if continueLeft:
+			continueLeft = isValidVerticalArea(surface, rec.zStart, rec.zEnd, rec.xStart, 0, height, heightRange)
+			if continueLeft:
+				rec.xStart -= 1
 	return rec
+
+def isValidHorizontalArea(surface, xStart, xEnd, z, zBorder, height, heightRange):
+	if z == zBorder:
+		return False
+	for x in range(xStart, xEnd):
+		if surface.surface[x][z].height < height or surface.surface[x][z].height > height + heightRange:
+			return False
+	return True
+
+def isValidVerticalArea(surface, zStart, zEnd, x, xBorder, height, heightRange):
+	if x == xBorder:
+		return False
+	for z in range(zStart, zEnd):
+		if surface.surface[x][z].height < height or surface.surface[x][z].height > height + heightRange:
+			return False
+	return True
 
 class Rectangle:
 
