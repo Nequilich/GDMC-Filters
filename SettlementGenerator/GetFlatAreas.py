@@ -1,5 +1,4 @@
 def getFlatAreas(surface, allowedSteepness = 0):
-	#isVisitedList = [[False] * surface.zLength] * surface.xLength
 	isVisitedList = []
 	for x in range(surface.xLength):
 		row = []

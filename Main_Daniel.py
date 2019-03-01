@@ -1,6 +1,6 @@
 from GetSurfaceAdv import getSurface
 from Common import setBlock
-from getFlatAreas import getFlatAreas
+from GetFlatAreas import getFlatAreas
 
 def perform(level, box, options):
 	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
@@ -11,12 +11,6 @@ def perform(level, box, options):
 			setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 20)
 
 	surface.setSteepness()
-	for x in range(surface.xLength):
-		s = ""
-		for z in range(surface.zLength):
-			s += str(surface.surface[x][z].steepness) + " "
-		print(s)
-  
 	flatAreas = getFlatAreas(surface, 0)
 	for a, area in enumerate(flatAreas):
 		for point in area:
