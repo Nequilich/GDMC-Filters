@@ -1,8 +1,8 @@
-from GetSurfaceAdv import getSurface
+from random import randint
 from Common import setBlock
 from GetFlatAreas import getFlatAreas
-from random import randint
 from GetRectangle import getRectangle
+from GetSurfaceAdv import getSurface
 
 def perform(level, box, options):
 	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
@@ -11,8 +11,8 @@ def perform(level, box, options):
 
 	length = len(areas)
 	i = 0
-	while(i < length):
-		if (len(areas[i]) < 35):
+	while i < length:
+		if len(areas[i]) < 35:
 			areas.pop(i)
 			length -= 1
 		else:
@@ -39,7 +39,7 @@ def perform(level, box, options):
 		x = combinedArea[i][0]
 		z = combinedArea[i][1]
 		rec = getRectangle(surface, x, z, 1)
-		if (not isValidRectangle(rec)):
+		if not isValidRectangle(rec):
 			continue
 		counter += 1
 	print(str(counter))
@@ -47,6 +47,6 @@ def perform(level, box, options):
 def isValidRectangle(rec):
 	xLength = rec.xEnd - rec.xStart
 	zLength = rec.zEnd - rec.zStart
-	if (xLength >= 5 and zLength >= 7 or xLength >= 7 and zLength >= 5):
+	if xLength >= 5 and zLength >= 7 or xLength >= 7 and zLength >= 5:
 		return True
 	return False

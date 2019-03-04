@@ -25,21 +25,21 @@ class Surface:
 
 	def getSteepness(self, x, z):
 		heights = []
-		if (x + 1 < self.xLength):
+		if x + 1 < self.xLength:
 			heights.append(self.surface[x + 1][z].height)
-		if (x - 1 >= 0):
+		if x - 1 >= 0:
 			heights.append(self.surface[x - 1][z].height)
-		if (z + 1 < self.zLength):
+		if z + 1 < self.zLength:
 			heights.append(self.surface[x][z + 1].height)
-		if (z - 1 >= 0):
+		if z - 1 >= 0:
 			heights.append(self.surface[x][z - 1].height)
 
 		minHeight = self.surface[x][z].height
 		maxHeight = self.surface[x][z].height
 		for h in heights:
-			if (h < minHeight):
+			if h < minHeight:
 				minHeight = h
-			elif (h > maxHeight):
+			elif h > maxHeight:
 				maxHeight = h
 		return maxHeight - minHeight
 
