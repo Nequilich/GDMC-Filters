@@ -1,5 +1,6 @@
 from random import randint
 from Common import setBlock
+from CreatePyramid import createPyramid
 from GetFlatAreas import getFlatAreas
 from GetRectangle import getRectangle
 from GetSurfaceAdv import getSurface
@@ -18,31 +19,21 @@ def perform(level, box, options):
 		else:
 			i += 1
 
-	for x in range(surface.xLength):
-		for z in range(surface.zLength):
-			y = surface.surface[x][z].height
-			setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 20)
-	for a, area in enumerate(areas):
-		for point in area:
-			y = surface.surface[point[0]][point[1]].height
-			setBlock(level, surface.xStart + point[0], y + 1, surface.zStart + point[1], 95, a % 15 + 1)
-	
 	combinedArea = []
 	for area in areas:
 		for spot in area:
 			combinedArea.append(spot)
-	
+
 	length = len(combinedArea)
-	counter = 0
-	for s in range(10):
+	for s in range(100):
 		i = randint(0, length - 1)
 		x = combinedArea[i][0]
 		z = combinedArea[i][1]
 		rec = getRectangle(surface, x, z, 1)
 		if not isValidRectangle(rec):
 			continue
-		counter += 1
-	print(str(counter))
+		occupyArea(surface, rec)
+		createPyramid(level, rec.xStart + box.minx, rec.xEnd + box.minx, rec.zStart + box.minz, rec.zEnd + box.minz, surface.surface[x][z].height)
 
 def isValidRectangle(rec):
 	xLength = rec.xEnd - rec.xStart
@@ -50,3 +41,8 @@ def isValidRectangle(rec):
 	if xLength >= 5 and zLength >= 7 or xLength >= 7 and zLength >= 5:
 		return True
 	return False
+
+def occupyArea(surface, rec):
+	for x in range(rec.xStart, rec.xEnd):
+		for z in range(rec.zStart, rec.zEnd):
+			surface.surface[x][z].isOccupied = True
