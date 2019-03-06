@@ -4,11 +4,11 @@ def getSurface(level, xStart, zStart, xEnd, zEnd):
 	surface = Surface(xStart, zStart, xEnd, zEnd)
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
-			height = getSurfaceSpotHeight(level, x + surface.xStart, z + surface.zStart)
+			height = getSurfacePointHeight(level, x + surface.xStart, z + surface.zStart)
 			surface.surface[x][z].height = height
 	return surface
 
-def getSurfaceSpotHeight(level, x, z):
+def getSurfacePointHeight(level, x, z):
 	heightIsFound = False
 	y = 128
 	while (not heightIsFound):

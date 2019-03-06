@@ -1,14 +1,14 @@
 from random import randint
 from Common import setBlock
 from CreatePyramid import createPyramid
-from GetFlatAreas import getFlatAreas
 from GetRectangle import getRectangle
 from GetSurfaceAdv import getSurface
+from UpdateSections import updateSections
 
 def perform(level, box, options):
 	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
 	surface.setSteepness()
-	areas = getFlatAreas(surface, 1)
+	areas = updateSections(surface, 1)
 
 	length = len(areas)
 	i = 0

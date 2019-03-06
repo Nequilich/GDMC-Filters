@@ -1,18 +1,18 @@
-from GetSurfaceAdv import getSurface
 from Common import setBlock
-from GetFlatAreas import getFlatAreas
+from GetSurfaceAdv import getSurface
+from UpdateSections import updateSections
 
 def perform(level, box, options):
 	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
+	surface.updateSteepness()
+	surface.updateWater(level)
+	sections = updateSections(surface, 1, 30)
 
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
 			y = surface.surface[x][z].height
-			setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 20)
-
-	surface.setSteepness()
-	flatAreas = getFlatAreas(surface, 0)
-	for a, area in enumerate(flatAreas):
-		for point in area:
-			y = surface.surface[point[0]][point[1]].height
-			setBlock(level, surface.xStart + point[0], y + 1, surface.zStart + point[1], 95, a % 15 + 1)
+			id = surface.surface[x][z].sectionId
+			if (id == -1):
+				setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 20)
+			else:
+				setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 95, id % 15 + 1)
