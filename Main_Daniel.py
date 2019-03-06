@@ -1,11 +1,9 @@
+from Classes import Surface
 from Common import setBlock
-from GetSurfaceAdv import getSurface
 from UpdateSections import updateSections
 
 def perform(level, box, options):
-	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
-	surface.updateSteepness()
-	surface.updateWater(level)
+	surface = Surface(level, box.minx, box.minz, box.maxx, box.maxz)
 	sections = updateSections(surface, 1, 30)
 
 	for x in range(surface.xLength):

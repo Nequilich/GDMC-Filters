@@ -1,9 +1,9 @@
+from Classes import Surface
 from Common import setBlock
 from GetRectangle import getRectangle
-from GetSurfaceAdv import getSurface
 
 def perform(level, box, options):
-	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
+	surface = Surface(level, box.minx, box.minz, box.maxx, box.maxz)
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
 			y = surface.surfaceMap[x][z].height
