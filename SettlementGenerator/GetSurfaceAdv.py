@@ -27,8 +27,8 @@ def getSurface(level, xStart, zStart, xEnd, zEnd):
 		height = getSurfacePointHeight(level, x + surface.xStart, z + surface.zStart, suggestedHeight)
 
 		#Returns if calculated is not higher than previous recorded height
-		if surface.surface[x][z].height < height:
-			surface.surface[x][z].height = height
+		if surface.surfaceMap[x][z].height < height:
+			surface.surfaceMap[x][z].height = height
 			tryAddSurfacePointToQueue(surface, suggestedHeights, unresolvedSurfacePoints, x + 1, z, height)
 			tryAddSurfacePointToQueue(surface, suggestedHeights, unresolvedSurfacePoints, x - 1, z, height)
 			tryAddSurfacePointToQueue(surface, suggestedHeights, unresolvedSurfacePoints, x, z + 1, height)

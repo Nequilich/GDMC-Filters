@@ -7,35 +7,35 @@ class Surface:
 		self.zEnd = zEnd
 		self.xLength = xEnd - xStart
 		self.zLength = zEnd - zStart
-		self.surface = self.getNewSurface()
+		self.surfaceMap = self.getNewSurfaceMap()
 
-	def getNewSurface(self):
-		surface = []
+	def getNewSurfaceMap(self):
+		surfaceMap = []
 		for x in range(self.xLength):
 			row = []
 			for z in range(self.zLength):
 				row.append(SurfacePoint())
-			surface.append(row)
-		return surface
+			surfaceMap.append(row)
+		return surfaceMap
 
 	def updateSteepness(self):	
 		for x in range(self.xLength):
 			for z in range(self.zLength):
-				self.surface[x][z].steepness = self.updatePointSteepness(x, z)
+				self.surfaceMap[x][z].steepness = self.updatePointSteepness(x, z)
 
 	def updatePointSteepness(self, x, z):
 		heights = []
 		if x + 1 < self.xLength:
-			heights.append(self.surface[x + 1][z].height)
+			heights.append(self.surfaceMap[x + 1][z].height)
 		if x - 1 >= 0:
-			heights.append(self.surface[x - 1][z].height)
+			heights.append(self.surfaceMap[x - 1][z].height)
 		if z + 1 < self.zLength:
-			heights.append(self.surface[x][z + 1].height)
+			heights.append(self.surfaceMap[x][z + 1].height)
 		if z - 1 >= 0:
-			heights.append(self.surface[x][z - 1].height)
+			heights.append(self.surfaceMap[x][z - 1].height)
 
-		minHeight = self.surface[x][z].height
-		maxHeight = self.surface[x][z].height
+		minHeight = self.surfaceMap[x][z].height
+		maxHeight = self.surfaceMap[x][z].height
 		for h in heights:
 			if h < minHeight:
 				minHeight = h
@@ -46,8 +46,8 @@ class Surface:
 	def updateWater(self, level):
 		for x in range(self.xLength):
 			for z in range(self.zLength):
-				y = self.surface[x][z].height
-				self.surface[x][z].isWater = (level.blockAt(x + self.xStart, y, z + self.zStart) == 9)
+				y = self.surfaceMap[x][z].height
+				self.surfaceMap[x][z].isWater = (level.blockAt(x + self.xStart, y, z + self.zStart) == 9)
 
 class SurfacePoint:
 

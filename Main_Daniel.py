@@ -10,8 +10,8 @@ def perform(level, box, options):
 
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
-			y = surface.surface[x][z].height
-			id = surface.surface[x][z].sectionId
+			y = surface.surfaceMap[x][z].height
+			id = surface.surfaceMap[x][z].sectionId
 			if (id == -1):
 				setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 20)
 			else:
