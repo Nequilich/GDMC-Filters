@@ -5,7 +5,7 @@ def getSurface(level, xStart, zStart, xEnd, zEnd):
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
 			height = getSurfacePointHeight(level, x + surface.xStart, z + surface.zStart)
-			surface.surface[x][z].height = height
+			surface.surfaceMap[x][z].height = height
 	return surface
 
 def getSurfacePointHeight(level, x, z):

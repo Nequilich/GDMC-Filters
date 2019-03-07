@@ -33,7 +33,7 @@ def perform(level, box, options):
 		if not isValidRectangle(rec):
 			continue
 		occupyArea(surface, rec)
-		createPyramid(level, rec.xStart + box.minx, rec.xEnd + box.minx, rec.zStart + box.minz, rec.zEnd + box.minz, surface.surface[x][z].height)
+		createPyramid(level, rec.xStart + box.minx, rec.xEnd + box.minx, rec.zStart + box.minz, rec.zEnd + box.minz, surface.surfaceMap[x][z].height)
 
 def isValidRectangle(rec):
 	xLength = rec.xEnd - rec.xStart
@@ -45,4 +45,4 @@ def isValidRectangle(rec):
 def occupyArea(surface, rec):
 	for x in range(rec.xStart, rec.xEnd):
 		for z in range(rec.zStart, rec.zEnd):
-			surface.surface[x][z].isOccupied = True
+			surface.surfaceMap[x][z].isOccupied = True

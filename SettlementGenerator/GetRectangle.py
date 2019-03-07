@@ -1,6 +1,6 @@
 def getRectangle(surface, xFirst, zFirst, heightRange):
 	rec = Rectangle(xFirst, zFirst, xFirst + 1, zFirst + 1)
-	height = surface.surface[xFirst][zFirst].height
+	height = surface.surfaceMap[xFirst][zFirst].height
 	continueUp = True
 	continueRight = True
 	continueDown = True
@@ -28,7 +28,7 @@ def isValidHorizontalArea(surface, xStart, xEnd, z, zBorder, height, heightRange
 	if z == zBorder:
 		return False
 	for x in range(xStart, xEnd):
-		if surface.surface[x][z].height < height or surface.surface[x][z].height > height + heightRange or surface.surface[x][z].isOccupied:
+		if surface.surfaceMap[x][z].height < height or surface.surfaceMap[x][z].height > height + heightRange or surface.surfaceMap[x][z].isOccupied:
 			return False
 	return True
 
@@ -36,7 +36,7 @@ def isValidVerticalArea(surface, zStart, zEnd, x, xBorder, height, heightRange):
 	if x == xBorder:
 		return False
 	for z in range(zStart, zEnd):
-		if surface.surface[x][z].height < height or surface.surface[x][z].height > height + heightRange or surface.surface[x][z].isOccupied:
+		if surface.surfaceMap[x][z].height < height or surface.surfaceMap[x][z].height > height + heightRange or surface.surfaceMap[x][z].isOccupied:
 			return False
 	return True
 
