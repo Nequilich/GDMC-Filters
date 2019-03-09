@@ -12,27 +12,18 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
-	areas = calculateSections(surface, 1, 40)
+	sections = calculateSections(surface, 1, 40)
 
-	length = len(areas)
-	i = 0
-	while i < length:
-		if len(areas[i]) < 35:
-			areas.pop(i)
-			length -= 1
-		else:
-			i += 1
+	allPoints = []
+	for section in sections:
+		for point in section.points:
+			allPoints.append(point)
 
-	combinedArea = []
-	for area in areas:
-		for spot in area:
-			combinedArea.append(spot)
-
-	length = len(combinedArea)
+	length = len(allPoints)
 	for s in range(100):
 		i = randint(0, length - 1)
-		x = combinedArea[i][0]
-		z = combinedArea[i][1]
+		x = allPoints[i].x
+		z = allPoints[i].z
 		rec = getRectangle(surface, x, z, 1)
 		if not isValidRectangle(rec):
 			continue

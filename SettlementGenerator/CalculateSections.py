@@ -5,7 +5,7 @@ from Common import getMatrix
 
 def calculateSections(surface, allowedSteepness = 0, minSize = 1):
 	sections = []
-	isChecked = getMatrix(surface.xLength, surface.zLength, False) #A matrix the keeps track of which points are checked
+	isChecked = getMatrix(surface.xLength, surface.zLength, False) #A matrix that keeps track of which points are checked
 
 	id = 0
 	for x in range(surface.xLength):
