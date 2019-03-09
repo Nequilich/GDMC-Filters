@@ -15,11 +15,11 @@ def getRectangle(surface, xFirst, zFirst, heightRange):
 			if continueRight:
 				rec.xEnd += 1
 		if continueDown:
-			continueDown = isValidHorizontalArea(surface, rec.xStart, rec.xEnd, rec.zStart - 1, 0, height, heightRange)
+			continueDown = isValidHorizontalArea(surface, rec.xStart, rec.xEnd, rec.zStart - 1, -1, height, heightRange)
 			if continueDown:
 				rec.zStart -= 1
 		if continueLeft:
-			continueLeft = isValidVerticalArea(surface, rec.zStart, rec.zEnd, rec.xStart - 1, 0, height, heightRange)
+			continueLeft = isValidVerticalArea(surface, rec.zStart, rec.zEnd, rec.xStart - 1, -1, height, heightRange)
 			if continueLeft:
 				rec.xStart -= 1
 	return rec

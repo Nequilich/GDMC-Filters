@@ -1,14 +1,18 @@
 from random import randint
-from Common import setBlock
+from Classes import Surface
 from CreatePyramid import createPyramid
 from GetRectangle import getRectangle
-from GetSurfaceAdv import getSurface
-from UpdateSections import updateSections
+from SurfaceManager import calculateHeightMapAdv
+from SurfaceManager import calculateSections
+from SurfaceManager import calculateSteepnessMap
+from SurfaceManager import calculateWaterPlacement
 
 def perform(level, box, options):
-	surface = getSurface(level, box.minx, box.minz, box.maxx, box.maxz)
-	surface.setSteepness()
-	areas = updateSections(surface, 1)
+	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+	calculateHeightMapAdv(level, surface)
+	calculateSteepnessMap(surface)
+	calculateWaterPlacement(level, surface)
+	areas = calculateSections(surface, 1, 40)
 
 	length = len(areas)
 	i = 0

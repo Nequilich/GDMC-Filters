@@ -1,15 +1,11 @@
 from collections import deque
 from Classes import Point
 from Classes import Section
+from Common import getMatrix
 
-def updateSections(surface, allowedSteepness = 0, minSize = 1):
+def calculateSections(surface, allowedSteepness = 0, minSize = 1):
 	sections = []
-	isChecked = [] #A matrix the keeps track of which points are checked
-	for x in range(surface.xLength):
-		row = []
-		for z in range(surface.zLength):
-			row.append(False)
-		isChecked.append(row)
+	isChecked = getMatrix(surface.xLength, surface.zLength, False) #A matrix the keeps track of which points are checked
 
 	id = 0
 	for x in range(surface.xLength):
@@ -17,20 +13,19 @@ def updateSections(surface, allowedSteepness = 0, minSize = 1):
 			if (isChecked[x][z]):
 				continue
 			if (surface.surfaceMap[x][z].steepness <= allowedSteepness):
-				section = getSection(id, Point(x, z), surface, isChecked, allowedSteepness)
+				section = calculateSection(id, Point(x, z), surface, isChecked, allowedSteepness)
 				if (section.size >= minSize):
 					registerIdsOnSurface(surface, section)
 					sections.append(section)
 					id += 1
 			isChecked[x][z] = True
-	print(str(id))
 	return sections
 
 def registerIdsOnSurface(surface, section):
 	for point in section.points:
 		surface.surfaceMap[point.x][point.z].sectionId = section.id
 
-def getSection(id, startPoint, surface, isChecked, allowedSteepness):
+def calculateSection(id, startPoint, surface, isChecked, allowedSteepness):
 	section = Section(id)
 	isWaterSection = surface.surfaceMap[startPoint.x][startPoint.z].isWater
 	pointsToCheck = deque()
