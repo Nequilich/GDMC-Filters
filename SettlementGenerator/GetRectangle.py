@@ -28,7 +28,7 @@ def isValidHorizontalArea(surface, xStart, xEnd, z, zBorder, height, heightRange
 	if z == zBorder:
 		return False
 	for x in range(xStart, xEnd):
-		if surface.surfaceMap[x][z].height < height or surface.surfaceMap[x][z].height > height + heightRange or surface.surfaceMap[x][z].isOccupied:
+		if surface.surfaceMap[x][z].height < height or surface.surfaceMap[x][z].height > height + heightRange or surface.surfaceMap[x][z].isOccupied or surface.surfaceMap[x][z].isWater:
 			return False
 	return True
 
@@ -36,7 +36,7 @@ def isValidVerticalArea(surface, zStart, zEnd, x, xBorder, height, heightRange):
 	if x == xBorder:
 		return False
 	for z in range(zStart, zEnd):
-		if surface.surfaceMap[x][z].height < height or surface.surfaceMap[x][z].height > height + heightRange or surface.surfaceMap[x][z].isOccupied:
+		if surface.surfaceMap[x][z].height < height or surface.surfaceMap[x][z].height > height + heightRange or surface.surfaceMap[x][z].isOccupied or surface.surfaceMap[x][z].isWater:
 			return False
 	return True
 
