@@ -10,11 +10,11 @@ def calculateSections(surface, allowedSteepness = 0, minSize = 1):
 	id = 0
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
-			if (isChecked[x][z]):
+			if isChecked[x][z]:
 				continue
-			if (surface.surfaceMap[x][z].steepness <= allowedSteepness):
+			if surface.surfaceMap[x][z].steepness <= allowedSteepness:
 				section = calculateSection(id, Point(x, z), surface, isChecked, allowedSteepness)
-				if (section.size >= minSize):
+				if section.size >= minSize:
 					registerIdsOnSurface(surface, section)
 					sections.append(section)
 					id += 1
@@ -27,15 +27,15 @@ def registerIdsOnSurface(surface, section):
 
 def calculateSection(id, startPoint, surface, isChecked, allowedSteepness):
 	section = Section(id)
-	isWaterSection = surface.surfaceMap[startPoint.x][startPoint.z].isWater
+	section.isWater = surface.surfaceMap[startPoint.x][startPoint.z].isWater
 	pointsToCheck = deque()
 	pointsToCheck.append(startPoint)
 	isChecked[startPoint.x][startPoint.z] = True
-	while (pointsToCheck):
+	while pointsToCheck:
 		nextPoint = pointsToCheck.popleft()
 		x = nextPoint.x
 		z = nextPoint.z
-		if surface.surfaceMap[x][z].isWater == isWaterSection and (surface.surfaceMap[x][z].steepness <= allowedSteepness or isWaterSection):
+		if surface.surfaceMap[x][z].isWater == section.isWater and (surface.surfaceMap[x][z].steepness <= allowedSteepness or section.isWater):
 			section.points.append(nextPoint)
 			pointsToCheck.extend(getNeighboursToCheck(nextPoint, surface, isChecked))
 		else:

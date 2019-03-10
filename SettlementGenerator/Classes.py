@@ -35,6 +35,7 @@ class Section:
 		self.id = id
 		self.points = []
 		self.size = 0
+		self.isWater = False
 
 class Point:
 

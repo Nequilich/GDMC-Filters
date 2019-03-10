@@ -16,6 +16,8 @@ def perform(level, box, options):
 
 	allPoints = []
 	for section in sections:
+		if section.isWater:
+			continue
 		for point in section.points:
 			allPoints.append(point)
 
