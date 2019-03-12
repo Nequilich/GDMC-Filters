@@ -3,7 +3,7 @@ import random
 
 def perform(level, box, options):
 	goal = "unicorn"
-	size = 20
+	size = 100
 	mutationRate = 0.02
 	population = Population(size)
 	createRandomPopulation(population)
@@ -35,7 +35,7 @@ def calculateFitness(population, goal):
 		fitness = 1
 		for i in range(7):
 			if goal[i] == element.body[i]:
-				fitness += 2
+				fitness += 5
 		element.fitness = fitness
 
 def createNewPopulation(population, mutationRate):
