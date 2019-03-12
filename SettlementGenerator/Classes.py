@@ -9,16 +9,16 @@ class Surface:
 		self.zEnd = zEnd
 		self.xLength = xEnd - xStart
 		self.zLength = zEnd - zStart
-		self.surfaceMap = getNewSurfaceMap(self.xLength, self.zLength)
+		self.surfaceMap = self.getNewSurfaceMap(self.xLength, self.zLength)
 
-def getNewSurfaceMap(xLength, zLength):
-	surfaceMap = []
-	for x in range(xLength):
-		row = []
-		for z in range(zLength):
-			row.append(SurfacePoint())
-		surfaceMap.append(row)
-	return surfaceMap
+	def getNewSurfaceMap(self, xLength, zLength):
+		surfaceMap = []
+		for x in range(xLength):
+			row = []
+			for z in range(zLength):
+				row.append(SurfacePoint())
+			surfaceMap.append(row)
+		return surfaceMap
 
 class SurfacePoint:
 
