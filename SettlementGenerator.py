@@ -33,7 +33,7 @@ def perform(level, box, options):
 		houseId += 1
 		registerHouse(surface, rec, houseId)
 		registerAsOccupied(surface, rec)
-		createPyramid(level, rec.xStart + 2 + box.minx, rec.xEnd - 2 + box.minx, rec.zStart + 2 + box.minz, rec.zEnd - 2 + box.minz, surface.surfaceMap[x][z].height + 1)
+		createPyramid(level, rec.xStart + 2 + box.minx, rec.xEnd - 2 + box.minx, rec.zStart + 2 + box.minz, rec.zEnd - 2 + box.minz, surface.surfaceMap[x][z].height)
 
 def isValidRectangle(rec):
 	xLength = rec.xEnd - rec.xStart
