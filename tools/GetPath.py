@@ -1,5 +1,6 @@
-import heapq as heapq
-import math as math
+import heapq
+import math
+import sys
 
 
 def getPath(surface, xStart, zStart, xEnd, zEnd):
@@ -78,22 +79,22 @@ def reconstructPath(node):
   return path
 
 
-c1 = math.sqrt(2)
+#c1 = math.sqrt(2)
 def getSimpleHeuristicCostEstimate(surface, node, targetNode):
-  heightCost = 4
+  heightCost = 40
   xLength = abs(targetNode.x - node.x)
   zLength = abs(targetNode.z - node.z)
   yLength = abs(targetNode.y - node.y)
   longHorizontalLength = max(xLength, zLength)
   shortHorizontalLength = min(xLength, zLength)
-  minimumDistance = shortHorizontalLength * c1 + (longHorizontalLength - shortHorizontalLength)
+  minimumDistance = shortHorizontalLength * 14 + (longHorizontalLength - shortHorizontalLength) * 10
   cost = minimumDistance + yLength * heightCost
   return cost
 
 
 def getStepCost(surface, node, neighbourNode):
-  heightCost = 4
-  waterCost = 4
+  heightCost = 40
+  waterCost = 40
   isWater = 0
   if (surface.surfaceMap[neighbourNode.x][neighbourNode.z].isWater):
     isWater = 1
@@ -101,9 +102,9 @@ def getStepCost(surface, node, neighbourNode):
   zLength = abs(neighbourNode.z - node.z)
   yLength = abs(neighbourNode.y - node.y)
   if (xLength + zLength == 2):
-    return c1 + yLength * heightCost + isWater * waterCost
+    return 14 + yLength * heightCost + isWater * waterCost
   elif (xLength + zLength == 1):
-    return 1 + yLength * heightCost + isWater * waterCost
+    return 10 + yLength * heightCost + isWater * waterCost
   else:
     print('this step should not happen')
     return 0
@@ -118,8 +119,8 @@ class Node:
     self.x = x
     self.y = getPointHeight(surface, x, z)
     self.z = z
-    self.gScore = float('inf')
-    self.fScore = float('inf')
+    self.gScore = sys.maxint
+    self.fScore = sys.maxint
     self.cameFrom = None
     self.targetNode = targetNode
     if (targetNode == None):
