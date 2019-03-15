@@ -1,16 +1,16 @@
 from Classes import Surface
 from Common import setBlock
-from UpdateSections import updateSections
+from GetPath import getPath
+from SurfaceManager import calculateHeightMapAdv
+from SurfaceManager import calculateWaterPlacement
 
 def perform(level, box, options):
-	surface = Surface(level, box.minx, box.minz, box.maxx, box.maxz)
-	sections = updateSections(surface, 1, 30)
+	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+	calculateHeightMapAdv(level, surface)
+	calculateWaterPlacement(level, surface)
 
-	for x in range(surface.xLength):
-		for z in range(surface.zLength):
-			y = surface.surfaceMap[x][z].height
-			id = surface.surfaceMap[x][z].sectionId
-			if (id == -1):
-				setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 20)
-			else:
-				setBlock(level, x + surface.xStart, y + 1, z + surface.zStart, 95, id % 15 + 1)
+	path = getPath(surface, 0, 0, surface.xLength - 1, surface.zLength - 1)
+
+	for p in path:
+		y = surface.surfaceMap[p.x][p.z].height
+		setBlock(level, p.x + surface.xStart, y, p.z + surface.zStart, 57, 0)
