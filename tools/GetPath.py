@@ -19,7 +19,6 @@ def getAStarPath(surface, xSource, zSource, xTarget, zTarget):
   targetNode = Node(surface, xTarget, zTarget, None)
 
   sourceNode = Node(surface, xSource, zSource, targetNode)
-  sourceNode.heuristicCostToTargetEstimate = getEuclideanHeuristicCostEstimate(surface, sourceNode, targetNode)
   sourceNode.gScore = 0
   sourceNode.fScore = sourceNode.heuristicCostToTargetEstimate
 
@@ -39,10 +38,7 @@ def getAStarPath(surface, xSource, zSource, xTarget, zTarget):
     for neighbourNode in getNeighbourNodes(surface, currentNode, initializedNodes, targetNode):
       if neighbourNode in closedSet:
         continue
-      waterCostModifier = 1
-      if (surface.surfaceMap[neighbourNode.x][neighbourNode.z].isWater):
-        waterCostModifier = 2
-      tentativeGSCore = currentNode.gScore + getEuclideanHeuristicCostEstimate(surface, currentNode, neighbourNode) * waterCostModifier
+      tentativeGSCore = currentNode.gScore + getStepCost(surface, currentNode, neighbourNode)
       if (tentativeGSCore >= neighbourNode.gScore):
         continue
       neighbourNode.gScore = tentativeGSCore
@@ -82,31 +78,7 @@ def reconstructPath(node):
   return path
 
 
-def getEuclideanHeuristicCostEstimate(surface, node, targetNode):
-  hcm = 4 # height cost modifier
-  return math.sqrt(math.pow(targetNode.x - node.x, 2) + math.pow(targetNode.z - node.z, 2) + math.pow((targetNode.y - node.y) * hcm, 2))
-
 c1 = math.sqrt(2)
-c2 = math.sqrt(3)
-def getHeuristicCostEstimate(surface, node, targetNode):
-  # hcm = 1 # height cost modifier
-  # return math.sqrt(math.pow(targetNode.x - node.x, 2) + math.pow(targetNode.z - node.z, 2) + math.pow((targetNode.y - node.y) * hcm, 2))
-  minimumDistance = 0
-  xLength = abs(targetNode.x - node.x)
-  zLength = abs(targetNode.z - node.z)
-  yLength = abs(targetNode.y - node.y)
-  longHorizontalLength = max(xLength, zLength)
-  shortHorizontalLength = min(xLength, zLength)
-  height = yLength
-  if(height > longHorizontalLength):
-    return math.sqrt(math.pow(targetNode.x - node.x, 2) + math.pow(targetNode.z - node.z, 2) + math.pow((targetNode.y - node.y), 2))
-  if (shortHorizontalLength > height):
-    minimumDistance = height * c2 + (shortHorizontalLength - height) * c1 + longHorizontalLength - shortHorizontalLength
-  else:
-    minimumDistance = shortHorizontalLength * c2 + (height - shortHorizontalLength) * c1 + longHorizontalLength - height
-  return minimumDistance
-
-
 def getSimpleHeuristicCostEstimate(surface, node, targetNode):
   heightCost = 4
   xLength = abs(targetNode.x - node.x)
@@ -129,7 +101,7 @@ def getStepCost(surface, node, neighbourNode):
   zLength = abs(neighbourNode.z - node.z)
   yLength = abs(neighbourNode.y - node.y)
   if (xLength + zLength == 2):
-    return c2 + yLength * heightCost + isWater * waterCost
+    return c1 + yLength * heightCost + isWater * waterCost
   elif (xLength + zLength == 1):
     return 1 + yLength * heightCost + isWater * waterCost
   else:
@@ -153,7 +125,7 @@ class Node:
     if (targetNode == None):
       self.heuristicCostToTargetEstimate = 0
     else:
-      self.heuristicCostToTargetEstimate = getEuclideanHeuristicCostEstimate(surface, self, targetNode)
+      self.heuristicCostToTargetEstimate = getSimpleHeuristicCostEstimate(surface, self, targetNode)
   
   def isEqual(self, node):
     if (node == None):
