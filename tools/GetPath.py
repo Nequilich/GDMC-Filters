@@ -23,14 +23,13 @@ def getAStarPath(surface, xSource, zSource, xTarget, zTarget):
   nodes[sourceNode.x][sourceNode.z] = sourceNode
   nodes[targetNode.x][targetNode.z] = targetNode
 
-  heapq.heappush(openSet, (sourceNode.fScore, sourceNode))
+  heapq.heappush(openSet, (getPriorityScore(sourceNode.fScore, sourceNode.hScore), sourceNode))
 
   while openSet:
-    #currentNode = extractMin(openSet)
     currentNode = heapq.heappop(openSet)[1]
     currentNode.isOpen = False
     currentNode.isClosed = True
-    
+
     if currentNode == targetNode:
       return reconstructPath(currentNode)
 
@@ -45,32 +44,20 @@ def getAStarPath(surface, xSource, zSource, xTarget, zTarget):
       neighbourNode.cameFrom = currentNode
       if not neighbourNode.isOpen:
         neighbourNode.isOpen = True
-        heapq.heappush(openSet, (neighbourNode.fScore, neighbourNode))
+        heapq.heappush(openSet, (getPriorityScore(neighbourNode.fScore, neighbourNode.hScore), neighbourNode))
       else:
         neighbourNodeIndex = getIndex(openSet, neighbourNode)
-        openSet[neighbourNodeIndex] = (neighbourNode.fScore, neighbourNode)
+        openSet[neighbourNodeIndex] = (getPriorityScore(neighbourNode.fScore, neighbourNode.hScore), neighbourNode)
         heapq.heapify(openSet)
   return []
-
-def extractMin(openSet):
-  minElements = [heapq.heappop(openSet)]
-  fScore = minElements[0][1].fScore
-  while openSet and openSet[0][0] == fScore:
-    minElements.append(heapq.heappop(openSet))
-  minElement = minElements[0]
-  minElementIndex = 0
-  for i, e in enumerate(minElements):
-    if e[1].hScore < minElement[1].hScore:
-      minElementIndex = i
-  minElements.pop(minElementIndex)
-  for e in minElements:
-    heapq.heappush(openSet, e)
-  return minElement[1]
 
 def getIndex(openSet, neighbourNode):
   for i, element in enumerate(openSet):
     if element[1] == neighbourNode:
       return i
+
+def getPriorityScore(fScore, hScore):
+  return fScore + hScore / float(10000)
 
 def getNeighbourNodes(surface, node, nodes, targetNode):
   neighbourNodes = []
