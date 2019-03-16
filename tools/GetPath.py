@@ -84,7 +84,7 @@ def reconstructPath(node):
   return path
 
 def getSimpleHeuristicCostEstimate(surface, node, targetNode):
-  heightCost = 40
+  heightCost = 20
   xLength = abs(targetNode.x - node.x)
   zLength = abs(targetNode.z - node.z)
   yLength = abs(targetNode.y - node.y)
@@ -95,7 +95,7 @@ def getSimpleHeuristicCostEstimate(surface, node, targetNode):
   return cost
 
 def getStepCost(surface, node, neighbourNode):
-  heightCost = 40
+  heightCost = 20
   waterCost = 40
   isWater = 0
   if surface.surfaceMap[neighbourNode.x][neighbourNode.z].isWater:
@@ -104,8 +104,8 @@ def getStepCost(surface, node, neighbourNode):
   zLength = abs(neighbourNode.z - node.z)
   yLength = abs(neighbourNode.y - node.y)
   if xLength + zLength == 2:
-    return 14 + yLength * heightCost + isWater * waterCost # Diagonal step
-  return 10 + yLength * heightCost + isWater * waterCost # Normal step
+    return 14 + yLength * yLength * heightCost + isWater * waterCost # Diagonal step
+  return 10 + yLength * yLength * heightCost + isWater * waterCost # Normal step
 
 class Node:
 
