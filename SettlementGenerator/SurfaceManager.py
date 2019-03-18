@@ -2,6 +2,7 @@ from CalculateHeightMap import calculateHeightMap as CHM
 from CalculateHeightMapAdv import calculateHeightMap as CHMA
 from CalculateSteepnessMap import calculateSteepnessMap as CSM
 from CalculateSections import calculateSections as CS
+from CalculateSectionMid import calculateSectionMid as CSMid
 
 def calculateHeightMap(level, surface):
 	CHM(level, surface)
@@ -20,3 +21,6 @@ def calculateWaterPlacement(level, surface):
 
 def calculateSections(surface, allowedSteepness = 0, minSize = 1):
 	return CS(surface, allowedSteepness, minSize)
+
+def calculateSectionMid(surface, section):
+	CSMid(surface, section)
