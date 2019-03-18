@@ -1,6 +1,7 @@
 import heapq
 import math
 import sys
+from Classes import Point
 
 def getPath(surface, xStart, zStart, xEnd, zEnd):
   return getAStarPath(surface, xStart, zStart, xEnd, zEnd)
@@ -75,12 +76,13 @@ def getNeighbourNodes(surface, node, nodes, targetNode):
   return neighbourNodes
 
 def reconstructPath(node):
-  path = [] # TODO: use Point class
+  path = []
   currentNode = node
-  path.insert(0, currentNode)
+  path.append(Point(currentNode.x, currentNode.z))
   while currentNode.cameFrom != None:
     currentNode = currentNode.cameFrom
-    path.insert(0, currentNode)
+    path.append(Point(currentNode.x, currentNode.z))
+  path.reverse()
   return path
 
 def getSimpleHeuristicCostEstimate(surface, node, targetNode):
