@@ -1,29 +1,32 @@
-from collections import deque
-from Classes import Point
 from Common import getMatrix
-from Common import setBlock
 
 def calculateSectionMid(surface, section, level):
-	visitedPoints = []
-	unvisitedPoints =  section.points
-	unresolvedPoints = deque()
 	surfaceInfo = newSurfaceInfo(surface, section)
+	print("x: " + str(surfaceInfo.xStart) + " - " + str(surfaceInfo.xEnd) + ", " + str(surfaceInfo.xLength))
+	print("z: " + str(surfaceInfo.zStart) + " - " + str(surfaceInfo.zEnd) + ", " + str(surfaceInfo.zLength))
+	setOutsideSectionAsComplete(surface, section, surfaceInfo)
 
-	addToQueue(unresolvedPoints, surfaceInfo, section.points[0])
-	layer = 0
-	while unresolvedPoints:
-		point = removeFromQueue(unresolvedPoints, surfaceInfo)
-		if isPartOfLayer(surfaceInfo, point, layer):
-			addPointToLayer(visitedPoints, unvisitedPoints, surfaceInfo, point, layer)
-			addNeighborsToQueue(unresolvedPoints, surfaceInfo, point)
-
+	
+	printSurfaceInfo(surfaceInfo, "before")
 	for x in range(surfaceInfo.xLength):
 		for z in range(surfaceInfo.zLength):
-			if surfaceInfo.surfaceMap[x][z].layer == 0:
-				height = surface.surfaceMap[x + surfaceInfo.xStart][z + surfaceInfo.zStart].height
-				xReal = x + surfaceInfo.xStart + surface.xStart
-				zReal = z + surfaceInfo.zStart + surface.zStart
-				setBlock(level, xReal, height + 1, zReal, 41)
+			if surfaceInfo.surfaceMap[x][z].isComplete:
+				continue
+			layer = getNeighborLayer(surfaceInfo, x, z) + 1
+			addPointToLayer(surfaceInfo, x, z, layer)
+			printSurfaceInfo(surfaceInfo, layer)
+
+def printSurfaceInfo(surfaceInfo, layer):
+	print("layer: " + str(layer))
+	for x in range(surfaceInfo.xLength):
+		s = ""
+		for z in range(surfaceInfo.zLength):
+			if surfaceInfo.surfaceMap[x][z].layer < 0 or surfaceInfo.surfaceMap[x][z].layer > 9:
+				s += str(surfaceInfo.surfaceMap[x][z].layer) + " "
+			else:
+				s += " " + str(surfaceInfo.surfaceMap[x][z].layer) + " "
+		print(s)
+	print()
 
 def newSurfaceInfo(surface, section):
 	xStart = section.points[0].x
@@ -39,52 +42,53 @@ def newSurfaceInfo(surface, section):
 			zStart = point.z
 		elif point.z > zEnd:
 			zEnd = point.z
-	
-	surfaceInfo = SurfaceInfo(xStart - 1, zStart - 1, xEnd + 1, zEnd + 1)
+	return SurfaceInfo(xStart, zStart, xEnd + 1, zEnd + 1)
+
+def setOutsideSectionAsComplete(surface, section, surfaceInfo):
 	for x in range(surfaceInfo.xLength):
 		for z in range(surfaceInfo.zLength):
-			if surface.surfaceMap[x + surfaceInfo.xStart][z + surfaceInfo.zStart].sectionId != section.id:
-				surfaceInfo.surfaceMap[x][z].isDetermined = True
-	return surfaceInfo
+			if section.id != surface.surfaceMap[x + surfaceInfo.xStart][z + surfaceInfo.zStart].sectionId:
+				surfaceInfo.surfaceMap[x][z].isComplete = True
+				surfaceInfo.surfaceMap[x][z].layer = -1
 
-def addToQueue(queue, surfaceInfo, point):
-	queue.append(point)
-	x = point.x - surfaceInfo.xStart
-	z = point.z - surfaceInfo.zStart
-	surfaceInfo.surfaceMap[x][z].isQueued = True
+def getNeighborLayer(surfaceInfo, x, z):
+	for xNeighbor in [x - 1, x, x + 1]:
+		for zNeighbor in [z - 1, z, z + 1]:
+			if xNeighbor == x and zNeighbor == z:
+				continue
+			if xNeighbor < surfaceInfo.xStart or xNeighbor >= surfaceInfo.xEnd or zNeighbor < surfaceInfo.zStart or zNeighbor >= surfaceInfo.zEnd:
+				continue
+			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete:
+				return surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer
+	return -1
 
-def removeFromQueue(queue, surfaceInfo):
-	point = queue.popleft()
-	x = point.x - surfaceInfo.xStart
-	z = point.z - surfaceInfo.zStart
-	surfaceInfo.surfaceMap[x][z].isQueued = False
-	return point
-
-def isPartOfLayer(surfaceInfo, point, layer):
-	for x in [point.x - 1, point.x, point.x + 1]:
-		for z in [point.z - 1, point.z, point.z + 1]:
-			pointInfo = surfaceInfo.surfaceMap[x + surfaceInfo.xStart][z + surfaceInfo.zStart]
-			if pointInfo.isDetermined and pointInfo.layer == layer - 1:
-				return True
-	return False
-
-def addPointToLayer(visitedPoints, unvisitedPoints, surfaceInfo, point, layer):
-	visitedPoints.append(point)
-	for i, p in enumerate(unvisitedPoints):
-		if point.x == p.x and point.z == p.z:
-			unvisitedPoints.pop(i)
-			break
-	x = point.x - surfaceInfo.xStart
-	z = point.z - surfaceInfo.zStart
+def addPointToLayer(surfaceInfo, x, z, layer):
+	# Return if the point is not part of the layer
+	isPartOfLayer = False
+	for xNeighbor in [x - 1, x, x + 1]:
+		for zNeighbor in [z - 1, z, z + 1]:
+			if xNeighbor == x and zNeighbor == z:
+				continue
+			if xNeighbor < surfaceInfo.xStart or xNeighbor >= surfaceInfo.xEnd or zNeighbor < surfaceInfo.zStart or zNeighbor >= surfaceInfo.zEnd:
+				isPartOfLayer = True
+				break
+			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer == layer - 1:
+				isPartOfLayer = True
+				break
+	if not isPartOfLayer:
+		return
+	# Add point to layer
 	surfaceInfo.surfaceMap[x][z].layer = layer
-	surfaceInfo.surfaceMap[x][z].isDetermined = True
-
-def addNeighborsToQueue(queue, surfaceInfo, point):
-	for x in [point.x - 1, point.x, point.x + 1]:
-		for z in [point.z - 1, point.z, point.z + 1]:
-			pointInfo = surfaceInfo.surfaceMap[x + surfaceInfo.xStart][z + surfaceInfo.zStart]
-			if not pointInfo.isQueued and not pointInfo.isDetermined:
-				addToQueue(queue, surfaceInfo, Point(x, z))
+	surfaceInfo.surfaceMap[x][z].isComplete = True
+	# Suggest some neighbors
+	for xNeighbor in [x - 1, x, x + 1]:
+		for zNeighbor in [z - 1, z, z + 1]:
+			if xNeighbor == x and zNeighbor == z:
+				continue
+			if xNeighbor < surfaceInfo.xStart or xNeighbor >= surfaceInfo.xEnd or zNeighbor < surfaceInfo.zStart or zNeighbor >= surfaceInfo.zEnd:
+				continue
+			if not surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete:
+				addPointToLayer(surfaceInfo, xNeighbor, zNeighbor, layer)
 
 class SurfaceInfo:
 
@@ -99,9 +103,9 @@ class SurfaceInfo:
 
 	def getNewSurfaceMap(self):
 		surfaceMap = []
-		for x in range(self.xLength):
+		for _ in range(self.xLength):
 			row = []
-			for z in range(self.zLength):
+			for _ in range(self.zLength):
 				row.append(PointInfo())
 			surfaceMap.append(row)
 		return surfaceMap
@@ -109,6 +113,5 @@ class SurfaceInfo:
 class PointInfo:
 
 	def __init__(self):
-		self.layer = -1
-		self.isDetermined = False
-		self.isQueued = False
+		self.layer = -2 # -2 is for uncompleted points, -1 is for outside the section, 0+ is for the actual layers
+		self.isComplete = False
