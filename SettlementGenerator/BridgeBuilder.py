@@ -6,9 +6,7 @@ materials = {}
 def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
     global materials
     materials = blocks
-
-    print(materials["lower slab"][0], materials["lower slab"][1])
-
+    
     xLength = abs(endPoint[0] - startPoint[0])+1
     zLength = abs(endPoint[1] - startPoint[1])+1
     bridgeLength = min(xLength, xLength)
