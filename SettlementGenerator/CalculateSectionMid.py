@@ -53,34 +53,26 @@ def findLayer(surfaceInfo, x, z, layer):
 	queue.append(Point(x, z))
 	while queue:
 		point = queue.popleft()
-		addPointToLayer(surfaceInfo, point.x, point.z, layer, queue)
+		if addPointToLayer(surfaceInfo, point.x, point.z, layer):
+			addNeighborPointsToQueue(surfaceInfo, point.x, point.z, layer, queue)
 
-def addPointToLayer(surfaceInfo, x, z, layer, queue):
-	# Return if the point is not part of the layer
-	isPartOfLayer = False
+def addPointToLayer(surfaceInfo, x, z, layer):
 	for xNeighbor in [x - 1, x, x + 1]:
 		for zNeighbor in [z - 1, z, z + 1]:
 			if xNeighbor == x and zNeighbor == z:
 				continue
-			if xNeighbor < 0 or xNeighbor >= surfaceInfo.xLength or zNeighbor < 0 or zNeighbor >= surfaceInfo.zLength:
-				isPartOfLayer = True
-				break
-			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer == layer - 1:
-				isPartOfLayer = True
-				break
-		if isPartOfLayer:
-			break
-	if not isPartOfLayer:
-		return
-	# Add point to layer
-	surfaceInfo.surfaceMap[x][z].layer = layer
-	surfaceInfo.surfaceMap[x][z].isComplete = True
-	# Suggest some neighbors
+			if not isWithinBorder(surfaceInfo, xNeighbor, zNeighbor) or surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer == layer - 1:
+				surfaceInfo.surfaceMap[x][z].layer = layer
+				surfaceInfo.surfaceMap[x][z].isComplete = True
+				return True
+
+def isWithinBorder(surfaceInfo, x, z):
+	return 0 <= x and x < surfaceInfo.xLength and 0 <= z and z < surfaceInfo.zLength
+
+def addNeighborPointsToQueue(surfaceInfo, x, z, layer, queue):
 	for xNeighbor in [x - 1, x, x + 1]:
 		for zNeighbor in [z - 1, z, z + 1]:
-			if xNeighbor == x and zNeighbor == z:
-				continue
-			if xNeighbor < 0 or xNeighbor >= surfaceInfo.xLength or zNeighbor < 0 or zNeighbor >= surfaceInfo.zLength:
+			if xNeighbor == x and zNeighbor == z or not isWithinBorder(surfaceInfo, xNeighbor, zNeighbor):
 				continue
 			if not surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete and surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isCheckedByLayer != layer:
 				surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isCheckedByLayer = layer
