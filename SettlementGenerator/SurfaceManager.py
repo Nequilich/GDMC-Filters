@@ -23,9 +23,5 @@ def calculateWaterPlacement(level, surface):
 def calculateSections(surface, allowedSteepness = 0, minSize = 1):
 	return CS(surface, allowedSteepness, minSize)
 
-
-def calculateSectionMid(surface, section, level):
-	CSMid(surface, section, level)
-
-def calculateSectionMidSimple(surface, section):
-	CSMidS(surface, section)
+def calculateSectionMid(surface, section):
+	CSMid(surface, section)

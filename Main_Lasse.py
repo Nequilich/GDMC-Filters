@@ -23,7 +23,7 @@ def perform(level, box, options):
 				setBlock(level, surface.xStart + x, height + 1, surface.zStart + z, 95, sectionId % 15 + 1)
 
 	for section in sections:
-		calculateSectionMid(surface, section, level)
+		calculateSectionMid(surface, section)
 
 	for section in sections:
 		height = surface.surfaceMap[section.xMid][section.zMid].height
