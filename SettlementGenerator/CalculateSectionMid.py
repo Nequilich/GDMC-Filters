@@ -2,19 +2,15 @@ from Common import getMatrix
 
 def calculateSectionMid(surface, section, level):
 	surfaceInfo = newSurfaceInfo(surface, section)
-	print("x: " + str(surfaceInfo.xStart) + " - " + str(surfaceInfo.xEnd) + ", " + str(surfaceInfo.xLength))
-	print("z: " + str(surfaceInfo.zStart) + " - " + str(surfaceInfo.zEnd) + ", " + str(surfaceInfo.zLength))
 	setOutsideSectionAsComplete(surface, section, surfaceInfo)
 
-	
-	printSurfaceInfo(surfaceInfo, "before")
 	for x in range(surfaceInfo.xLength):
 		for z in range(surfaceInfo.zLength):
 			if surfaceInfo.surfaceMap[x][z].isComplete:
 				continue
 			layer = getNeighborLayer(surfaceInfo, x, z) + 1
 			addPointToLayer(surfaceInfo, x, z, layer)
-			printSurfaceInfo(surfaceInfo, layer)
+	setSectionMid(section, surfaceInfo)
 
 def printSurfaceInfo(surfaceInfo, layer):
 	print("layer: " + str(layer))
@@ -26,7 +22,7 @@ def printSurfaceInfo(surfaceInfo, layer):
 			else:
 				s += " " + str(surfaceInfo.surfaceMap[x][z].layer) + " "
 		print(s)
-	print()
+	print(" ")
 
 def newSurfaceInfo(surface, section):
 	xStart = section.points[0].x
@@ -56,7 +52,7 @@ def getNeighborLayer(surfaceInfo, x, z):
 		for zNeighbor in [z - 1, z, z + 1]:
 			if xNeighbor == x and zNeighbor == z:
 				continue
-			if xNeighbor < surfaceInfo.xStart or xNeighbor >= surfaceInfo.xEnd or zNeighbor < surfaceInfo.zStart or zNeighbor >= surfaceInfo.zEnd:
+			if xNeighbor < 0 or xNeighbor >= surfaceInfo.xLength or zNeighbor < 0 or zNeighbor >= surfaceInfo.zLength:
 				continue
 			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete:
 				return surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer
@@ -69,7 +65,7 @@ def addPointToLayer(surfaceInfo, x, z, layer):
 		for zNeighbor in [z - 1, z, z + 1]:
 			if xNeighbor == x and zNeighbor == z:
 				continue
-			if xNeighbor < surfaceInfo.xStart or xNeighbor >= surfaceInfo.xEnd or zNeighbor < surfaceInfo.zStart or zNeighbor >= surfaceInfo.zEnd:
+			if xNeighbor < 0 or xNeighbor >= surfaceInfo.xLength or zNeighbor < 0 or zNeighbor >= surfaceInfo.zLength:
 				isPartOfLayer = True
 				break
 			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer == layer - 1:
@@ -85,10 +81,23 @@ def addPointToLayer(surfaceInfo, x, z, layer):
 		for zNeighbor in [z - 1, z, z + 1]:
 			if xNeighbor == x and zNeighbor == z:
 				continue
-			if xNeighbor < surfaceInfo.xStart or xNeighbor >= surfaceInfo.xEnd or zNeighbor < surfaceInfo.zStart or zNeighbor >= surfaceInfo.zEnd:
+			if xNeighbor < 0 or xNeighbor >= surfaceInfo.xLength or zNeighbor < 0 or zNeighbor >= surfaceInfo.zLength:
 				continue
 			if not surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete:
 				addPointToLayer(surfaceInfo, xNeighbor, zNeighbor, layer)
+
+def setSectionMid(section, surfaceInfo):
+	xMid = 0
+	zMid = 0
+	layer = -2
+	for x in range(surfaceInfo.xLength):
+		for z in range(surfaceInfo.zLength):
+			if layer < surfaceInfo.surfaceMap[x][z].layer:
+				xMid = x
+				zMid = z
+				layer = surfaceInfo.surfaceMap[x][z].layer
+	section.xMid = xMid + surfaceInfo.xStart
+	section.zMid = zMid + surfaceInfo.zStart
 
 class SurfaceInfo:
 
