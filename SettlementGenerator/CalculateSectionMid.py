@@ -1,3 +1,5 @@
+from collections import deque
+from Classes import Point
 from Common import getMatrix
 
 def calculateSectionMid(surface, section):
@@ -9,19 +11,8 @@ def calculateSectionMid(surface, section):
 			if surfaceInfo.surfaceMap[x][z].isComplete:
 				continue
 			layer = getNeighborLayer(surfaceInfo, x, z) + 1
-			addPointToLayer(surfaceInfo, x, z, layer)
+			findLayer(surfaceInfo, x, z, layer)
 	setSectionMid(section, surfaceInfo)
-	printSurfaceInfo(surfaceInfo)
-
-def printSurfaceInfo(surfaceInfo):
-	for x in range(surfaceInfo.xLength):
-		s = ""
-		for z in range(surfaceInfo.zLength):
-			if surfaceInfo.surfaceMap[x][z].layer < 0 or surfaceInfo.surfaceMap[x][z].layer > 9:
-				s += str(surfaceInfo.surfaceMap[x][z].layer) + " "
-			else:
-				s += " " + str(surfaceInfo.surfaceMap[x][z].layer) + " "
-		print(s)
 
 def newSurfaceInfo(surface, section):
 	xStart = section.points[0].x
@@ -57,7 +48,14 @@ def getNeighborLayer(surfaceInfo, x, z):
 				return surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer
 	return -1
 
-def addPointToLayer(surfaceInfo, x, z, layer):
+def findLayer(surfaceInfo, x, z, layer):
+	queue = deque()
+	queue.append(Point(x, z))
+	while queue:
+		point = queue.popleft()
+		addPointToLayer(surfaceInfo, point.x, point.z, layer, queue)
+
+def addPointToLayer(surfaceInfo, x, z, layer, queue):
 	# Return if the point is not part of the layer
 	isPartOfLayer = False
 	for xNeighbor in [x - 1, x, x + 1]:
@@ -70,6 +68,8 @@ def addPointToLayer(surfaceInfo, x, z, layer):
 			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer == layer - 1:
 				isPartOfLayer = True
 				break
+		if isPartOfLayer:
+			break
 	if not isPartOfLayer:
 		return
 	# Add point to layer
@@ -82,8 +82,9 @@ def addPointToLayer(surfaceInfo, x, z, layer):
 				continue
 			if xNeighbor < 0 or xNeighbor >= surfaceInfo.xLength or zNeighbor < 0 or zNeighbor >= surfaceInfo.zLength:
 				continue
-			if not surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete:
-				addPointToLayer(surfaceInfo, xNeighbor, zNeighbor, layer)
+			if not surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete and surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isCheckedByLayer != layer:
+				surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isCheckedByLayer = layer
+				queue.append(Point(xNeighbor, zNeighbor))
 
 def setSectionMid(section, surfaceInfo):
 	xMid = 0
@@ -123,3 +124,14 @@ class PointInfo:
 	def __init__(self):
 		self.layer = -2 # -2 is for uncompleted points, -1 is for outside the section, 0+ is for the actual layers
 		self.isComplete = False
+		self.isCheckedByLayer = -1
+
+def printSurfaceInfo(surfaceInfo):
+	for x in range(surfaceInfo.xLength):
+		s = ""
+		for z in range(surfaceInfo.zLength):
+			if surfaceInfo.surfaceMap[x][z].layer < 0 or surfaceInfo.surfaceMap[x][z].layer > 9:
+				s += str(surfaceInfo.surfaceMap[x][z].layer) + " "
+			else:
+				s += " " + str(surfaceInfo.surfaceMap[x][z].layer) + " "
+		print(s)
