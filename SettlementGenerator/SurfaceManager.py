@@ -3,7 +3,6 @@ from CalculateHeightMapAdv import calculateHeightMap as CHMA
 from CalculateSteepnessMap import calculateSteepnessMap as CSM
 from CalculateSections import calculateSections as CS
 from CalculateSectionMid import calculateSectionMid as CSMid
-from CalculateSectionMidSimple import calculateSectionMidSimple as CSMidS
 
 def calculateHeightMap(level, surface):
 	CHM(level, surface)

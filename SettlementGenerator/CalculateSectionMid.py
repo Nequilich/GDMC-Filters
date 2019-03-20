@@ -11,10 +11,9 @@ def calculateSectionMid(surface, section):
 			layer = getNeighborLayer(surfaceInfo, x, z) + 1
 			addPointToLayer(surfaceInfo, x, z, layer)
 	setSectionMid(section, surfaceInfo)
-	printSurfaceInfo(surfaceInfo, "finished")
+	printSurfaceInfo(surfaceInfo)
 
-def printSurfaceInfo(surfaceInfo, layer):
-	print("layer: " + str(layer))
+def printSurfaceInfo(surfaceInfo):
 	for x in range(surfaceInfo.xLength):
 		s = ""
 		for z in range(surfaceInfo.zLength):
@@ -23,7 +22,6 @@ def printSurfaceInfo(surfaceInfo, layer):
 			else:
 				s += " " + str(surfaceInfo.surfaceMap[x][z].layer) + " "
 		print(s)
-	print(" ")
 
 def newSurfaceInfo(surface, section):
 	xStart = section.points[0].x
