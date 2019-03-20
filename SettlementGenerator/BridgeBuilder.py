@@ -1,14 +1,12 @@
 from Common import setBlock
 from Classes import Surface
 
-blocks = {
-    "wood": 17.0,
-    "wood slab": 126.0,
-    "fence": 85.0,
-    "torch": 50
-}
+materials = {}
 
-def buildBridge(level, startPoint, endPoint, bridgeY, width):
+def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
+    global materials
+    materials = blocks
+    
     xLength = abs(endPoint[0] - startPoint[0])+1
     zLength = abs(endPoint[1] - startPoint[1])+1
     bridgeLength = min(xLength, xLength)
@@ -65,24 +63,24 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width):
 def placeBridgeSection(level, x, y, z, directionX, directionZ, width, extraFenceLeft, extraFenceRight):
     #Place main part of bridge
     for i in range(width):
-        setBlock(level, x+i*directionX, y, z+i*directionZ, blocks["wood slab"], 8)
+        setBlock(level, x+i*directionX, y, z+i*directionZ, materials["upper slab"][0], materials["upper slab"][1])
 
     #Place fencing
-    level.setBlockAt(x, y+1, z, blocks["fence"])
-    level.setBlockAt(x+(width-1)*directionX, y+1, z+(width-1)*directionZ, blocks["fence"])
+    setBlock(level, x, y+1, z, materials["fence"])
+    setBlock(level, x+(width-1)*directionX, y+1, z+(width-1)*directionZ, materials["fence"])
     if (extraFenceLeft):
-        setBlock(level, x+directionX, y+1, z+directionZ, blocks["fence"])
+        setBlock(level, x+directionX, y+1, z+directionZ, materials["fence"])
     elif (extraFenceRight):
-        setBlock(level, x+(width-2)*directionX, y+1, z+(width-2)*directionZ, blocks["fence"])
+        setBlock(level, x+(width-2)*directionX, y+1, z+(width-2)*directionZ, materials["fence"])
 
 def placeBridgeStartOrEnd(level, x, y, z, directionX, directionZ, width):
     placePillarWithTorch(level, x, y, z)
 
     for i in range(1, width-1):
-        level.setBlockAt(x+i*directionX, y, z+i*directionZ, blocks["wood slab"])
+        setBlock(level, x+i*directionX, y, z+i*directionZ, materials["lower slab"][0], materials["lower slab"][1])
     placePillarWithTorch(level, x+(width-1)*directionX, y, z+(width-1)*directionZ)
 
 def placePillarWithTorch(level, x, y, z):
-    setBlock(level, x, y, z, 17)
-    setBlock(level, x, y+1, z, 17)
-    setBlock(level, x, y+2, z, blocks["torch"])
+    setBlock(level, x, y, z, materials["normal"][0], materials["normal"][1])
+    setBlock(level, x, y+1, z, materials["normal"][0], materials["normal"][1])
+    setBlock(level, x, y+2, z, materials["torch"])
