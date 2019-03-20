@@ -6,7 +6,7 @@ from GetPath import getPath
 import heapq
 from Kruskal import getMinimumSpanningTree
 from SurfaceManager import calculateHeightMapAdv
-from SurfaceManager import calculateSectionMidSimple
+from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
@@ -28,7 +28,7 @@ def perform(level, box, options):
 				setBlock(level, surface.xStart + x, height + 1, surface.zStart + z, 95, sectionId % 15 + 1)
 
 	for section in sections:
-		calculateSectionMidSimple(surface, section)
+		calculateSectionMid(surface, section)
 
 	distances = [] # Tuples: (distance, (section1, section2))
 	sectionIds = []

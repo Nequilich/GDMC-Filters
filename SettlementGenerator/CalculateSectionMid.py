@@ -1,6 +1,6 @@
 from Common import getMatrix
 
-def calculateSectionMid(surface, section, level):
+def calculateSectionMid(surface, section):
 	surfaceInfo = newSurfaceInfo(surface, section)
 	setOutsideSectionAsComplete(surface, section, surfaceInfo)
 
@@ -11,6 +11,7 @@ def calculateSectionMid(surface, section, level):
 			layer = getNeighborLayer(surfaceInfo, x, z) + 1
 			addPointToLayer(surfaceInfo, x, z, layer)
 	setSectionMid(section, surfaceInfo)
+	printSurfaceInfo(surfaceInfo, "finished")
 
 def printSurfaceInfo(surfaceInfo, layer):
 	print("layer: " + str(layer))
