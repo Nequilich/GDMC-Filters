@@ -57,7 +57,7 @@ def perform(level, box, options):
 	for path in paths:
 		for p in path:
 			y = surface.surfaceMap[p.x][p.z].height
-			setBlock(level, p.x + surface.xStart, y, p.z + surface.zStart, 57, 0)
+			setBlock(level, p.x + surface.xStart, y + 1, p.z + surface.zStart, 57, 0)
 
 def getSection(sections, id):
 	for section in sections:
