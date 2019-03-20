@@ -4,16 +4,34 @@ def getMinimumSpanningTree(vertexData, edges):
 	minimumSpanningTree = []
 	vertices = getVertices(vertexData)
 	numberOfSets = len(vertices)
+	print("START")
+	print(numberOfSets)
+	printVertexSets(vertices)
 	while numberOfSets > 1:
 		edge = heapq.heappop(edges) # pops shortest edge
-		if edgeVerticesInSameSet(edge, vertices):
+		vertexOne = getVertex(edge[1][0], vertices)
+		vertexTwo = getVertex(edge[1][1], vertices)
+		if edgeVerticesInSameSet(vertexOne, vertexTwo):
 			continue
-		for vertex in vertices:
-			if vertex.setId == vertices[edge[1][1]].setId:
-				vertex.setId = vertices[edge[1][0]].setId
+		print("V1 SetID: " + str(vertexOne.setId) + ", V2 SetID: " + str(vertexTwo.setId))
+		setTwoId = vertexTwo.setId
+		for vertex in vertices: # Merge sets of the two vertices
+			if vertex.setId == setTwoId:
+				vertex.setId = vertexOne.setId
 		numberOfSets -= 1
-		minimumSpanningTree.append((edge[1][0], edge[1][1]))
+		print(numberOfSets)
+		printVertexSets(vertices)
+		minimumSpanningTree.append((vertexOne.data, vertexTwo.data))
 	return minimumSpanningTree
+
+def printVertexSets(vertices):
+	strings = []
+	for i in range(len(vertices)):
+		strings.append("Set " + str(i) + ": ")
+	for v in vertices:
+		strings[v.setId] += str(v.id) + " "
+	for s in strings:
+		print(s)
 
 def getVertices(vertexData):
 	vertices = []
@@ -21,8 +39,13 @@ def getVertices(vertexData):
 		vertices.append(Vertex(i, i, data)) # each vertex starts in their own set
 	return vertices
 
-def edgeVerticesInSameSet(edge, vertices):
-	return vertices[edge[1][0]].setId == vertices[edge[1][1]].setId
+def getVertex(vertexData, vertices):
+	for vertex in vertices:
+		if vertex.data == vertexData:
+			return vertex
+
+def edgeVerticesInSameSet(vertexOne, vertexTwo):
+	return vertexOne.setId == vertexTwo.setId
 
 class Vertex:
 	def __init__(self, id, setId, data):
