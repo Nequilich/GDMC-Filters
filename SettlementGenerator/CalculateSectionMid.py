@@ -4,14 +4,28 @@ from Common import getMatrix
 
 def calculateSectionMid(surface, section):
 	surfaceInfo = newSurfaceInfo(surface, section)
+
+	# Layer -1
 	setOutsideSectionAsComplete(surface, section, surfaceInfo)
 
-	for x in range(surfaceInfo.xLength):
-		for z in range(surfaceInfo.zLength):
-			if surfaceInfo.surfaceMap[x][z].isComplete:
-				continue
-			layer = getNeighborLayer(surfaceInfo, x, z) + 1
-			findLayer(surfaceInfo, x, z, layer)
+	# Layer 0
+	findFirstLayerAlongBorder(surfaceInfo)
+	for x in range(1, surfaceInfo.xLength - 1):
+		for z in range(1, surfaceInfo.zLength - 1):
+			findLayer(surfaceInfo, x, z, 0)
+
+	# Layer 1+
+	layer = 1
+	finished = False
+	while not finished:
+		finished = True
+		for x in range(0 + layer, surfaceInfo.xLength - layer):
+			for z in range(0 + layer, surfaceInfo.zLength - layer):
+				if isPartOfLayer(surfaceInfo, x, z, layer):
+					findLayer(surfaceInfo, x, z, layer)
+					finished = False
+		layer += 1
+
 	setSectionMid(section, surfaceInfo)
 
 def newSurfaceInfo(surface, section):
@@ -37,16 +51,28 @@ def setOutsideSectionAsComplete(surface, section, surfaceInfo):
 				surfaceInfo.surfaceMap[x][z].isComplete = True
 				surfaceInfo.surfaceMap[x][z].layer = -1
 
-def getNeighborLayer(surfaceInfo, x, z):
-	for xNeighbor in [x - 1, x, x + 1]:
-		for zNeighbor in [z - 1, z, z + 1]:
-			if xNeighbor == x and zNeighbor == z:
-				continue
-			if xNeighbor < 0 or xNeighbor >= surfaceInfo.xLength or zNeighbor < 0 or zNeighbor >= surfaceInfo.zLength:
-				continue
-			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete:
-				return surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer
-	return -1
+def findFirstLayerAlongBorder(surfaceInfo):
+	zTop = surfaceInfo.zLength - 1
+	for x in range(surfaceInfo.xLength):
+		if not surfaceInfo.surfaceMap[x][0].isComplete:
+			surfaceInfo.surfaceMap[x][0].isComplete = True
+			surfaceInfo.surfaceMap[x][0].layer = 0
+		if not surfaceInfo.surfaceMap[x][zTop].isComplete:
+			surfaceInfo.surfaceMap[x][zTop].isComplete = True
+			surfaceInfo.surfaceMap[x][zTop].layer = 0
+
+	xTop = surfaceInfo.xLength - 1
+	for z in range(1, surfaceInfo.zLength - 1):
+		if not surfaceInfo.surfaceMap[0][z].isComplete:
+			surfaceInfo.surfaceMap[0][z].isComplete = True
+			surfaceInfo.surfaceMap[0][z].layer = 0
+		if not surfaceInfo.surfaceMap[xTop][z].isComplete:
+			surfaceInfo.surfaceMap[xTop][z].isComplete = True
+			surfaceInfo.surfaceMap[xTop][z].layer = 0
+
+# A more simple function to find out whether the given point is part of the layer.
+def isPartOfLayer(surfaceInfo, x, z, layer):
+	return not surfaceInfo.surfaceMap[x][z].isComplete and surfaceInfo.surfaceMap[x + 1][z].layer == layer - 1
 
 def findLayer(surfaceInfo, x, z, layer):
 	queue = deque()
@@ -61,18 +87,15 @@ def addPointToLayer(surfaceInfo, x, z, layer):
 		for zNeighbor in [z - 1, z, z + 1]:
 			if xNeighbor == x and zNeighbor == z:
 				continue
-			if not isWithinBorder(surfaceInfo, xNeighbor, zNeighbor) or surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer == layer - 1:
+			if surfaceInfo.surfaceMap[xNeighbor][zNeighbor].layer == layer - 1:
 				surfaceInfo.surfaceMap[x][z].layer = layer
 				surfaceInfo.surfaceMap[x][z].isComplete = True
 				return True
 
-def isWithinBorder(surfaceInfo, x, z):
-	return 0 <= x and x < surfaceInfo.xLength and 0 <= z and z < surfaceInfo.zLength
-
 def addNeighborPointsToQueue(surfaceInfo, x, z, layer, queue):
 	for xNeighbor in [x - 1, x, x + 1]:
 		for zNeighbor in [z - 1, z, z + 1]:
-			if xNeighbor == x and zNeighbor == z or not isWithinBorder(surfaceInfo, xNeighbor, zNeighbor):
+			if xNeighbor == x and zNeighbor == z:
 				continue
 			if not surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isComplete and surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isCheckedByLayer != layer:
 				surfaceInfo.surfaceMap[xNeighbor][zNeighbor].isCheckedByLayer = layer
@@ -117,13 +140,3 @@ class PointInfo:
 		self.layer = -2 # -2 is for uncompleted points, -1 is for outside the section, 0+ is for the actual layers
 		self.isComplete = False
 		self.isCheckedByLayer = -1
-
-def printSurfaceInfo(surfaceInfo):
-	for x in range(surfaceInfo.xLength):
-		s = ""
-		for z in range(surfaceInfo.zLength):
-			if surfaceInfo.surfaceMap[x][z].layer < 0 or surfaceInfo.surfaceMap[x][z].layer > 9:
-				s += str(surfaceInfo.surfaceMap[x][z].layer) + " "
-			else:
-				s += " " + str(surfaceInfo.surfaceMap[x][z].layer) + " "
-		print(s)
