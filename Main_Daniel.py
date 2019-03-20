@@ -18,18 +18,10 @@ def perform(level, box, options):
 	calculateWaterPlacement(level, surface)
 	sections = calculateSections(surface, 1, 40)
 
-	for x in range(surface.xLength):
-		for z in range(surface.zLength):
-			height = surface.surfaceMap[x][z].height
-			sectionId = surface.surfaceMap[x][z].sectionId
-			if sectionId == -1:
-				setBlock(level, surface.xStart + x, height + 1, surface.zStart + z, 20)
-			else:
-				setBlock(level, surface.xStart + x, height + 1, surface.zStart + z, 95, sectionId % 15 + 1)
-
 	for section in sections:
 		calculateSectionMid(surface, section)
 
+	useAStar = False
 	distances = [] # Tuples: (distance, (section1, section2))
 	sectionIds = []
 	for section in sections:
@@ -39,9 +31,13 @@ def perform(level, box, options):
 		for otherSection in sections:
 			if (otherSection.id <= section.id):
 				continue
-			sectionMidPoint = Point(section.xMid, section.zMid)
-			otherSectionMidPoint = Point(otherSection.xMid, otherSection.zMid)
-			heapq.heappush(distances, (getEuclideanDistance(surface, sectionMidPoint, otherSectionMidPoint), (section.id, otherSection.id)))
+			if useAStar:
+				pathLength = len(getPath(surface, section.xMid, section.zMid, otherSection.xMid, otherSection.zMid))
+				heapq.heappush(distances, (pathLength, (section.id, otherSection.id)))
+			else:
+				sectionMidPoint = Point(section.xMid, section.zMid)
+				otherSectionMidPoint = Point(otherSection.xMid, otherSection.zMid)
+				heapq.heappush(distances, (getEuclideanDistance(surface, sectionMidPoint, otherSectionMidPoint), (section.id, otherSection.id)))
 	
 	minimumSpanningTree = getMinimumSpanningTree(sectionIds, distances)
 	roads = [] # Tuples: (point1, point2)
@@ -57,7 +53,7 @@ def perform(level, box, options):
 	for path in paths:
 		for p in path:
 			y = surface.surfaceMap[p.x][p.z].height
-			setBlock(level, p.x + surface.xStart, y + 1, p.z + surface.zStart, 57, 0)
+			setBlock(level, p.x + surface.xStart, y, p.z + surface.zStart, 57, 0)
 
 def getSection(sections, id):
 	for section in sections:
