@@ -1,5 +1,3 @@
-import heapq
-
 def getMinimumSpanningTree(nodes, edges):
 	edges = sorted(edges)
 	nodeSets = getNodeSets(nodes)
