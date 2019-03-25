@@ -15,6 +15,7 @@ def getMinimumSpanningTree(vertexData, edges):
 			if vertex.setId == setTwoId:
 				vertex.setId = vertexOne.setId
 		numberOfSets -= 1
+		minimumSpanningTree.append((vertexOne.data, vertexTwo.data))
 	return minimumSpanningTree
 
 def printVertexSets(vertices):
