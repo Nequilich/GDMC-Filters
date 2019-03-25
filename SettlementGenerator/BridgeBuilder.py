@@ -9,22 +9,35 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
     
     xLength = abs(endPoint[0] - startPoint[0])+1
     zLength = abs(endPoint[1] - startPoint[1])+1
-    bridgeLength = min(xLength, xLength)
+    # bridgeLength = max(xLength, xLength)
 
-    if(xLength > zLength):  #Main direction is east, positive X
+    if(xLength > zLength):  #Main direction is east or west, positive/negative X
         bridgeLength = xLength
         bridgeSkew = zLength
-        bridgeMainDirectionX = 1
         bridgeMainDirectionZ = 0
         bridgeSecondaryDirectionX = 0
-        bridgeSecondaryDirectionZ = 1
-    else:  #Main direction is south, positive Z
+        if (startPoint[0] < endPoint[0]):  # Main east
+            bridgeMainDirectionX = 1
+        else:  # Main west
+            bridgeMainDirectionX = -1
+        if (startPoint[1] < endPoint[1]):  # Secondary south
+            bridgeSecondaryDirectionZ = 1
+        else: # Secondary north
+            bridgeSecondaryDirectionZ = -1
+    
+    else:  #Main direction is north or south, negative/positive Z
         bridgeLength = zLength        
         bridgeSkew = xLength
         bridgeMainDirectionX = 0
-        bridgeMainDirectionZ = 1
-        bridgeSecondaryDirectionX = 1
         bridgeSecondaryDirectionZ = 0
+        if (startPoint[1] < endPoint[1]):  # Main south
+            bridgeMainDirectionZ = 1
+        else:  # Main north
+            bridgeMainDirectionZ = -1
+        if (startPoint[0] < endPoint[0]):  # Secondary east
+            bridgeSecondaryDirectionX = 1
+        else:  # Secondary west
+            bridgeSecondaryDirectionX = -1
 
     #Offsets the start and end points to center bridge.
     startPoint = (startPoint[0]-((width/2)*bridgeSecondaryDirectionX), startPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
