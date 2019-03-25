@@ -98,3 +98,22 @@ class Point:
 	def __init__(self, x, z):
 		self.x = x
 		self.z = z
+
+class Node:
+
+	def __init__(self, id, data):
+		self.id = id
+		self.data = data
+
+class Edge:
+
+	def __init__(self, cost, nodeId1, nodeId2):
+		self.cost = cost
+		self.nodeId1 = nodeId1
+		self.nodeId2 = nodeId2
+
+	def __eq__(self, other):
+		return self.cost == other.cost
+
+	def __lt__(self, other):
+		return self.cost < other.cost
