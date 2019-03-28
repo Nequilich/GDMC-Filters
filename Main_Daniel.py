@@ -77,23 +77,3 @@ def getSection(sections, id):
 		if section.id == id:
 			return section
 	return None
-
-def findBridges(surface, paths):
-	bridges = []
-	newPaths = []
-	for path in paths:
-		bridge = []
-		newPath = []
-		for p in path:
-			if surface.surfaceMap[p.x][p.z].isWater:
-				bridge.append(p)
-				if newPath:
-					newPaths.append(newPath)
-					newPath = []
-			else:
-				newPath.append(p)
-				if bridge:
-					bridges.append(bridge)
-					bridge = []
-	paths = newPaths
-	return bridges
