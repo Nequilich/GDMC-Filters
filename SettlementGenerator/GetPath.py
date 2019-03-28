@@ -106,7 +106,7 @@ def getStepCost(surface, node, neighbourNode):
   zLength = abs(neighbourNode.z - node.z)
   yLength = abs(neighbourNode.y - node.y)
   if xLength + zLength == 2:
-    return 14 + yLength * yLength * heightCost + isWater * waterCost # Diagonal step
+    return 14 + yLength * yLength * heightCost * 2 + isWater * waterCost # Diagonal step
   return 10 + yLength * yLength * heightCost + isWater * waterCost # Normal step
 
 class Node:
