@@ -24,6 +24,9 @@ def perform(level, box, options):
 	for path in paths:
 		buildRoad(level, surface, path)
 
+	for path in paths:
+		buildHouses(level, surface, path)
+
 def buildRoad(level, surface, path):
 	for point in path:
 		buildRoadPoint(level, surface, point.x, point.z)
@@ -45,3 +48,20 @@ def isGreatHeightDifference(surface, x1, z1, x2, z2):
 	heigth2 = surface.surfaceMap[x2][z2].height
 	difference = heigth1 - heigth2
 	return difference > 1 or difference < -1
+
+def buildHouses(level, surface, path):
+	gap = 10
+	lengthFromCenter = 8
+	for i, point in enumerate(path):
+		if i % gap != 0:
+			continue
+		for p in [(point.x + lengthFromCenter, point.z), (point.x - lengthFromCenter, point.z), (point.x, point.z + lengthFromCenter), (point.x, point.z - lengthFromCenter)]:
+			x = p[0]
+			z = p[1]
+			if not isWithinBorder(surface, x, z) or surface.surfaceMap[x][z].isOccupied or surface.surfaceMap[x][z].isWater:
+				continue
+			buildHouse(level, surface, x, z)
+
+def buildHouse(level, surface, x, z):
+	height = surface.surfaceMap[x][z].height
+	setBlock(level, surface.xStart + x, height, surface.zStart + z, 57)
