@@ -1,48 +1,41 @@
-import heapq
-
-def getMinimumSpanningTree(vertexData, edges):
+def getMinimumSpanningTree(nodes, edges):
+	edges = sorted(edges)
+	nodeSets = getNodeSets(nodes)
+	amountOfNodeSets = len(nodeSets)
 	minimumSpanningTree = []
-	vertices = getVertices(vertexData)
-	numberOfSets = len(vertices)
-	while numberOfSets > 1:
-		edge = heapq.heappop(edges) # pops shortest edge
-		vertexOne = getVertex(edge[1][0], vertices)
-		vertexTwo = getVertex(edge[1][1], vertices)
-		if edgeVerticesInSameSet(vertexOne, vertexTwo):
+	for edge in edges:
+		nodeSet1 = findNodeSet(nodeSets, edge.nodeId1)
+		nodeSet2 = findNodeSet(nodeSets, edge.nodeId2)
+		if nodeSet1.id == nodeSet2.id:
 			continue
-		setTwoId = vertexTwo.setId
-		for vertex in vertices: # Merge sets of the two vertices
-			if vertex.setId == setTwoId:
-				vertex.setId = vertexOne.setId
-		numberOfSets -= 1
-		minimumSpanningTree.append((vertexOne.data, vertexTwo.data))
+		minimumSpanningTree.append(edge)
+		mergeNodeSets(nodeSet1, nodeSet2)
+		amountOfNodeSets -= 1
+		if amountOfNodeSets == 1:
+			break
 	return minimumSpanningTree
 
-def printVertexSets(vertices):
-	strings = []
-	for i in range(len(vertices)):
-		strings.append("Set " + str(i) + ": ")
-	for v in vertices:
-		strings[v.setId] += str(v.id) + " "
-	for s in strings:
-		print(s)
+def getNodeSets(nodes):
+	nodeSets = []
+	for i, node in enumerate(nodes):
+		s = NodeSet(i)
+		s.nodes.append(node)
+		nodeSets.append(s)
+	return nodeSets
 
-def getVertices(vertexData):
-	vertices = []
-	for i, data in enumerate(vertexData):
-		vertices.append(Vertex(i, i, data)) # each vertex starts in their own set
-	return vertices
+def findNodeSet(nodeSets, nodeId):
+	for nodeSet in nodeSets:
+		for node in nodeSet.nodes:
+			if node.id == nodeId:
+				return nodeSet
+	return None
 
-def getVertex(vertexData, vertices):
-	for vertex in vertices:
-		if vertex.data == vertexData:
-			return vertex
+def mergeNodeSets(nodeSet1, nodeSet2):
+	nodeSet1.nodes.extend(nodeSet2.nodes)
+	nodeSet2.nodes = []
 
-def edgeVerticesInSameSet(vertexOne, vertexTwo):
-	return vertexOne.setId == vertexTwo.setId
+class NodeSet:
 
-class Vertex:
-	def __init__(self, id, setId, data):
+	def __init__(self, id):
 		self.id = id
-		self.setId = setId
-		self.data = data
+		self.nodes = []
