@@ -4,6 +4,7 @@ from Classes import Surface
 from Common import getEuclideanDistance
 from Common import setBlock
 from GetPathBetweenSections import getPathBetweenSections
+from RoadBuilder import buildTestRoad
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
@@ -53,10 +54,7 @@ def perform(level, box, options):
 	paths = newPaths
 
 	for path in paths:
-		for p in path:
-			y = surface.surfaceMap[p.x][p.z].height
-			point = Point(p.x + surface.xStart, p.z + surface.zStart)
-			buildPathPoint(level, point, y)
+		buildTestRoad(level, surface, path)
 
 	oakMaterial = {
     "normal": (17, 0),
@@ -69,7 +67,7 @@ def perform(level, box, options):
 	for bridge in bridges:
 		startPoint = bridge[0]
 		endPoint = bridge[len(bridge) - 1]
-		height = surface.surfaceMap[startPoint.x][startPoint.z].height
+		height = surface.surfaceMap[startPoint.x][startPoint.z].height + 1
 		startPointTuple = (startPoint.x + surface.xStart, startPoint.z + surface.zStart)
 		endPointTuple = (endPoint.x + surface.xStart, endPoint.z + surface.zStart)
 		buildBridge(level, startPointTuple, endPointTuple, height, 4, oakMaterial)
@@ -99,40 +97,3 @@ def findBridges(surface, paths):
 					bridge = []
 	paths = newPaths
 	return bridges
-
-
-def buildPathPoint(level, point, height):
-	buildCenterPathTile(level, point, height)
-	for p in [(point.x - 1, point.z), (point.x + 1, point.z), (point.x, point.z - 1), (point.x, point.z + 1)]:
-		buildOuterPathTile(level, Point(p[0], p[1]), height)
-
-def buildCenterPathTile(level, point, height):
-	setBlock(level, point.x, height, point.z, 43, 0)
-	clearAboveTile(level, point, height)
-
-def buildOuterPathTile(level, point, height):
-	if level.blockAt(point.x, height, point.z) == 43:
-		return
-	if level.blockAt(point.x, height, point.z) == 0:
-		i = 0
-		while level.blockAt(point.x, height - i, point.z) == 0:
-			if level.blockAt(point.x, height - 1 - i, point.z) == 43:
-				return
-			i += 1
-	
-	if level.blockAt(point.x, height + 1, point.z) == 4:
-		setBlock(level, point.x, height + 1, point.z, 44, 3)
-	if level.blockAt(point.x, height - 1, point.z) == 4:
-		setBlock(level, point.x, height, point.z, 44, 3)
-	else:
-		setBlock(level, point.x, height, point.z, 4, 0)
-	
-	i = 1
-	while(level.blockAt(point.x, height - i, point.z) == 0):
-		setBlock(level, point.x, height - i, point.z, 98, 0)
-		i += 1
-
-def clearAboveTile(level, point, height):
-	for i in range(1, 9):
-		setBlock(level, point.x, height + i, point.z, 0, 0)
-	
