@@ -2,6 +2,7 @@ from Classes import Surface
 from Common import getEuclideanDistance
 from Common import setBlock
 from GetPathBetweenSections import getPathBetweenSections
+from GetRectangle import getRectangle
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
@@ -49,19 +50,45 @@ def isGreatHeightDifference(surface, x1, z1, x2, z2):
 	difference = heigth1 - heigth2
 	return difference > 1 or difference < -1
 
+gap = 10
+lengthFromCenter = 8
 def buildHouses(level, surface, path):
-	gap = 10
-	lengthFromCenter = 8
 	for i, point in enumerate(path):
 		if i % gap != 0:
 			continue
-		for p in [(point.x + lengthFromCenter, point.z), (point.x - lengthFromCenter, point.z), (point.x, point.z + lengthFromCenter), (point.x, point.z - lengthFromCenter)]:
+		for p in [(point.x + lengthFromCenter, point.z, "W"), (point.x - lengthFromCenter, point.z, "E"), (point.x, point.z + lengthFromCenter, "S"), (point.x, point.z - lengthFromCenter, "N")]:
 			x = p[0]
 			z = p[1]
 			if not isWithinBorder(surface, x, z) or surface.surfaceMap[x][z].isOccupied or surface.surfaceMap[x][z].isWater:
 				continue
-			buildHouse(level, surface, x, z)
+			buildHouse(level, surface, x, z, p[2])
 
-def buildHouse(level, surface, x, z):
-	height = surface.surfaceMap[x][z].height
-	setBlock(level, surface.xStart + x, height, surface.zStart + z, 57)
+propertyMinWidth = 7
+propertyMaxWidth = 11
+def buildHouse(level, surface, x, z, doorDirection):
+	rec = getRectangle(surface, x, z, 1, propertyMaxWidth)
+	if rec.xLength >= propertyMinWidth and rec.zLength >= propertyMinWidth:
+		height = surface.surfaceMap[x][z].height
+		occupyArea(surface, rec.xStart, rec.zStart, rec.xEnd, rec.zEnd)
+		buildFloor(level, surface, rec.xStart + 1, rec.zStart + 1, rec.xEnd - 1, rec.zEnd - 1, height)
+		buildDoor(level, surface, rec.xStart + 1, rec.zStart + 1, rec.xEnd - 1, rec.zEnd - 1, height, doorDirection)
+
+def occupyArea(surface, xStart, zStart, xEnd, zEnd):
+	for x in range(xStart, xEnd):
+		for z in range(zStart, zEnd):
+			surface.surfaceMap[x][z].isOccupied = True
+
+def buildFloor(level, surface, xStart, zStart, xEnd, zEnd, height):
+	for x in range(xStart, xEnd):
+		for z in range(zStart, zEnd):
+			setBlock(level, surface.xStart + x, height + 1, surface.zStart + z, 41)
+
+def buildDoor(level, surface, xStart, zStart, xEnd, zEnd, height, doorDirection):
+	if doorDirection == "N":
+		setBlock(level, surface.xStart + xStart + (xEnd - xStart) / 2, height + 1, surface.zStart + zEnd, 57)
+	elif doorDirection == "E":
+		setBlock(level, surface.xStart + xEnd, height + 1, surface.zStart + zStart + (zEnd - zStart) / 2, 57)
+	elif doorDirection == "S":
+		setBlock(level, surface.xStart + xStart + (xEnd - xStart) / 2, height + 1, surface.zStart + zStart - 1, 57)
+	elif doorDirection == "W":
+		setBlock(level, surface.xStart + xStart - 1, height + 1, surface.zStart + zStart + (zEnd - zStart) / 2, 57)
