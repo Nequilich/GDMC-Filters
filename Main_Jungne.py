@@ -7,6 +7,7 @@ from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
 from SurfaceManager import calculateSections
 from VillagerSpawner import spawnVillager
+from BiomeMaterials import testMaterials
 
 inputs = (
     ("Width", 4),
@@ -49,6 +50,8 @@ glass = {
 
 def perform(level, box, options):
 
+    testMaterials()
+
 
     #spawnVillager(level, box)
     
@@ -56,8 +59,8 @@ def perform(level, box, options):
     # BridgeBuilder
     # bridgeWidth = options["Width"]
 
-    surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
-    calculateHeightMapAdv(level, surface)
+    # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+    # calculateHeightMapAdv(level, surface)
     # startPoint = (box.minx, box.minz)
     # endPoint = (box.maxx-1, box.maxz-1)
     # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
@@ -75,7 +78,7 @@ def perform(level, box, options):
     # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, materials)
 
     # BiomeFinder
-    biomes = findBiomes(level, box, surface)
+    # biomes = findBiomes(level, box, surface)
 
     # Topographic marker
     # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
