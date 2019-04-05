@@ -1,14 +1,14 @@
 class Block:
 
-	def __init__(self, type, direction, verticalAllignment):
+	def __init__(self, type, direction = None, verticalAllignment = None):
 		self.type = type
 		self.direction = direction
 		self.verticalAllignment = verticalAllignment
 
 def getBlockIdentifier(block):
-	if block.direction == None and block.verticalAllignment == None:
+	if not block.direction and not block.verticalAllignment:
 		return blockTypes[block.type]['default']
-	elif block.direction == None and block.verticalAllignment != None:
+	elif not block.direction and block.verticalAllignment:
 		return blockTypes[block.type]['slabs'][block.verticalAllignment]
 	return blockTypes[block.type]['directions'][block.direction][block.verticalAllignment]
 
@@ -45,7 +45,8 @@ def getBlock(identifier):
 			return Block(blockType['type'], 'west', 'bottom')
 	return None
 
-blockTypes = [{
+blockTypes = {
+	'stone': {
 	'type': 'stone',
 	'default': (1, 0),
 	'directions': {
@@ -71,7 +72,7 @@ blockTypes = [{
 		'bottom': (44, 0)
 	}
 },
-{
+'cobblestone': {
 	'type': 'cobblestone',
 	'default': (4, 0),
 	'directions': {
@@ -97,7 +98,7 @@ blockTypes = [{
 		'bottom': (44, 3)
 	}
 },
-{
+'oak_wood': {
 	'type': 'oak_wood',
 	'default': (17, 0),
 	'directions': {
@@ -122,4 +123,4 @@ blockTypes = [{
 		'top': (17, 0),
 		'bottom': (17, 0)
 	}
-}]
+}}
