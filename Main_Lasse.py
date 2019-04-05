@@ -1,5 +1,6 @@
 from Classes import Surface
 from Common import setBlock
+from GetPath import getPath
 from GetPathBetweenSections import getPathBetweenSections
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from SurfaceManager import calculateHeightMapAdv
@@ -30,7 +31,8 @@ def perform(level, box, options):
 
 	for p in properties:
 		buildFloor(level, surface, p.xStart + 1, p.zStart + 1, p.xEnd - 1, p.zEnd - 1, p.height)
-		buildDoor(level, surface, p.xStart + 1, p.zStart + 1, p.xEnd - 1, p.zEnd - 1, p.height, p.doorDirection)
+		setBlock(level, surface.xStart + p.xPathwayStart, p.height + 1, surface.zStart + p.zPathwayStart, 57)
+		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
 def buildRoad(level, surface, path):
 	for point in path:
@@ -59,12 +61,8 @@ def buildFloor(level, surface, xStart, zStart, xEnd, zEnd, height):
 		for z in range(zStart, zEnd):
 			setBlock(level, surface.xStart + x, height + 1, surface.zStart + z, 41)
 
-def buildDoor(level, surface, xStart, zStart, xEnd, zEnd, height, doorDirection):
-	if doorDirection == "NORTH":
-		setBlock(level, surface.xStart + xStart + (xEnd - xStart) / 2, height + 1, surface.zStart + zEnd, 57)
-	elif doorDirection == "EAST":
-		setBlock(level, surface.xStart + xEnd, height + 1, surface.zStart + zStart + (zEnd - zStart) / 2, 57)
-	elif doorDirection == "SOUTH":
-		setBlock(level, surface.xStart + xStart + (xEnd - xStart) / 2, height + 1, surface.zStart + zStart - 1, 57)
-	elif doorDirection == "WEST":
-		setBlock(level, surface.xStart + xStart - 1, height + 1, surface.zStart + zStart + (zEnd - zStart) / 2, 57)
+def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
+	path = getPath(surface, xStart, zStart, xEnd, zEnd)
+	for p in path:
+		height = surface.surfaceMap[p.x][p.z].height
+		setBlock(level, surface.xStart + p.x, height, surface.zStart + p.z, 4)
