@@ -50,32 +50,32 @@ glass = {
 
 def perform(level, box, options):
 
-    testMaterials()
+    # testMaterials()
 
 
     #spawnVillager(level, box)
     
     
     # BridgeBuilder
-    # bridgeWidth = options["Width"]
+    bridgeWidth = options["Width"]
 
-    # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
-    # calculateHeightMapAdv(level, surface)
-    # startPoint = (box.minx, box.minz)
-    # endPoint = (box.maxx-1, box.maxz-1)
-    # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
+    surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+    calculateHeightMapAdv(level, surface)
+    startPoint = (box.minx, box.minz)
+    endPoint = (box.maxx-1, box.maxz-1)
+    bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
 
-    # chosenMaterial = options["Material"]
-    # if (chosenMaterial == "Oak"):
-    #   materials = oakMaterial
-    # elif (chosenMaterial == "Cobblestone"):
-    #   materials = cobblestoneMaterial
-    # elif (chosenMaterial == "Birch"):
-    #   materials = birchMaterial
-    # else:
-    #   materials = oakMaterial
+    chosenMaterial = options["Material"]
+    if (chosenMaterial == "Oak"):
+      materials = oakMaterial
+    elif (chosenMaterial == "Cobblestone"):
+      materials = cobblestoneMaterial
+    elif (chosenMaterial == "Birch"):
+      materials = birchMaterial
+    else:
+      materials = oakMaterial
 
-    # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, materials)
+    buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, materials)
 
     # BiomeFinder
     # biomes = findBiomes(level, box, surface)

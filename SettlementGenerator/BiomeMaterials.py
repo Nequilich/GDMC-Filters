@@ -14,12 +14,12 @@ plains = {
     "door": oak["door"]
 }
 
-
 biomeMaterials = {
     1: plains
 }
 
-def getBiomeMaterials(biomeID):
+def getBiomeMaterials(biomeID = 1):
+    biomeID = 1  # TODO Remove line when implementing more material sets.
     # Merges the default materials with the biome materials.
     materials = addDefaultMaterials(biomeMaterials[biomeID])
 
