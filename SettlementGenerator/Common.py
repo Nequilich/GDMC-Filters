@@ -6,9 +6,9 @@ def setBlock(level, x, y, z, block, data = 0):
 
 def getMatrix(height, width, defaultValue):
 	matrix = []
-	for x in range(height):
+	for _ in range(height):
 		row = []
-		for z in range(width):
+		for _ in range(width):
 			row.append(defaultValue)
 		matrix.append(row)
 	return matrix
