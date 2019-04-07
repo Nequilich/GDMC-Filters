@@ -1,8 +1,6 @@
 from Common import setBlock
 from Classes import Surface
 
-materials = {}
-
 
 def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
     global materials
@@ -21,7 +19,7 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
     offsetNext = False
     offsetInterval = bridgeLength/float(bridgeSkew)
     currentOffset = 0
-    # TODO handle offset intervals smaller than 2.
+    # TODO WIP handle offset intervals smaller than 2.
 
     # place bridge heads
     if (offsetInterval >= 2):
@@ -114,22 +112,33 @@ def placePillarWithTorch(level, x, y, z):
 
 
 def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):
-    pass  # TODO implement diagonal bridge terminals
+    tempWidth = width/2  # Halved and truncated
     if not flipped:
-        placePillarWithTorch(level, (x + 2*(bridgeMainDirectionX + bridgeSecondaryDirectionX)),
-                            y, (z + -1*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
-        placePillarWithTorch(level, (x + -1*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)),
-                            y, (z + 2*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
-        setBlock(level, x+(bridgeMainDirectionX + bridgeSecondaryDirectionX), y, z,
-                 materials["lower slab"][0], materials["lower slab"][1])
-        setBlock(level, x, y, z+(bridgeMainDirectionZ + bridgeSecondaryDirectionZ),
-                 materials["lower slab"][0], materials["lower slab"][1])
-
+        flipped = 1
     else:
-        placePillarWithTorch(level, (x + -2*(bridgeMainDirectionX + bridgeSecondaryDirectionX)),
-                            y, (z + 1*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
-        placePillarWithTorch(level, (x + 1*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)),
-                            y, (z + -2*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
+        flipped = -1
+
+    # Pillars with torches TODO scale with width
+    placePillarWithTorch(level, (x + flipped*2*(bridgeMainDirectionX + bridgeSecondaryDirectionX)),
+                         y, (z + flipped*-1*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
+    placePillarWithTorch(level, (x + flipped*-1*(bridgeMainDirectionX + bridgeSecondaryDirectionX)),
+                         y, (z + flipped*2*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
+
+    # Steps
+    setBlock(level, x+flipped*-1*(bridgeMainDirectionX + bridgeSecondaryDirectionX), y, z+flipped*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ),
+             materials["lower slab"][0], materials["lower slab"][1])
+    for i in range(tempWidth):
+        for j in range(2):
+            setBlock(level, x+i*flipped*(bridgeMainDirectionX + bridgeSecondaryDirectionX), y, z+(j*flipped*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ))-i*flipped,
+                     materials["lower slab"][0], materials["lower slab"][1])
+
+    # Platform
+    offsetX = -1*(tempWidth-1)
+    offsetZ = tempWidth+1
+    for i in range(2*tempWidth+1):
+        for j in range(i, -1, -1):
+            setBlock(level, x+flipped*(i*(bridgeMainDirectionX + bridgeSecondaryDirectionX)+offsetX), y, z+flipped*(-1*j*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)+offsetZ),
+             materials["upper slab"][0], materials["upper slab"][1])
 
 def setBridgeDirections(startPoint, endPoint):
     xLength = abs(endPoint[0] - startPoint[0])+1
