@@ -12,8 +12,9 @@ def getBlockIdentifier(block):
 		return blockTypes[block.type]['slabs'][block.verticalAllignment]
 	return blockTypes[block.type]['directions'][block.direction][block.verticalAllignment]
 
-def getBlock(identifier):
-	for blockType in blockTypes:
+def getBlock(id, data):
+	identifier = (id, data)
+	for _, blockType in blockTypes.iteritems():
 		# checking default
 		if blockType['default'] == identifier:
 			return Block(blockType['type'], None, None)
