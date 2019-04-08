@@ -9,12 +9,6 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
     # Sets the direction variables
     setBridgeDirections(startPoint, endPoint)
 
-    # # Offsets the start and end points to center bridge.
-    # startPoint = (startPoint[0]-((width/2)*bridgeSecondaryDirectionX),
-    #               startPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
-    # endPoint = (endPoint[0]-((width/2)*bridgeSecondaryDirectionX),
-    #             endPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
-
     # Offset variables
     offsetNext = False
     offsetInterval = bridgeLength/float(bridgeSkew)
@@ -23,47 +17,68 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
 
     # place bridge heads
     if (offsetInterval >= 2):
-        headLength = 3
+        diagonal = False
+        headLength = width/2
+
+        # Offset points of bridge to center.
+        startPoint = (startPoint[0]-((width/2)*bridgeSecondaryDirectionX),
+                      startPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
+        endPoint = (endPoint[0]-((width/2)*bridgeSecondaryDirectionX),
+                    endPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
 
         placeOrthogonalBridgeHead(
             level, startPoint[0], bridgeY, startPoint[1], width, headLength)  # Start of bridge
         placeOrthogonalBridgeHead(
             level, endPoint[0], bridgeY, endPoint[1], width, headLength, True)  # End of bridge
 
-        startPoint = ((startPoint[0] + headLength * bridgeMainDirectionX),
-                      (startPoint[1] + headLength * bridgeMainDirectionZ))
-        endPoint = ((endPoint[0] + headLength * bridgeMainDirectionX * -1),
-                    (endPoint[1] + headLength * bridgeMainDirectionZ * -1))
+        # Offsets points of bridge to edge of platform.
+        startPoint = ((startPoint[0] + (headLength-1) * bridgeMainDirectionX),
+                      (startPoint[1] + (headLength-1) * bridgeMainDirectionZ))
+        endPoint = ((endPoint[0] + (headLength-1) * bridgeMainDirectionX * -1),
+                    (endPoint[1] + (headLength-1) * bridgeMainDirectionZ * -1))
 
     else:
+        diagonal = True
+        tempWidth = width/2
         placeDiagonalBridgeHead(
             level, startPoint[0], bridgeY, startPoint[1], width)  # Start of bridge
         placeDiagonalBridgeHead(
             level, endPoint[0], bridgeY, endPoint[1], width, True)  # End of bridge
 
+        offsetMain = tempWidth
+        offsetSecondaryStart = tempWidth-2
+        offsetSecondaryEnd = width + 1
+        startPoint = ((startPoint[0] + offsetMain*bridgeMainDirectionX + offsetSecondaryStart*bridgeSecondaryDirectionX),
+                      (startPoint[1] + offsetMain*bridgeMainDirectionZ + offsetSecondaryStart*bridgeSecondaryDirectionZ))
+        endPoint = ((endPoint[0] + (offsetMain*bridgeMainDirectionX + offsetSecondaryEnd*bridgeSecondaryDirectionX) * -1),
+                    (endPoint[1] + (offsetMain*bridgeMainDirectionZ + offsetSecondaryEnd*bridgeSecondaryDirectionZ) * -1))
+
     # Update offset variables after placing bridgeheads
     setBridgeDirections(startPoint, endPoint)
     offsetInterval = bridgeLength/float(bridgeSkew)
-
     # place main part of bridge
-    # for i in range(1, bridgeLength-1):
-    #     x = startPoint[0]+(i*bridgeMainDirectionX) + \
-    #         (currentOffset*bridgeSecondaryDirectionX)
-    #     z = startPoint[1]+(i*bridgeMainDirectionZ) + \
-    #         (currentOffset*bridgeSecondaryDirectionZ)
-    #     if ((i+1) % offsetInterval < 1):
-    #         if (offsetNext == True):
-    #             placeBridgeSection(level, x, bridgeY, z, width+2, True, True)
-    #             currentOffset += 1
-    #         else:
-    #             placeBridgeSection(level, x, bridgeY, z, width+1, False, True)
-    #         offsetNext = True
-    #     elif (offsetNext == True):
-    #         placeBridgeSection(level, x, bridgeY, z, width+1, True, False)
-    #         offsetNext = False
-    #         currentOffset += 1
-    #     else:
-    #         placeBridgeSection(level, x, bridgeY, z, width, False, False)
+    if diagonal:
+        offsetNext = True
+        if offsetInterval > 1:
+            width = width+1
+    for i in range(1, bridgeLength-1):
+        x = startPoint[0]+(i*bridgeMainDirectionX) + \
+            (currentOffset*bridgeSecondaryDirectionX)
+        z = startPoint[1]+(i*bridgeMainDirectionZ) + \
+            (currentOffset*bridgeSecondaryDirectionZ)
+        if ((i+1) % offsetInterval < 1):
+            if (offsetNext == True):
+                placeBridgeSection(level, x, bridgeY, z, width+2, True, True)
+                currentOffset += 1
+            else:
+                placeBridgeSection(level, x, bridgeY, z, width+1, False, True)
+            offsetNext = True
+        elif (offsetNext == True):
+            placeBridgeSection(level, x, bridgeY, z, width+1, True, False)
+            offsetNext = False
+            currentOffset += 1
+        else:
+            placeBridgeSection(level, x, bridgeY, z, width, False, False)
 
 
 def placeBridgeSection(level, x, y, z, width, extraFenceLeft=False, extraFenceRight=False):
@@ -79,7 +94,7 @@ def placeBridgeSection(level, x, y, z, width, extraFenceLeft=False, extraFenceRi
     if (extraFenceLeft):
         setBlock(level, x+bridgeSecondaryDirectionX, y+1, z +
                  bridgeSecondaryDirectionZ, materials["fence"])
-    elif (extraFenceRight):
+    if (extraFenceRight):
         setBlock(level, x+(width-2)*bridgeSecondaryDirectionX, y+1, z +
                  (width-2)*bridgeSecondaryDirectionZ, materials["fence"])
 
@@ -133,12 +148,46 @@ def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):
                      materials["lower slab"][0], materials["lower slab"][1])
 
     # Platform
-    offsetX = -1*(tempWidth-1)
-    offsetZ = tempWidth+1
-    for i in range(2*tempWidth+1):
+
+    # Primary platform
+    offsetMain = -1*(tempWidth-2)
+    offsetSecondary = tempWidth
+    for i in range(2*tempWidth-1):
+        tempX = x + flipped*(i * bridgeMainDirectionX +
+                             offsetSecondary * bridgeSecondaryDirectionX)
+        tempZ = z + flipped*(i * bridgeMainDirectionZ +
+                             offsetSecondary * bridgeSecondaryDirectionZ)
         for j in range(i, -1, -1):
-            setBlock(level, x+flipped*(i*(bridgeMainDirectionX + bridgeSecondaryDirectionX)+offsetX), y, z+flipped*(-1*j*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)+offsetZ),
-             materials["upper slab"][0], materials["upper slab"][1])
+            setBlock(level, tempX+flipped*(-1*j*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y, tempZ+flipped*(-1*j*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ),
+                     materials["upper slab"][0], materials["upper slab"][1])
+    setBlock(level, x + flipped*tempWidth, y+1, z, materials["fence"])
+    setBlock(level, x, y+1, z + flipped*tempWidth, materials["fence"])
+
+    # Priming platform for main part of bridge
+    offsetMain = -1*(tempWidth-2)
+    offsetSecondary = tempWidth+1
+    offsetInterval = bridgeLength / bridgeSkew  # Yes, redundant code.
+    flapSize = 1
+    extraFence = False
+
+    for i in range(width-1):
+        tempX = x + flipped*(i * bridgeMainDirectionX +
+                             offsetSecondary * bridgeSecondaryDirectionX)
+        tempZ = z + flipped*(i * bridgeMainDirectionZ +
+                             offsetSecondary * bridgeSecondaryDirectionZ)
+        
+        for j in range(flapSize):
+            if (j == flapSize-1):
+                setBlock(level, tempX+flipped*(j*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y+1,
+                         tempZ+flipped*(j*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ), materials["fence"])
+                if (extraFence):
+                    setBlock(level, tempX+flipped*((j-1)*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y+1,
+                         tempZ+flipped*((j-1)*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ), materials["fence"])
+            setBlock(level, tempX+flipped*(j*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y, tempZ+flipped*(j*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ),
+                     materials["upper slab"][0], materials["upper slab"][1])
+        if (i % offsetInterval < 1):
+            flapSize = flapSize + 1
+            extraFence = True
 
 def setBridgeDirections(startPoint, endPoint):
     xLength = abs(endPoint[0] - startPoint[0])+1
