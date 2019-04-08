@@ -462,4 +462,30 @@ blockTypes = {
 		'top': (126, 13),
 		'bottom': (126, 5)
 	}
+},
+'oak_door': {
+	'type': 'oak_door',
+	'default': (64, 3),
+	'directions': {
+		'north': {
+			'top': (64, 3),
+			'bottom': (64, 3)
+		},
+		'east': {
+			'top': (64, 0),
+			'bottom': (64, 0)
+		},
+		'south': {
+			'top': (64, 1),
+			'bottom': (64, 1)
+		},
+		'west': {
+			'top': (64, 2),
+			'bottom': (64, 2)
+		}
+	},
+	'slabs': {
+		'top': (64, 3),
+		'bottom': (64, 3)
+	}
 }}
