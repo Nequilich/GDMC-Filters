@@ -39,6 +39,7 @@ class SurfacePoint:
 		self.steepness = 0
 		self.isWater = False
 		self.sectionId = -1
+		self.layer = -1
 		self.isOccupied = False
 		self.houseId = -1
 

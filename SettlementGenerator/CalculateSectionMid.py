@@ -27,6 +27,7 @@ def calculateSectionMid(surface, section):
 		layer += 1
 
 	setSectionMid(section, surfaceInfo)
+	updateSurfacePoints(surface, surfaceInfo)
 
 def newSurfaceInfo(surface, section):
 	xStart = section.points[0].x
@@ -114,6 +115,11 @@ def setSectionMid(section, surfaceInfo):
 	section.xMid = xMid + surfaceInfo.xStart
 	section.zMid = zMid + surfaceInfo.zStart
 	section.layerDepth = layer + 1
+
+def updateSurfacePoints(surface, surfaceInfo):
+	for x in range(surfaceInfo.xLength):
+		for z in range(surfaceInfo.zLength):
+			surface.surfaceMap[surfaceInfo.xStart + x][surfaceInfo.zStart + z].layer = surfaceInfo.surfaceMap[x][z].layer
 
 class SurfaceInfo:
 
