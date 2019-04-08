@@ -44,7 +44,7 @@ def getBlocks(layers, includeAir):
 def addBlockInformation(blocks):
 	data = []
 	for mcBlock in blocks:
-		block = blockDictionary.getBlock((mcBlock['id'], mcBlock['data']))
+		block = blockDictionary.getBlock(mcBlock['id'], mcBlock['data'])
 		if block == None:
 			data.append({'type': 'unknown', 'direction': None, 'verticalAllignment': None, 'id': mcBlock['id'], 'data': mcBlock['data'], 'x': mcBlock['x'], 'y': mcBlock['y'], 'z': mcBlock['z']})
 			continue

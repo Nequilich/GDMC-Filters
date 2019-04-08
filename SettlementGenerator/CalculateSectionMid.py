@@ -113,6 +113,7 @@ def setSectionMid(section, surfaceInfo):
 				layer = surfaceInfo.surfaceMap[x][z].layer
 	section.xMid = xMid + surfaceInfo.xStart
 	section.zMid = zMid + surfaceInfo.zStart
+	section.layerDepth = layer + 1
 
 class SurfaceInfo:
 
