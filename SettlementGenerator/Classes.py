@@ -119,3 +119,19 @@ class Edge:
 
 	def __lt__(self, other):
 		return self.cost < other.cost
+
+class Property:
+
+	def __init__(self, xStart, zStart, xEnd, zEnd, height):
+		self.xStart = xStart
+		self.zStart = zStart
+		self.xEnd = xEnd
+		self.zEnd = zEnd
+		self.xLength = xEnd - xStart
+		self.zLength = zEnd - zStart
+		self.height = height
+		self.doorDirection = ""
+		self.xPathwayStart = 0
+		self.zPathwayStart = 0
+		self.xPathwayEnd = 0
+		self.zPathwayEnd = 0

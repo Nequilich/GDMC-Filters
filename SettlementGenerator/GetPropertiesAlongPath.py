@@ -1,18 +1,19 @@
 import math
+from Classes import Property
 from GetRectangle import getRectangle
 
 gap = 10
-lengthFromCenter = 8
+lengthFromCenter = 7
 def getPropertiesAlongPath(surface, path):
 	properties = []
 	for i, point in enumerate(path):
 		if i % gap != 0:
 			continue
-		for p in [(point.x + lengthFromCenter, point.z, "WEST"), (point.x - lengthFromCenter, point.z, "EAST"), (point.x, point.z + lengthFromCenter, "SOUTH"), (point.x, point.z - lengthFromCenter, "NORTH")]:
+		for p in [(point.x + lengthFromCenter, point.z, "WEST"), (point.x - lengthFromCenter, point.z, "EAST"), (point.x, point.z + lengthFromCenter, "NORTH"), (point.x, point.z - lengthFromCenter, "SOUTH")]:
 			x = p[0]
 			z = p[1]
 			doorDirection = p[2]
-			if not isWithinBorder(surface, x, z) or surface.surfaceMap[x][z].isOccupied or surface.surfaceMap[x][z].isWater:
+			if not isWithinBorder(surface, x, z) or surface.surfaceMap[x][z].isOccupied or surface.surfaceMap[x][z].isWater or isGreatHeightDifference(surface, point.x, point.z, x, z):
 				continue
 			prop = getProperty(surface, x, z)
 			if prop:
@@ -26,6 +27,11 @@ def getPropertiesAlongPath(surface, path):
 def isWithinBorder(surface, x, z):
 	return x >= 0 and x < surface.xLength and z >= 0 and z < surface.zLength
 
+def isGreatHeightDifference(surface, x1, z1, x2, z2):
+	height1 = surface.surfaceMap[x1][z1].height
+	height2 = surface.surfaceMap[x2][z2].height
+	return abs(height1 - height2) > 3
+
 propertyMinWidth = 7
 propertyMaxWidth = 11
 def getProperty(surface, x, z):
@@ -38,13 +44,13 @@ def getProperty(surface, x, z):
 def setPathwayStart(prop):
 	if prop.doorDirection == "NORTH":
 		prop.xPathwayStart = prop.xStart + prop.xLength / 2
-		prop.zPathwayStart = prop.zEnd - 1
+		prop.zPathwayStart = prop.zStart
 	elif prop.doorDirection == "EAST":
 		prop.xPathwayStart = prop.xEnd - 1
 		prop.zPathwayStart = prop.zStart + prop.zLength / 2
 	elif prop.doorDirection == "SOUTH":
 		prop.xPathwayStart = prop.xStart + prop.xLength / 2
-		prop.zPathwayStart = prop.zStart
+		prop.zPathwayStart = prop.zEnd - 1
 	elif prop.doorDirection == "WEST":
 		prop.xPathwayStart = prop.xStart
 		prop.zPathwayStart = prop.zStart + prop.zLength / 2
@@ -95,19 +101,3 @@ def getDistance(x1, z1, x2, z2):
 		shortest = verticalDist
 		longest = horizontalDist
 	return shortest * sqrtOfTwo + longest - shortest
-
-class Property:
-
-	def __init__(self, xStart, zStart, xEnd, zEnd, height):
-		self.xStart = xStart
-		self.zStart = zStart
-		self.xEnd = xEnd
-		self.zEnd = zEnd
-		self.xLength = xEnd - xStart
-		self.zLength = zEnd - zStart
-		self.height = height
-		self.doorDirection = ""
-		self.xPathwayStart = 0
-		self.zPathwayStart = 0
-		self.xPathwayEnd = 0
-		self.zPathwayEnd = 0

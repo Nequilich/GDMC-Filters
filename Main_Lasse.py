@@ -3,6 +3,7 @@ from Common import setBlock
 from GetPath import getPath
 from GetPathBetweenSections import getPathBetweenSections
 from GetPropertiesAlongPath import getPropertiesAlongPath
+from HouseBuilder import buildHouse
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
@@ -30,8 +31,7 @@ def perform(level, box, options):
 		properties.extend(getPropertiesAlongPath(surface, path))
 
 	for p in properties:
-		buildFloor(level, surface, p.xStart + 1, p.zStart + 1, p.xEnd - 1, p.zEnd - 1, p.height)
-		setBlock(level, surface.xStart + p.xPathwayStart, p.height + 1, surface.zStart + p.zPathwayStart, 57)
+		buildHouse(level, surface, p)
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
 def buildRoad(level, surface, path):
