@@ -7,6 +7,7 @@ from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
+from TowerBuilder import buildMediumTower
 
 def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
@@ -43,7 +44,6 @@ def perform(level, box, options):
 		pointHeap = []		
 		for point in section.points:
 			surfacePoint = surface.surfaceMap[point.x][point.z]
-			print(surfacePoint.layer)
 			if surfacePoint.layer == 1:
 				heapq.heappush(pointHeap, (surfacePoint.height, point))
 		
@@ -64,8 +64,7 @@ def perform(level, box, options):
 			if distance < 40:
 				tooClose = True
 		if not tooClose:
-			for i in range(25):
-				setBlock(level, surface.xStart + point.x, height + 1 + i, surface.zStart + point.z, 57)
+			buildMediumTower(level, surface, point, height, 'north')
 			towers.append(point)
 
 def calculateAverageSurfaceHeight(surface):
