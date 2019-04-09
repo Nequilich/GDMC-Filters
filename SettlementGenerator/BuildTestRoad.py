@@ -4,21 +4,24 @@ from RemoveTree import isTreeBlock
 from RemoveTree import removeTree
 
 def buildTestRoad(level, surface, path):
-  for point in path:
-			y = surface.surfaceMap[point.x][point.z].height
-			point = Point(point.x + surface.xStart, point.z + surface.zStart)
-			buildPathPoint(level, point, y)
+	for point in path:
+		y = surface.surfaceMap[point.x][point.z].height
+		point = Point(point.x + surface.xStart, point.z + surface.zStart)
+		buildPathPoint(level, surface, point, y)
 
-def buildPathPoint(level, point, height):
-	buildCenterPathTile(level, point, height)
+def buildPathPoint(level, surface, point, height):
+	buildCenterPathTile(level, surface, point, height)
 	for p in [(point.x - 1, point.z), (point.x + 1, point.z), (point.x, point.z - 1), (point.x, point.z + 1)]:
-		buildOuterPathTile(level, Point(p[0], p[1]), height)
+		buildOuterPathTile(level, surface, Point(p[0], p[1]), height)
 
-def buildCenterPathTile(level, point, height):
+def buildCenterPathTile(level, surface, point, height):
+	surface.surfaceMap[point.x - surface.xStart][point.z - surface.zStart].isOccupied = True
 	setBlock(level, point.x, height, point.z, 43, 0)
 	clearAboveTile(level, point, height)
 
-def buildOuterPathTile(level, point, height):
+def buildOuterPathTile(level, surface, point, height):
+	if point.x >= 0 and point.x < surface.xLength and point.z >= 0 and point.z < surface.zLength:
+		surface.surfaceMap[point.x - surface.xStart][point.z - surface.zStart].isOccupied = True
 	if level.blockAt(point.x, height, point.z) == 43:
 		return
 	if level.blockAt(point.x, height, point.z) == 0:
@@ -36,7 +39,7 @@ def buildOuterPathTile(level, point, height):
 		setBlock(level, point.x, height, point.z, 4, 0)
 	
 	i = 1
-	while(level.blockAt(point.x, height - i, point.z) == 0):
+	while level.blockAt(point.x, height - i, point.z) == 0:
 		setBlock(level, point.x, height - i, point.z, 98, 0)
 		i += 1
 
