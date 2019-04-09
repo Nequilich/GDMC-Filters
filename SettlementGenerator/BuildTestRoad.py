@@ -1,13 +1,57 @@
+from BridgeBuilder import buildBridge
 from Classes import Point
 from Common import setBlock
 from RemoveTree import isTreeBlock
 from RemoveTree import removeTree
 
 def buildTestRoad(level, surface, path):
-	for point in path:
-		y = surface.surfaceMap[point.x][point.z].height
-		point = Point(point.x + surface.xStart, point.z + surface.zStart)
-		buildPathPoint(level, surface, point, y)
+	roads = []
+	bridges = []
+	findRoadsAndBridges(surface, path, roads, bridges)
+	buildRoads(level, surface, roads)
+	buildBridges(level, surface, bridges)
+
+def findRoadsAndBridges(surface, path, roads, bridges):
+	bridge = []
+	road = []
+	for p in path:
+		if surface.surfaceMap[p.x][p.z].isWater:
+			bridge.append(p)
+			if road:
+				roads.append(road)
+				road = []
+		else:
+			road.append(p)
+			if bridge:
+				bridges.append(bridge)
+				bridge = []
+	if road:
+		roads.append(road)
+	if bridge:
+		bridges.append(bridge)
+
+def buildRoads(level, surface, roads):
+	for road in roads:
+		for point in road:
+			y = surface.surfaceMap[point.x][point.z].height
+			point = Point(point.x + surface.xStart, point.z + surface.zStart)
+			buildPathPoint(level, surface, point, y)
+
+def buildBridges(level, surface, bridges):
+	oakMaterial = {
+    "normal": (17, 0),
+    "upper slab": (126, 8),
+    "lower slab": (126, 0),
+    "fence": 85.0,
+    "torch": 50
+	}
+	for bridge in bridges:
+		startPoint = bridge[0]
+		endPoint = bridge[len(bridge) - 1]
+		height = surface.surfaceMap[startPoint.x][startPoint.z].height + 1
+		startPointTuple = (startPoint.x + surface.xStart, startPoint.z + surface.zStart)
+		endPointTuple = (endPoint.x + surface.xStart, endPoint.z + surface.zStart)
+		buildBridge(level, startPointTuple, endPointTuple, height, 4, oakMaterial)
 
 def buildPathPoint(level, surface, point, height):
 	buildCenterPathTile(level, surface, point, height)
