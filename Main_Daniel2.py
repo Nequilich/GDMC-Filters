@@ -1,4 +1,6 @@
+import heapq
 from Classes import Surface
+from Common import getEuclideanDistance
 from Common import setBlock
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
@@ -11,13 +13,13 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
-	sections = calculateSections(surface, 1, 24)
+	sections = calculateSections(surface, 1, 15)
 
 	landSections = []
 	waterSections = []
 	for section in sections:
 		calculateSectionMid(surface, section)
-		if section.layerDepth < 3:
+		if section.layerDepth < 2:
 			continue
 		if section.isWater:
 			waterSections.append(section)
@@ -26,21 +28,45 @@ def perform(level, box, options):
 	
 	averageSurfaceHeight = calculateAverageSurfaceHeight(surface)
 
+	sectionHeap = []
+	largestTuples = []
 	for section in landSections:
 		averageSectionHeight = calculateAverageSectionHeight(surface, section)
-		if averageSectionHeight < averageSurfaceHeight:
+		heapq.heappush(sectionHeap, (averageSectionHeight, section))
+	
+	n = int(len(sectionHeap)/5)
+	for sectionTuple in heapq.nlargest(n, sectionHeap):
+		section = sectionTuple[1]
+		if sectionTuple[0] < averageSurfaceHeight:
 			continue
 		
-		highestHeight = 0
-		highestPoint = None
-
+		pointHeap = []		
 		for point in section.points:
 			surfacePoint = surface.surfaceMap[point.x][point.z]
-			height = surfacePoint.height
-			if surfacePoint.layer == 2 and height > highestHeight:
-				highestHeight = height
-				highestPoint = point
-		setBlock(level, surface.xStart + highestPoint.x, highestHeight + 1, surface.zStart + highestPoint.z, 57)
+			print(surfacePoint.layer)
+			if surfacePoint.layer == 1:
+				heapq.heappush(pointHeap, (surfacePoint.height, point))
+		
+		largestTuple = heapq.nlargest(1, pointHeap)[0]
+		largestTuples.append(largestTuple)
+	
+	ltHeap = []
+	towers = []
+	for t in largestTuples:
+		heapq.heappush(ltHeap, (-t[0], t[1]))
+	while ltHeap:
+		t = heapq.heappop(ltHeap)
+		tooClose = False
+		point = t[1]
+		height = -t[0]
+		for p in towers:
+			distance = getEuclideanDistance(surface, point, p)
+			if distance < 40:
+				tooClose = True
+		if not tooClose:
+			for i in range(25):
+				setBlock(level, surface.xStart + point.x, height + 1 + i, surface.zStart + point.z, 57)
+			towers.append(point)
 
 def calculateAverageSurfaceHeight(surface):
 	cumulativeHeight = 0
