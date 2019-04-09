@@ -27,3 +27,9 @@ def convertChunkBlockCoordinate(cPosX, CPosZ, chunkBlockPosition):
     realPosZ = CPosZ*16 + chunkBlockPositionZ
 
     return (realPosX, realPosZ)
+
+def calculateAverage(list):
+	total = 0
+	for n in list:
+		total += n
+	return total / len(list)
