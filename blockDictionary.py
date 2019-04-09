@@ -488,4 +488,82 @@ blockTypes = {
 		'top': (64, 3),
 		'bottom': (64, 3)
 	}
+},
+'wooden_trapdoor': {
+	'type': 'wooden_trapdoor',
+	'default': (96, 0),
+	'directions': {
+		'north': {
+			'top': (96, 8),
+			'bottom': (96, 0)
+		},
+		'east': {
+			'top': (96, 11),
+			'bottom': (96, 3)
+		},
+		'south': {
+			'top': (96, 9),
+			'bottom': (96, 1)
+		},
+		'west': {
+			'top': (96, 10),
+			'bottom': (96, 2)
+		}
+	},
+	'slabs': {
+		'top': (96, 8),
+		'bottom': (96, 0)
+	}
+},
+'ladder': {
+	'type': 'ladder',
+	'default': (65, 2),
+	'directions': {
+		'north': {
+			'top': (65, 2),
+			'bottom': (65, 2)
+		},
+		'east': {
+			'top': (65, 5),
+			'bottom': (65, 5)
+		},
+		'south': {
+			'top': (65, 3),
+			'bottom': (65, 3)
+		},
+		'west': {
+			'top': (65, 4),
+			'bottom': (65, 4)
+		}
+	},
+	'slabs': {
+		'top': (65, 2),
+		'bottom': (65, 2)
+	}
+},
+'torch': {
+	'type': 'torch',
+	'default': (50, 5),
+	'directions': {
+		'north': {
+			'top': (50, 4),
+			'bottom': (50, 4)
+		},
+		'east': {
+			'top': (50, 1),
+			'bottom': (50, 1)
+		},
+		'south': {
+			'top': (50, 3),
+			'bottom': (50, 3)
+		},
+		'west': {
+			'top': (50, 2),
+			'bottom': (50, 2)
+		}
+	},
+	'slabs': {
+		'top': (50, 5),
+		'bottom': (50, 5)
+	}
 }}
