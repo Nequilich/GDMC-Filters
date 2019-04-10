@@ -1,5 +1,6 @@
 from BridgeBuilder import buildBridge
 from Classes import Point
+from Common import isWithinBorder
 from Common import setBlock
 from RemoveTree import isTreeBlock
 from RemoveTree import removeTree
@@ -64,8 +65,9 @@ def buildCenterPathTile(level, surface, point, height):
 	clearAboveTile(level, point, height)
 
 def buildOuterPathTile(level, surface, point, height):
-	if point.x >= 0 and point.x < surface.xLength and point.z >= 0 and point.z < surface.zLength:
-		surface.surfaceMap[point.x - surface.xStart][point.z - surface.zStart].isOccupied = True
+	if not isWithinBorder(surface, point.x - surface.xStart, point.z - surface.zStart):
+		return
+	surface.surfaceMap[point.x - surface.xStart][point.z - surface.zStart].isOccupied = True
 	if level.blockAt(point.x, height, point.z) == 43:
 		return
 	if level.blockAt(point.x, height, point.z) == 0:

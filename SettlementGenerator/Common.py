@@ -4,6 +4,9 @@ def setBlock(level, x, y, z, block, data = 0):
 	level.setBlockAt(x, y, z, block)
 	level.setBlockDataAt(x, y, z, data)
 
+def isWithinBorder(surface, x, z):
+	return x >= 0 and x < surface.xLength and z >= 0 and z < surface.zLength
+
 def getMatrix(height, width, defaultValue):
 	matrix = []
 	for _ in range(height):
