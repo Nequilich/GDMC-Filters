@@ -80,33 +80,57 @@ def buildRoofEW(level, surface, prop):
 
 def buildDoor(level, surface, prop):
 	if prop.doorDirection == "NORTH":
-		if isSurfaceBlock(level, prop.xStart + prop.xLength / 2 + surface.xStart, prop.height + 1, prop.zStart - 1 + surface.zStart):
-			setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 1, prop.zStart, 4)
+		x = prop.xStart + prop.xLength / 2
+		# Stair
+		if isSurfaceBlock(level, x + surface.xStart, prop.height + 1, prop.zStart - 1 + surface.zStart):
+			setBlock(level, surface, x, prop.height + 1, prop.zStart, 4)
 		else:
-			setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 1, prop.zStart, 67, 2)
-		setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 2, prop.zStart + 1, 64, 1)
-		setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 3, prop.zStart + 1, 64, 9)
+			setBlock(level, surface, x, prop.height + 1, prop.zStart, 67, 2)
+		# Door
+		setBlock(level, surface, x, prop.height + 2, prop.zStart + 1, 64, 1)
+		setBlock(level, surface, x, prop.height + 3, prop.zStart + 1, 64, 9)
+		# Torch
+		setBlock(level, surface, x + 1, prop.height + 3, prop.zStart + 2, 50, 3)
+		setBlock(level, surface, x - 1, prop.height + 3, prop.zStart + 2, 50, 3)
 	elif prop.doorDirection == "EAST":
-		if isSurfaceBlock(level, prop.xEnd + surface.xStart, prop.height + 1, prop.zStart + prop.zLength / 2 + surface.zStart):
-			setBlock(level, surface, prop.xEnd - 1, prop.height + 1, prop.zStart + prop.zLength / 2, 4)
+		z = prop.zStart + prop.zLength / 2
+		# Stair
+		if isSurfaceBlock(level, prop.xEnd + surface.xStart, prop.height + 1, z + surface.zStart):
+			setBlock(level, surface, prop.xEnd - 1, prop.height + 1, z, 4)
 		else:
-			setBlock(level, surface, prop.xEnd - 1, prop.height + 1, prop.zStart + prop.zLength / 2, 67, 1)
-		setBlock(level, surface, prop.xEnd - 2, prop.height + 2, prop.zStart + prop.zLength / 2, 64, 2)
-		setBlock(level, surface, prop.xEnd - 2, prop.height + 3, prop.zStart + prop.zLength / 2, 64, 9)
+			setBlock(level, surface, prop.xEnd - 1, prop.height + 1, z, 67, 1)
+		# Door
+		setBlock(level, surface, prop.xEnd - 2, prop.height + 2, z, 64, 2)
+		setBlock(level, surface, prop.xEnd - 2, prop.height + 3, z, 64, 9)
+		# Torch
+		setBlock(level, surface, prop.xEnd - 3, prop.height + 3, z + 1, 50, 2)
+		setBlock(level, surface, prop.xEnd - 3, prop.height + 3, z - 1, 50, 2)
 	elif prop.doorDirection == "SOUTH":
-		if isSurfaceBlock(level, prop.xStart + prop.xLength / 2 + surface.xStart, prop.height + 1, prop.zEnd + surface.zStart):
-			setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 1, prop.zEnd - 1, 4)
+		x = prop.xStart + prop.xLength / 2
+		# Stair
+		if isSurfaceBlock(level, x + surface.xStart, prop.height + 1, prop.zEnd + surface.zStart):
+			setBlock(level, surface, x, prop.height + 1, prop.zEnd - 1, 4)
 		else:
-			setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 1, prop.zEnd - 1, 67, 3)
-		setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 2, prop.zEnd - 2, 64, 3)
-		setBlock(level, surface, prop.xStart + prop.xLength / 2, prop.height + 3, prop.zEnd - 2, 64, 9)
+			setBlock(level, surface, x, prop.height + 1, prop.zEnd - 1, 67, 3)
+		# Door
+		setBlock(level, surface, x, prop.height + 2, prop.zEnd - 2, 64, 3)
+		setBlock(level, surface, x, prop.height + 3, prop.zEnd - 2, 64, 9)
+		# Torch
+		setBlock(level, surface, x + 1, prop.height + 3, prop.zEnd - 3, 50, 4)
+		setBlock(level, surface, x - 1, prop.height + 3, prop.zEnd - 3, 50, 4)
 	elif prop.doorDirection == "WEST":
-		if isSurfaceBlock(level, prop.xStart - 1 + surface.xStart, prop.height + 1, prop.zStart + prop.zLength / 2 + surface.zStart):
-			setBlock(level, surface, prop.xStart, prop.height + 1, prop.zStart + prop.zLength / 2, 4)
+		z = prop.zStart + prop.zLength / 2
+		# Stair
+		if isSurfaceBlock(level, prop.xStart - 1 + surface.xStart, prop.height + 1, z + surface.zStart):
+			setBlock(level, surface, prop.xStart, prop.height + 1, z, 4)
 		else:
-			setBlock(level, surface, prop.xStart, prop.height + 1, prop.zStart + prop.zLength / 2, 67, 0)
-		setBlock(level, surface, prop.xStart + 1, prop.height + 2, prop.zStart + prop.zLength / 2, 64, 0)
-		setBlock(level, surface, prop.xStart + 1, prop.height + 3, prop.zStart + prop.zLength / 2, 64, 9)
+			setBlock(level, surface, prop.xStart, prop.height + 1, z, 67, 0)
+		# Door
+		setBlock(level, surface, prop.xStart + 1, prop.height + 2, z, 64, 0)
+		setBlock(level, surface, prop.xStart + 1, prop.height + 3, z, 64, 9)
+		# Torch
+		setBlock(level, surface, prop.xStart + 2, prop.height + 3, z + 1, 50, 1)
+		setBlock(level, surface, prop.xStart + 2, prop.height + 3, z - 1, 50, 1)
 
 aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
 def isSurfaceBlock(level, x, y, z):
@@ -125,7 +149,13 @@ def buildWindows(level, surface, prop):
 			x += 1
 			i += 1
 	if prop.doorDirection != "EAST":
-		print()
+		z = prop.zStart + 3
+		i = 0
+		while z < prop.zEnd - 3:
+			if i % 2 == 0:
+				setBlock(level, surface, prop.xEnd - 2, prop.height + 3, z, 102)
+			z += 1
+			i += 1
 	if prop.doorDirection != "SOUTH":
 		x = prop.xStart + 3
 		i = 0
@@ -135,4 +165,10 @@ def buildWindows(level, surface, prop):
 			x += 1
 			i += 1
 	if prop.doorDirection != "WEST":
-		print()
+		z = prop.zStart + 3
+		i = 0
+		while z < prop.zEnd - 3:
+			if i % 2 == 0:
+				setBlock(level, surface, prop.xStart + 1, prop.height + 3, z, 102)
+			z += 1
+			i += 1
