@@ -2,7 +2,6 @@ from BridgeBuilder import buildBridge
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
-from Common import setBlock
 from GetPathBetweenSections import getPathBetweenSections
 from RoadBuilder import buildTestRoad
 from SurfaceManager import calculateHeightMapAdv

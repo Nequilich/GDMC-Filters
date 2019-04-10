@@ -19,5 +19,5 @@ def perform(level, box, options):
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
 			layer = surface.surfaceMap[x][z].layer
-			setBlock(level, surface.xStart + x, 159, surface.zStart + z, 251)
-			setBlock(level, surface.xStart + x, 160, surface.zStart + z, 95, ((layer + 1) % 15) + 1)
+			setBlock(level, surface, x, 159, z, 251)
+			setBlock(level, surface, x, 160, z, 95, ((layer + 1) % 15) + 1)
