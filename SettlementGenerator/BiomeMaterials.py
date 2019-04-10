@@ -1,4 +1,5 @@
 from MaterialSets import *
+from Biomes import getBiomeDict
 
 default = {
     "torch": (50, 0),
@@ -14,10 +15,6 @@ plains = {
     "door": oak["door"]
 }
 
-biomeMaterials = {
-    1: plains
-}
-
 def getBiomeMaterials(biomeID = 1):
     biomeID = 1  # TODO Remove line when implementing more material sets.
     # Merges the default materials with the biome materials.
@@ -26,8 +23,11 @@ def getBiomeMaterials(biomeID = 1):
     return materials
 
 def testMaterials():
-    materials = getBiomeMaterials(1)
-    print(materials.keys())
+    global biomeMaterials
+    biomeMaterials = getBiomeDict()
+    # materials = getBiomeMaterials(1)
+    # print(materials.keys())
+    print(biomeMaterials[1])
 
 def addDefaultMaterials(materials):
     dflt = default.copy()
