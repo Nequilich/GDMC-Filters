@@ -10,6 +10,7 @@ from GetPathBetweenSections import getPathBetweenSections
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from HouseBuilder import buildHouse
 from Kruskal import getMinimumSpanningTree
+from RemoveTree import removeTree
 from RoadBuilder import buildTestRoad
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSteepnessMap
@@ -39,6 +40,9 @@ def perform(level, box, options):
 	properties = []
 	for path in paths:
 		properties.extend(getPropertiesAlongPath(surface, path))
+
+	for p in properties:
+		removeTrees(level, surface, p)
 
 	for p in properties:
 		buildHouse(level, surface, p)
@@ -92,3 +96,9 @@ def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
 			continue
 		height = surface.surfaceMap[p.x][p.z].height
 		setBlock(level, surface, p.x, height, p.z, 4)
+
+def removeTrees(level, surface, prop):
+	for x in range(prop.xStart, prop.xEnd):
+		for z in range(prop.zStart, prop.zEnd):
+			y = surface.surfaceMap[x][z].height + 2
+			removeTree(level, x + surface.xStart, y, z + surface.zStart)

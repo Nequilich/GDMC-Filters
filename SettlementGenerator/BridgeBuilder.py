@@ -134,7 +134,7 @@ def placeOrthogonalBridgeHead(level, x, y, z, width, headLength, flipped=False):
     for i in rangeList:
         sectionX = x + (i*bridgeMainDirectionX)
         sectionZ = z + (i*bridgeMainDirectionZ)
-        placeBridgeSection(level, sectionX, y, sectionZ, width)
+        placeBridgeSection(level, sectionX, y, sectionZ, width, materials["upper slab"])
 
 
 def placePillarWithTorch(level, x, y, z):

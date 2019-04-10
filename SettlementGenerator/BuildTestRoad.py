@@ -90,9 +90,5 @@ def buildOuterPathTile(level, surface, point, height):
 		i += 1
 
 def clearAboveTile(level, point, height):
-	for i in range(1, 9):
-		setBlock(level, None, point.x, height + i, point.z, 0, 0)
-		#if isTreeBlock(level, point.x, height + i, point.z):
-		#	removeTree(level, point.x, height + i, point.z)
-		#else:
-		#	setBlock(level, None, point.x, height + i, point.z, 0, 0)
+	for i in range(1, 3):
+		removeTree(level, point.x, height + i, point.z)

@@ -1,4 +1,3 @@
-from Classes import Property
 from Common import setBlock
 
 def buildHouse(level, surface, prop):
