@@ -80,20 +80,24 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
             (currentOffset*bridgeSecondaryDirectionZ)
         if ((i+1) % offsetInterval < 1):
             if (offsetNext == True):
-                placeBridgeSection(level, x, bridgeY, z, width+2, True, True)
+                placeBridgeSection(level, x, bridgeY, z, width+2,
+                                   materials["upper slab"], True, True)
                 currentOffset += 1
             else:
-                placeBridgeSection(level, x, bridgeY, z, width+1, False, True)
+                placeBridgeSection(level, x, bridgeY, z, width+1,
+                                   materials["upper slab"], False, True)
             offsetNext = True
         elif (offsetNext == True):
-            placeBridgeSection(level, x, bridgeY, z, width+1, True, False)
+            placeBridgeSection(level, x, bridgeY, z, width+1,
+                               materials["upper slab"], True, False)
             offsetNext = False
             currentOffset += 1
         else:
-            placeBridgeSection(level, x, bridgeY, z, width, False, False)
+            placeBridgeSection(level, x, bridgeY, z, width,
+                               materials["upper slab"], False, False)
 
 
-def placeBridgeSection(level, x, y, z, width, extraFenceLeft=False, extraFenceRight=False, placeFence=True, bridgeMaterial=materials["upper slab"]):
+def placeBridgeSection(level, x, y, z, width, bridgeMaterial, extraFenceLeft=False, extraFenceRight=False, placeFence=True, ):
     # Place main part of bridge
     for i in range(width):
         setBlock(level, x+i*bridgeSecondaryDirectionX, y, z+i*bridgeSecondaryDirectionZ,
@@ -263,9 +267,9 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
         z = startPoint[1]+(i*bridgeMainDirectionZ) + \
             (currentOffset*bridgeSecondaryDirectionZ)
         if ((i+1) % offsetInterval < 1):
-            placeBridgeSection(level, x, bridgeY, z, width+1,
-                               False, False, False, materials["lower slab"])
+            placeBridgeSection(level, x, bridgeY, z, width+1, materials["upper slab"],
+                               False, False, False)
             currentOffset += 1
         else:
-            placeBridgeSection(level, x, bridgeY, z, width,
-                               False, False, False, materials["lower slab"])
+            placeBridgeSection(level, x, bridgeY, z, width, materials["upper slab"],
+                               False, False, False)
