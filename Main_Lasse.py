@@ -43,8 +43,8 @@ def buildRoadPoint(level, surface, x, z):
 		if not isWithinBorder(surface, p[0], p[1]) or surface.surfaceMap[p[0]][p[1]].isOccupied or isGreatHeightDifference(surface, x, z, p[0], p[1]):
 			continue
 		height = surface.surfaceMap[p[0]][p[1]].height
-		setBlock(level, surface.xStart + p[0], height, surface.zStart + p[1], 4)
-		setBlock(level, surface.xStart + p[0], height - 1, surface.zStart + p[1], 4)
+		setBlock(level, surface, p[0], height, p[1], 4)
+		setBlock(level, surface, p[0], height - 1, p[1], 4)
 		surface.surfaceMap[p[0]][p[1]].isOccupied = True
 
 def isWithinBorder(surface, x, z):
@@ -59,10 +59,10 @@ def isGreatHeightDifference(surface, x1, z1, x2, z2):
 def buildFloor(level, surface, xStart, zStart, xEnd, zEnd, height):
 	for x in range(xStart, xEnd):
 		for z in range(zStart, zEnd):
-			setBlock(level, surface.xStart + x, height + 1, surface.zStart + z, 41)
+			setBlock(level, surface, x, height + 1, z, 41)
 
 def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
 	path = getPath(surface, xStart, zStart, xEnd, zEnd)
 	for p in path:
 		height = surface.surfaceMap[p.x][p.z].height
-		setBlock(level, surface.xStart + p.x, height, surface.zStart + p.z, 4)
+		setBlock(level, surface, p.x, height, p.z, 4)
