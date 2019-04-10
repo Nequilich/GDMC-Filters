@@ -1,7 +1,7 @@
 import json
 import math
 import utilityFunctions as utilityFunctions
-import blockDictionary
+import BlockDictionary
 
 
 inputs = (
@@ -68,6 +68,6 @@ def build(level, xStart, zStart, baseHeight, blockRegister):
 		if block['type'] == None:
 			utilityFunctions.setBlock(level, (block['id'], block['data']), xStart + block['x'], baseHeight + block['y'], zStart + block['z'])
 		else:
-			b = blockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
-			blockIdentifier = blockDictionary.getBlockIdentifier(b)
+			b = BlockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
+			blockIdentifier = BlockDictionary.getBlockIdentifier(b)
 			utilityFunctions.setBlock(level, (blockIdentifier[0], blockIdentifier[1]), xStart + block['x'], baseHeight + block['y'], zStart + block['z'])
