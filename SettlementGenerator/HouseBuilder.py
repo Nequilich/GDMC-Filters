@@ -12,6 +12,7 @@ def buildHouse(level, surface, prop):
 	else:
 		buildRoofEW(level, surface, prop)
 	buildDoor(level, surface, prop)
+	buildWindows(level, surface, prop)
 
 def buildFloor(level, surface, prop):
 	for x in range(prop.xStart + 1, prop.xEnd - 1):
@@ -113,3 +114,19 @@ def isSurfaceBlock(level, x, y, z):
 		if level.blockAt(x, y, z) == block:
 			return False
 	return True
+
+def buildWindows(level, surface, prop):
+	if prop.doorDirection != "NORTH":
+		x = prop.xStart + 3
+		i = 0
+		while x < prop.xEnd - 3:
+			if i % 2 == 0:
+				setBlock(level, x + surface.xStart, prop.height + 3, prop.zStart + 1 + surface.zStart, 57)
+			x += 1
+			i += 1
+	if prop.doorDirection != "EAST":
+		print()
+	if prop.doorDirection != "SOUTH":
+		print()
+	if prop.doorDirection != "WEST":
+		print()
