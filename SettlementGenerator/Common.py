@@ -1,8 +1,12 @@
 import math
 
-def setBlock(level, x, y, z, block, data = 0):
-	level.setBlockAt(x, y, z, block)
-	level.setBlockDataAt(x, y, z, data)
+def setBlock(level, surface, x, y, z, block, data = 0):
+	if surface == None:
+		level.setBlockAt(x, y, z, block)
+		level.setBlockDataAt(x, y, z, data)
+	else:
+		level.setBlockAt(x + surface.xStart, y, z + surface.zStart, block)
+		level.setBlockDataAt(x + surface.xStart, y, z + surface.zStart, data)
 
 def isWithinBorder(surface, x, z):
 	return x >= 0 and x < surface.xLength and z >= 0 and z < surface.zLength

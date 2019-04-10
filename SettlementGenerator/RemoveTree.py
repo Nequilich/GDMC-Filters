@@ -8,11 +8,11 @@ def isTreeBlock(level, x, y, z):
 		return False
 
 def removeTree(level, x, y, z):
-	setBlock(level, x, y, z, 0)
+	setBlock(level, None, x, y, z, 0)
 
 	#Removes snow layer
 	if (level.blockAt(x, y + 1, z) == 78):
-		setBlock(level, x, y + 1, z, 0)
+		setBlock(level, None, x, y + 1, z, 0)
 
 	#Checks if neighbor blocks are parts of the tree
 	neighborBlocks = [Block(x + 1, y, z), Block(x - 1, y, z), Block(x, y + 1, z), Block(x, y - 1, z), Block(x, y, z + 1), Block(x, y, z - 1)]

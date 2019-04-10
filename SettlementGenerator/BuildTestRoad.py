@@ -61,7 +61,7 @@ def buildPathPoint(level, surface, point, height):
 
 def buildCenterPathTile(level, surface, point, height):
 	surface.surfaceMap[point.x - surface.xStart][point.z - surface.zStart].isOccupied = True
-	setBlock(level, point.x, height, point.z, 43, 0)
+	setBlock(level, None, point.x, height, point.z, 43, 0)
 	clearAboveTile(level, point, height)
 
 def buildOuterPathTile(level, surface, point, height):
@@ -78,21 +78,21 @@ def buildOuterPathTile(level, surface, point, height):
 			i += 1
 	
 	if level.blockAt(point.x, height + 1, point.z) == 4:
-		setBlock(level, point.x, height + 1, point.z, 44, 3)
+		setBlock(level, None, point.x, height + 1, point.z, 44, 3)
 	if level.blockAt(point.x, height - 1, point.z) == 4:
-		setBlock(level, point.x, height, point.z, 44, 3)
+		setBlock(level, None, point.x, height, point.z, 44, 3)
 	else:
-		setBlock(level, point.x, height, point.z, 4, 0)
+		setBlock(level, None, point.x, height, point.z, 4, 0)
 	
 	i = 1
 	while level.blockAt(point.x, height - i, point.z) == 0:
-		setBlock(level, point.x, height - i, point.z, 98, 0)
+		setBlock(level, None, point.x, height - i, point.z, 98, 0)
 		i += 1
 
 def clearAboveTile(level, point, height):
 	for i in range(1, 9):
-		setBlock(level, point.x, height + i, point.z, 0, 0)
+		setBlock(level, None, point.x, height + i, point.z, 0, 0)
 		#if isTreeBlock(level, point.x, height + i, point.z):
 		#	removeTree(level, point.x, height + i, point.z)
 		#else:
-		#	setBlock(level, point.x, height + i, point.z, 0, 0)
+		#	setBlock(level, None, point.x, height + i, point.z, 0, 0)

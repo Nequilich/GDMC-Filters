@@ -91,4 +91,4 @@ def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
 		if surface.surfaceMap[p.x][p.z].isOccupied:
 			continue
 		height = surface.surfaceMap[p.x][p.z].height
-		setBlock(level, surface.xStart + p.x, height, surface.zStart + p.z, 4)
+		setBlock(level, surface, p.x, height, p.z, 4)
