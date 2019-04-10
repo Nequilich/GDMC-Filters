@@ -73,6 +73,6 @@ def build(level, point, baseHeight, blockRegister):
 		if block['type'] == None:
 			setBlock(level, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), block['id'], block['data'])
 		else:
-			b = blockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
-			blockIdentifier = blockDictionary.getBlockIdentifier(b)
+			b = BlockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
+			blockIdentifier = BlockDictionary.getBlockIdentifier(b)
 			setBlock(level, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), blockIdentifier[0], blockIdentifier[1])
