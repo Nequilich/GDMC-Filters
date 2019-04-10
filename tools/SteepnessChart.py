@@ -21,7 +21,7 @@ def perform(level, box, options):
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
 			if surface.surfaceMap[x][z].isWater:
-				setBlock(level, surface.xStart + x, 160, surface.zStart + z, 35, 15)
+				setBlock(level, surface, x, 160, z, 35, 15)
 				continue
 			steepness = surface.surfaceMap[x][z].steepness
-			setBlock(level, surface.xStart + x, 160, surface.zStart + z, 35, blockDatas[min(steepness, 3)])
+			setBlock(level, surface, x, 160, z, 35, blockDatas[min(steepness, 3)])

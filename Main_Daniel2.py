@@ -2,7 +2,6 @@ import heapq
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
-from Common import setBlock
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections

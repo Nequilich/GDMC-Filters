@@ -19,7 +19,7 @@ def buildFoundation(level, point, height, size):
 	for x in range(cornerPoint.x, cornerPoint.x + size):
 		for z in range(cornerPoint.z, cornerPoint.z + size):
 			for y in range (height - 5, height):
-				setBlock(level, x, y, z, 57)
+				setBlock(level, None, x, y, z, 57)
 
 def loadBlockRegisterFromFile(filePath):
 	with open(filePath) as f:
@@ -50,7 +50,6 @@ def rotateBlock(cx, cz, angle, p):
 	return p
 
 def changeDirection(direction, rotations):
-	directions = ['north', 'east', 'south', 'west']
 	i = (directions.index(direction) + rotations) % 4
 	return directions[i]
 
