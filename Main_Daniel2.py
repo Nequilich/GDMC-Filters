@@ -1,4 +1,5 @@
 import heapq
+from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
 from Common import setBlock
@@ -64,7 +65,7 @@ def perform(level, box, options):
 			if distance < 40:
 				tooClose = True
 		if not tooClose:
-			buildMediumTower(level, surface, point, height, 'north')
+			buildMediumTower(level, Point(surface.xStart + point.x, surface.zStart + point.z), height, 'north')
 			towers.append(point)
 
 def calculateAverageSurfaceHeight(surface):

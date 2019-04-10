@@ -1,5 +1,5 @@
 import json
-import blockDictionary
+import BlockDictionary
 
 inputs = (
 	("Create JSON file of selection", "label"),
