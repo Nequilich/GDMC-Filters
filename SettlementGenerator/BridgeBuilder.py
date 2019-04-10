@@ -9,6 +9,11 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
     # Sets the direction variables
     setBridgeDirections(startPoint, endPoint)
 
+    # Builds small bridge if distance is short.
+    if (bridgeLength < 6):
+        buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks)
+        return
+
     # Offset variables
     offsetNext = False
     offsetInterval = bridgeLength/float(bridgeSkew)
@@ -81,22 +86,23 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
             placeBridgeSection(level, x, bridgeY, z, width, False, False)
 
 
-def placeBridgeSection(level, x, y, z, width, extraFenceLeft=False, extraFenceRight=False):
+def placeBridgeSection(level, x, y, z, width, extraFenceLeft=False, extraFenceRight=False, placeFence = True, bridgeMaterial = materials["upper slab"]):
     # Place main part of bridge
     for i in range(width):
         setBlock(level, x+i*bridgeSecondaryDirectionX, y, z+i*bridgeSecondaryDirectionZ,
-                 materials["upper slab"][0], materials["upper slab"][1])
+                 bridgeMaterial[0], bridgeMaterial[1])
 
     # Place fencing
-    setBlock(level, x, y+1, z, materials["fence"])
-    setBlock(level, x+(width-1)*bridgeSecondaryDirectionX, y+1, z +
-             (width-1)*bridgeSecondaryDirectionZ, materials["fence"])
-    if (extraFenceLeft):
-        setBlock(level, x+bridgeSecondaryDirectionX, y+1, z +
-                 bridgeSecondaryDirectionZ, materials["fence"])
-    if (extraFenceRight):
-        setBlock(level, x+(width-2)*bridgeSecondaryDirectionX, y+1, z +
-                 (width-2)*bridgeSecondaryDirectionZ, materials["fence"])
+    if (placeFence):
+        setBlock(level, x, y+1, z, materials["fence"])
+        setBlock(level, x+(width-1)*bridgeSecondaryDirectionX, y+1, z +
+                (width-1)*bridgeSecondaryDirectionZ, materials["fence"])
+        if (extraFenceLeft):
+            setBlock(level, x+bridgeSecondaryDirectionX, y+1, z +
+                    bridgeSecondaryDirectionZ, materials["fence"])
+        if (extraFenceRight):
+            setBlock(level, x+(width-2)*bridgeSecondaryDirectionX, y+1, z +
+                    (width-2)*bridgeSecondaryDirectionZ, materials["fence"])
 
 
 def placeOrthogonalBridgeHead(level, x, y, z, width, headLength, flipped=False):
@@ -228,3 +234,26 @@ def setBridgeDirections(startPoint, endPoint):
             bridgeSecondaryDirectionX = 1
         else:  # Secondary west
             bridgeSecondaryDirectionX = -1
+
+def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
+    width = 3
+    currentOffset = 0
+    offsetInterval = bridgeLength/float(bridgeSkew)
+    offsetNext = False
+    
+    # Offset points of bridge to center.
+    startPoint = (startPoint[0]-((width/2)*bridgeSecondaryDirectionX),
+                    startPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
+    endPoint = (endPoint[0]-((width/2)*bridgeSecondaryDirectionX),
+                endPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
+
+    for i in range(bridgeLength):
+        x = startPoint[0]+(i*bridgeMainDirectionX) + \
+            (currentOffset*bridgeSecondaryDirectionX)
+        z = startPoint[1]+(i*bridgeMainDirectionZ) + \
+            (currentOffset*bridgeSecondaryDirectionZ)
+        if ((i+1) % offsetInterval < 1):
+            placeBridgeSection(level, x, bridgeY, z, width+1, False, False, False, materials["lower slab"])
+            currentOffset += 1
+        else:
+            placeBridgeSection(level, x, bridgeY, z, width, False, False, False, materials["lower slab"])
