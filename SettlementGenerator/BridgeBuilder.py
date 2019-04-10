@@ -267,12 +267,12 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
         z = startPoint[1]+(i*bridgeMainDirectionZ) + \
             (currentOffset*bridgeSecondaryDirectionZ)
         if ((i+1) % offsetInterval < 1):
-            placeBridgeSection(level, x, bridgeY, z, width+1, materials["upper slab"],
+            placeBridgeSection(level, x, bridgeY, z, width+1, materials["lower slab"],
                                False, False, False)
             currentOffset += 1
         else:
-            placeBridgeSection(level, x, bridgeY, z, width, materials["upper slab"],
+            placeBridgeSection(level, x, bridgeY, z, width, materials["lower slab"],
                                False, False, False)
-                               
+
 def setBlock(level, x, y , z, block, data = 0):
     setBlockWithSurface(level, None, x, y, z, block, data)
