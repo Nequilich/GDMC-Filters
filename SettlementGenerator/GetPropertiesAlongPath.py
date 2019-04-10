@@ -1,5 +1,6 @@
 import math
 from Classes import Property
+from Common import isWithinBorder
 from GetRectangle import getRectangle
 
 gap = 10
@@ -23,9 +24,6 @@ def getPropertiesAlongPath(surface, path):
 				properties.append(prop)
 				occupyArea(surface, prop.xStart, prop.zStart, prop.xEnd, prop.zEnd)
 	return properties
-
-def isWithinBorder(surface, x, z):
-	return x >= 0 and x < surface.xLength and z >= 0 and z < surface.zLength
 
 def isGreatHeightDifference(surface, x1, z1, x2, z2):
 	height1 = surface.surfaceMap[x1][z1].height
