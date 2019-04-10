@@ -5,7 +5,6 @@ def buildHouse(level, surface, prop):
 		return
 	buildFloor(level, surface, prop)
 	buildWalls(level, surface, prop)
-	buildCeiling(level, surface, prop)
 	if prop.doorDirection == "NORTH" or prop.doorDirection == "SOUTH":
 		buildRoofNS(level, surface, prop)
 	else:
@@ -19,63 +18,54 @@ def buildFloor(level, surface, prop):
 			setBlock(level, surface, x, prop.height + 1, z, 4)
 
 def buildWalls(level, surface, prop):
+	# North and south walls
 	for x in range(prop.xStart + 2, prop.xEnd - 2):
 		for y in range(prop.height + 2, prop.height + 5):
 			setBlock(level, surface, x, y, prop.zStart + 1, 5)
 			setBlock(level, surface, x, y, prop.zEnd - 2, 5)
+	# East and west walls
 	for z in range(prop.zStart + 2, prop.zEnd - 2):
 		for y in range(prop.height + 2, prop.height + 5):
 			setBlock(level, surface, prop.xStart + 1, y, z, 5)
 			setBlock(level, surface, prop.xEnd - 2, y, z, 5)
+	# Corners
 	for y in range(prop.height + 2, prop.height + 5):
 		setBlock(level, surface, prop.xStart + 1, y, prop.zStart + 1, 17)
 		setBlock(level, surface, prop.xStart + 1, y, prop.zEnd - 2, 17)
 		setBlock(level, surface, prop.xEnd - 2, y, prop.zStart + 1, 17)
 		setBlock(level, surface, prop.xEnd - 2, y, prop.zEnd - 2, 17)
 
-def buildCeiling(level, surface, prop):
-	y = prop.height + 5
-	for x in range(prop.xStart + 2, prop.xEnd - 2):
-		for z in range(prop.zStart + 2, prop.zEnd - 2):
-			setBlock(level, surface, x, y, z, 5)
-
 def buildRoofNS(level, surface, prop):
 	y = prop.height + 5
-	for x in range(prop.xStart + 1, prop.xEnd - 1):
-		setBlock(level, surface, x, y, prop.zStart + 1, 17, 4)
-		setBlock(level, surface, x, y, prop.zEnd - 2, 17, 4)
-	y = prop.height + 6
 	for x in range(prop.xStart + 2, prop.xEnd - 2):
 		setBlock(level, surface, x, y, prop.zStart + 1, 17, 4)
 		setBlock(level, surface, x, y, prop.zEnd - 2, 17, 4)
-	
-	y = prop.height + 5
-	for z in range(prop.zStart + 1, prop.zEnd - 1):
-		setBlock(level, surface, prop.xStart, y, z, 17, 8)
-		setBlock(level, surface, prop.xStart + 1, y + 1, z, 17, 8)
-		setBlock(level, surface, prop.xEnd - 1, y, z, 17, 8)
-		setBlock(level, surface, prop.xEnd - 2, y + 1, z, 17, 8)
+
+	for z in range(prop.zStart, prop.zEnd):
+		setBlock(level, surface, prop.xStart, y, z, 53, 0)
+		setBlock(level, surface, prop.xStart + 1, y + 1, z, 53, 0)
+		setBlock(level, surface, prop.xStart + 1, y, z, 17, 8)
+		setBlock(level, surface, prop.xEnd - 1, y, z, 53, 1)
+		setBlock(level, surface, prop.xEnd - 2, y + 1, z, 53, 1)
+		setBlock(level, surface, prop.xEnd - 2, y, z, 17, 8)
 		for x in range(prop.xStart + 2, prop.xEnd - 2):
-			setBlock(level, surface, x, y + 2, z, 17, 8)
+			setBlock(level, surface, x, y + 1, z, 5)
 
 def buildRoofEW(level, surface, prop):
 	y = prop.height + 5
-	for z in range(prop.zStart + 1, prop.zEnd - 1):
-		setBlock(level, surface, prop.xStart + 1, y, z, 17, 8)
-		setBlock(level, surface, prop.xEnd - 2, y, z, 17, 8)
-	y = prop.height + 6
 	for z in range(prop.zStart + 2, prop.zEnd - 2):
 		setBlock(level, surface, prop.xStart + 1, y, z, 17, 8)
 		setBlock(level, surface, prop.xEnd - 2, y, z, 17, 8)
-	
-	y = prop.height + 5
-	for x in range(prop.xStart + 1, prop.xEnd - 1):
-		setBlock(level, surface, x, y, prop.zStart, 17, 4)
-		setBlock(level, surface, x, y + 1, prop.zStart + 1, 17, 4)
-		setBlock(level, surface, x, y, prop.zEnd - 1, 17, 4)
-		setBlock(level, surface, x, y + 1, prop.zEnd - 2, 17, 4)
+
+	for x in range(prop.xStart, prop.xEnd):
+		setBlock(level, surface, x, y, prop.zStart, 53, 2)
+		setBlock(level, surface, x, y + 1, prop.zStart + 1, 53, 2)
+		setBlock(level, surface, x, y, prop.zStart + 1, 17, 4)
+		setBlock(level, surface, x, y, prop.zEnd - 1, 53, 3)
+		setBlock(level, surface, x, y + 1, prop.zEnd - 2, 53, 3)
+		setBlock(level, surface, x, y, prop.zEnd - 2, 17, 4)
 		for z in range(prop.zStart + 2, prop.zEnd - 2):
-			setBlock(level, surface, x, y + 2, z, 17, 4)
+			setBlock(level, surface, x, y + 1, z, 5)
 
 def buildDoor(level, surface, prop):
 	if prop.doorDirection == "NORTH":
