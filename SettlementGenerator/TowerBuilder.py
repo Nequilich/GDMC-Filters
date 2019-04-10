@@ -18,8 +18,22 @@ def buildFoundation(level, point, height, size):
 	cornerPoint = Point(point.x - int(size/2), point.z - int(size/2))
 	for x in range(cornerPoint.x, cornerPoint.x + size):
 		for z in range(cornerPoint.z, cornerPoint.z + size):
-			for y in range (height - 5, height):
-				setBlock(level, None, x, y, z, 57)
+			i = 1
+			while not isSurfaceBlock(level, x, height - i, z):
+				blockId = 1
+				if i == 1:
+					blockId = 98
+				if (x == cornerPoint.x or x == cornerPoint.x + size - 1) and (z == cornerPoint.z or z == cornerPoint.z + size - 1):
+					blockId = 98
+				setBlock(level, None, x, height - i, z, blockId)
+				i += 1
+
+aboveSurfaceBlocks = [0, 2, 3, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
+def isSurfaceBlock(level, x, y, z):
+	for block in aboveSurfaceBlocks:
+		if level.blockAt(x, y, z) == block:
+			return False
+	return True
 
 def loadBlockRegisterFromFile(filePath):
 	with open(filePath) as f:
@@ -70,8 +84,8 @@ def build(level, point, baseHeight, blockRegister):
 		x = point.x
 		z = point.z
 		if block['type'] == None:
-			setBlock(level, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), block['id'], block['data'])
+			setBlock(level, None, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), block['id'], block['data'])
 		else:
 			b = BlockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
 			blockIdentifier = BlockDictionary.getBlockIdentifier(b)
-			setBlock(level, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), blockIdentifier[0], blockIdentifier[1])
+			setBlock(level, None, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), blockIdentifier[0], blockIdentifier[1])
