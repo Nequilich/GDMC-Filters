@@ -242,8 +242,8 @@
   {
     "data": 0, 
     "direction": null, 
-    "id": 4, 
-    "type": "cobblestone", 
+    "id": 98, 
+    "type": "stone_brick", 
     "verticalAllignment": null, 
     "x": 2, 
     "y": 0, 
@@ -302,8 +302,8 @@
   {
     "data": 0, 
     "direction": null, 
-    "id": 4, 
-    "type": "cobblestone", 
+    "id": 98, 
+    "type": "stone_brick", 
     "verticalAllignment": null, 
     "x": 2, 
     "y": 0, 
@@ -902,8 +902,8 @@
   {
     "data": 0, 
     "direction": null, 
-    "id": 4, 
-    "type": "cobblestone", 
+    "id": 98, 
+    "type": "stone_brick", 
     "verticalAllignment": null, 
     "x": 8, 
     "y": 0, 
@@ -962,8 +962,8 @@
   {
     "data": 0, 
     "direction": null, 
-    "id": 4, 
-    "type": "cobblestone", 
+    "id": 98, 
+    "type": "stone_brick", 
     "verticalAllignment": null, 
     "x": 8, 
     "y": 0, 
