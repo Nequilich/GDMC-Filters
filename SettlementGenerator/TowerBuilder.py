@@ -1,4 +1,4 @@
-import blockDictionary
+import BlockDictionary
 import json
 import math
 from Classes import Point
@@ -6,19 +6,20 @@ from Common import setBlock
 
 directions = ['north', 'east', 'south', 'west']
 
-def buildMediumTower(level, surface, point, baseHeight, direction):
+def buildMediumTower(level, point, baseHeight, direction='north'):
+	buildFoundation(level, point, baseHeight, 7)
 	point = Point(point.x - 5, point.z - 5)
-	# buildFoundation(level, surface, point, baseHeight, 7)
 	filePath = "./stock-filters/SettlementGenerator/structures/medium_tower.json"
 	blockRegister = loadBlockRegisterFromFile(filePath)
 	blockRegister = rotateRegister(blockRegister, directions.index(direction))
-	build(level, surface, point, baseHeight, blockRegister)
+	build(level, point, baseHeight, blockRegister)
 
-def buildFoundation(level, surface, point, height, size):
-	for x in range(point.x - int(size/2), point.x + int(size/2) + 2):
-		for z in range(point.z - int(size/2), point.z + int(size/2) + 2):
+def buildFoundation(level, point, height, size):
+	cornerPoint = Point(point.x - int(size/2), point.z - int(size/2))
+	for x in range(cornerPoint.x, cornerPoint.x + size):
+		for z in range(cornerPoint.z, cornerPoint.z + size):
 			for y in range (height - 5, height):
-				setBlock(level, surface.xStart + x, y, surface.zStart + z, 57)
+				setBlock(level, x, y, z, 57)
 
 def loadBlockRegisterFromFile(filePath):
 	with open(filePath) as f:
@@ -65,13 +66,13 @@ def moveToPositive(blockRegister):
 		block['x'] += abs(xMin)
 		block['z'] += abs(zMin)
 
-def build(level, surface, point, baseHeight, blockRegister):
+def build(level, point, baseHeight, blockRegister):
 	for block in blockRegister:
 		x = point.x
 		z = point.z
 		if block['type'] == None:
-			setBlock(level, surface.xStart + x + int(block['x']), baseHeight + int(block['y']), surface.zStart + z + int(block['z']), block['id'], block['data'])
+			setBlock(level, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), block['id'], block['data'])
 		else:
 			b = blockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
 			blockIdentifier = blockDictionary.getBlockIdentifier(b)
-			setBlock(level, surface.xStart + x + int(block['x']), baseHeight + int(block['y']), surface.zStart + z + int(block['z']), blockIdentifier[0], blockIdentifier[1])
+			setBlock(level, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), blockIdentifier[0], blockIdentifier[1])

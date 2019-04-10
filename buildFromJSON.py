@@ -1,7 +1,7 @@
 import json
 import math
 import utilityFunctions as utilityFunctions
-import blockDictionary
+import BlockDictionary
 
 
 inputs = (
