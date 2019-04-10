@@ -1,4 +1,4 @@
-from Common import setBlock
+from Common import setBlock as setBlockWithSurface
 from Classes import Surface
 
 
@@ -273,3 +273,6 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
         else:
             placeBridgeSection(level, x, bridgeY, z, width, materials["upper slab"],
                                False, False, False)
+                               
+def setBlock(level, x, y , z, block, data = 0):
+    setBlockWithSurface(level, None, x, y, z, block, data)
