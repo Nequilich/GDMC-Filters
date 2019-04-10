@@ -28,7 +28,6 @@ def perform(level, box, options):
 		if not section.isWater:
 			calculateSectionMid(surface, section)
 			landSections.append(section)
-			print(str(len(section.points)))
 	paths = getPathBetweenSections(surface, landSections)
 
 	for section in landSections:
