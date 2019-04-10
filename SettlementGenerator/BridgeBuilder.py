@@ -97,7 +97,7 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
                                materials["upper slab"], False, False)
 
 
-def placeBridgeSection(level, x, y, z, width, bridgeMaterial, extraFenceLeft=False, extraFenceRight=False, placeFence=True, ):
+def placeBridgeSection(level, x, y, z, width, bridgeMaterial, extraFenceLeft=False, extraFenceRight=False, placeFence=True):
     # Place main part of bridge
     for i in range(width):
         setBlock(level, x+i*bridgeSecondaryDirectionX, y, z+i*bridgeSecondaryDirectionZ,
