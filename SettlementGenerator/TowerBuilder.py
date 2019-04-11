@@ -6,12 +6,14 @@ from Common import setBlock
 
 directions = ['north', 'east', 'south', 'west']
 
-def buildMediumTower(level, point, baseHeight, direction='north'):
+def buildMediumTower(level, point, baseHeight, direction='north', applyBiomeChanges=True, specialBiomeChanges=None, biome='plains'):
 	buildFoundation(level, point, baseHeight, 7)
 	point = Point(point.x - 5, point.z - 5)
 	filePath = "./stock-filters/SettlementGenerator/structures/medium_tower.json"
 	blockRegister = loadBlockRegisterFromFile(filePath)
 	blockRegister = rotateRegister(blockRegister, directions.index(direction))
+	if applyBiomeChanges and biome != 'plains':
+		blockRegister = calculateBiomeChanges(blockRegister, specialBiomeChanges, biome)
 	build(level, point, baseHeight, blockRegister)
 
 def buildFoundation(level, point, height, size):
@@ -44,8 +46,12 @@ def rotateRegister(blockRegister, rotations):
 	rotatedRegister = []
 	for block in blockRegister:
 		np = rotateBlock(0, 0, 1.57079632679 * rotations, (block['x'], block['z']))
-		if not block['type'] or not block['direction']:
-			rotatedRegister.append({'type': None, 'direction': None, 'verticalAllignment': None, 'id': block['id'], 'data': block['data'], 'x': np[0], 'y': block['y'], 'z': np[1]})
+		if not block.get('type') or not block.get('direction'):
+			b = BlockDictionary.getBlock(block['id'], block['data'])
+			if not b:
+				rotatedRegister.append({'type': None, 'direction': None, 'verticalAllignment': None, 'id': block['id'], 'data': block['data'], 'x': np[0], 'y': block['y'], 'z': np[1]})
+			else:
+				rotatedRegister.append({'type': b.type, 'direction': changeDirection(b.direction, rotations), 'verticalAllignment': b.verticalAllignment, 'id': block['id'], 'data': block['data'], 'x': np[0], 'y': block['y'], 'z': np[1]})
 			continue
 		rotatedRegister.append({'type': block['type'], 'direction': changeDirection(block['direction'], rotations), 'verticalAllignment': block['verticalAllignment'], 'id': block['id'], 'data': block['data'], 'x': np[0], 'y': block['y'], 'z': np[1]})
 	moveToPositive(rotatedRegister)
@@ -64,6 +70,8 @@ def rotateBlock(cx, cz, angle, p):
 	return p
 
 def changeDirection(direction, rotations):
+	if not direction:
+		return None
 	i = (directions.index(direction) + rotations) % 4
 	return directions[i]
 
@@ -79,13 +87,30 @@ def moveToPositive(blockRegister):
 		block['x'] += abs(xMin)
 		block['z'] += abs(zMin)
 
+def calculateBiomeChanges(blockRegister, specialBiomeChanges, biome):
+	biomeChanges = getBiomeChanges(specialBiomeChanges, biome)
+	for block in blockRegister:
+		if biomeChanges.get(block['type']):
+			block['type'] = biomeChanges[block['type']]
+	return blockRegister
+
+def getBiomeChanges(specialBiomeChanges, biome):
+	biomeChanges = specialBiomeChanges.get(biome)
+	if not biomeChanges:
+		print('getdefaultbiomechanges')
+	return biomeChanges
+
 def build(level, point, baseHeight, blockRegister):
 	for block in blockRegister:
 		x = point.x
 		z = point.z
-		if block['type'] == None:
+		b = None
+		if block.get('type'):
+			b = BlockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
+		else:
+			b = BlockDictionary.getBlock(block['id'], block['data'])
+		if not b:
 			setBlock(level, None, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), block['id'], block['data'])
 		else:
-			b = BlockDictionary.Block(block['type'], block['direction'], block['verticalAllignment'])
 			blockIdentifier = BlockDictionary.getBlockIdentifier(b)
 			setBlock(level, None, x + int(block['x']), baseHeight + int(block['y']), z + int(block['z']), blockIdentifier[0], blockIdentifier[1])
