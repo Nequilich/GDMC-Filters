@@ -5,10 +5,13 @@ from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
 from Common import setBlock
+from FarmBuilder import buildPatch
+from FarmBuilder import clearPatchProperty
 from GetPath import getPath
 from GetPathBetweenSections import getPathBetweenSections
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from HouseBuilder import buildHouse
+from HouseBuilder import clearHouseProperty
 from Kruskal import getMinimumSpanningTree
 from RemoveTree import removeTree
 from RoadBuilder import buildTestRoad
@@ -37,16 +40,28 @@ def perform(level, box, options):
 	for path in paths:
 		buildTestRoad(level, surface, path)
 
-	properties = []
+	# Builds houses
+	houseProperties = []
 	for path in paths:
-		properties.extend(getPropertiesAlongPath(surface, path))
+		houseProperties.extend(getPropertiesAlongPath(surface, path, 7, 11, 7))
 
-	for p in properties:
-		removeTrees(level, surface, p)
+	for p in houseProperties:
+		clearHouseProperty(level, surface, p)
 
-	for p in properties:
+	for p in houseProperties:
 		buildHouse(level, surface, p)
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
+
+	# Builds patches
+	patchProperties = []
+	for path in paths:
+		patchProperties.extend(getPropertiesAlongPath(surface, path, 5, 11, 16))
+
+	for p in patchProperties:
+		clearPatchProperty(level, surface, p)
+
+	for p in patchProperties:
+		buildPatch(level, surface, p)
 
 def getPathsInSection(surface, section):
 	amountOfPoints = len(section.points)
@@ -96,9 +111,3 @@ def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
 			continue
 		height = surface.surfaceMap[p.x][p.z].height
 		setBlock(level, surface, p.x, height, p.z, 4)
-
-def removeTrees(level, surface, prop):
-	for x in range(prop.xStart, prop.xEnd):
-		for z in range(prop.zStart, prop.zEnd):
-			y = surface.surfaceMap[x][z].height + 2
-			removeTree(level, x + surface.xStart, y, z + surface.zStart)

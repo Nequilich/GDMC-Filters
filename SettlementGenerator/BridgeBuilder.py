@@ -140,7 +140,7 @@ def placeOrthogonalBridgeHead(level, x, y, z, width, headLength, flipped=False):
 def placePillarWithTorch(level, x, y, z):
     setBlock(level, x, y, z, materials["normal"][0], materials["normal"][1])
     setBlock(level, x, y+1, z, materials["normal"][0], materials["normal"][1])
-    setBlock(level, x, y+2, z, materials["torch"])
+    setBlock(level, x, y+2, z, materials["torch"][0], materials["torch"][1])
 
 
 def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):

@@ -44,7 +44,7 @@ def buildBridges(level, surface, bridges):
     "upper slab": (126, 8),
     "lower slab": (126, 0),
     "fence": 85.0,
-    "torch": 50
+    "torch": (50, 5)
 	}
 	for bridge in bridges:
 		startPoint = bridge[0]

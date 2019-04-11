@@ -1,4 +1,5 @@
 from Common import setBlock
+from RemoveTree import removeTree
 
 def buildHouse(level, surface, prop):
 	if prop.xLength < 7 or prop.zLength < 7:
@@ -11,6 +12,13 @@ def buildHouse(level, surface, prop):
 		buildRoofEW(level, surface, prop)
 	buildDoor(level, surface, prop)
 	buildWindows(level, surface, prop)
+
+def clearHouseProperty(level, surface, prop):
+	for x in range(prop.xStart, prop.xEnd):
+		for z in range(prop.zStart, prop.zEnd):
+			for y in range(prop.height + 2, prop.height + 7):
+				removeTree(level, x + surface.xStart, y, z + surface.zStart)
+				setBlock(level, surface, x, y, z, 0)
 
 def buildFloor(level, surface, prop):
 	for x in range(prop.xStart + 1, prop.xEnd - 1):
