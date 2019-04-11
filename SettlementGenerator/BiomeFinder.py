@@ -7,8 +7,12 @@ def findBiomes(level, box, surface):
 
     for cPos in box.chunkPositions:
         chunk = level.getChunk(cPos[0], cPos[1])
-        biomes = chunk.root_tag["Level"]["Biomes"].value
-        biomesFound.update(biomes)
+
+        chunkBiomeData = chunk.root_tag["Level"]["Biomes"].value
+
+        # biomes = chunk.root_tag["Level"]["Biomes"].value
+        # biomesFound.update(biomes)
+        
         # Marks river biome with yellow wool.
         # for i in range(biomes.size):
         #     if biomes[i] == 7:  # River

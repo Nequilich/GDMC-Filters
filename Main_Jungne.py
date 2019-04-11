@@ -50,17 +50,17 @@ glass = {
 
 def perform(level, box, options):
 
-    testMaterials()
+    # testMaterials()
 
 
-    #spawnVillager(level, box)
+    # spawnVillager(level, box)
     
     
     # BridgeBuilder
     # bridgeWidth = options["Width"]
 
-    # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
-    # calculateHeightMapAdv(level, surface)
+    surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+    calculateHeightMapAdv(level, surface)
     # startPoint = (box.minx, box.minz)
     # endPoint = (box.maxx-1, box.maxz-1)
     # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
@@ -78,7 +78,7 @@ def perform(level, box, options):
     # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, materials)
 
     # BiomeFinder
-    # biomes = findBiomes(level, box, surface)
+    biomes = findBiomes(level, box, surface)
 
     # Topographic marker
     # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
