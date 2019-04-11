@@ -46,7 +46,7 @@ def addBlockInformation(blocks):
 	for mcBlock in blocks:
 		block = BlockDictionary.getBlock(mcBlock['id'], mcBlock['data'])
 		if block == None:
-			data.append({'type': 'unknown', 'direction': None, 'verticalAllignment': None, 'id': mcBlock['id'], 'data': mcBlock['data'], 'x': mcBlock['x'], 'y': mcBlock['y'], 'z': mcBlock['z']})
+			data.append({'type': None, 'direction': None, 'verticalAllignment': None, 'id': mcBlock['id'], 'data': mcBlock['data'], 'x': mcBlock['x'], 'y': mcBlock['y'], 'z': mcBlock['z']})
 			continue
 		data.append({'type': block.type, 'direction': block.direction, 'verticalAllignment': block.verticalAllignment, 'id': mcBlock['id'], 'data': mcBlock['data'], 'x': mcBlock['x'], 'y': mcBlock['y'], 'z': mcBlock['z']})
 	return data
