@@ -8,6 +8,8 @@ from SurfaceManager import calculateWaterPlacement
 from SurfaceManager import calculateSections
 from VillagerSpawner import spawnVillager
 from BiomeMaterials import testMaterials
+import Biomes
+import time
 
 inputs = (
     ("Width", 4),
@@ -49,18 +51,17 @@ glass = {
 
 
 def perform(level, box, options):
+    startTime = time.time()
 
-    testMaterials()
+    # testMaterials()
 
+    # spawnVillager(level, box)
 
-    #spawnVillager(level, box)
-    
-    
     # BridgeBuilder
     # bridgeWidth = options["Width"]
 
-    # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
-    # calculateHeightMapAdv(level, surface)
+    surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+    calculateHeightMapAdv(level, surface)
     # startPoint = (box.minx, box.minz)
     # endPoint = (box.maxx-1, box.maxz-1)
     # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
@@ -77,8 +78,19 @@ def perform(level, box, options):
 
     # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, materials)
 
-    # BiomeFinder
-    # biomes = findBiomes(level, box, surface)
+    # BiomeFinder adds biome data to surfaceMap
+    biomes = findBiomes(level, box, surface)
+
+    # Makes a colored map of biomes in the sky
+    biomeIds = Biomes.getBiomeDict()
+    biomeNameList = Biomes.biomes.keys()
+    for x in range(surface.xLength):
+        for z in range(surface.zLength):
+            biomeName = biomeIds[surface.surfaceMap[x][z].biomeId]
+
+            for i in range(len(biomeNameList)):
+                if (biomeName == biomeNameList[i]):
+                    setBlock(level, surface, x, 100, z, 35, i)
 
     # Topographic marker
     # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
@@ -121,3 +133,6 @@ def perform(level, box, options):
     #         else:
     #             setBlock(level, surface.xStart + x,
     #                      height + 1, surface.zStart + z, glass["red"][0], glass["red"][1])
+    endTime = time.time()
+
+    print("Runtime: ", endTime-startTime)

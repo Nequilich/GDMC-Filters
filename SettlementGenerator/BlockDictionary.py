@@ -6,11 +6,18 @@ class Block:
 		self.verticalAllignment = verticalAllignment
 
 def getBlockIdentifier(block):
+	if not blockTypes.get(block.type):
+		return None
+	identifier = None
 	if not block.direction and not block.verticalAllignment:
-		return blockTypes[block.type]['default']
-	elif not block.direction and block.verticalAllignment:
-		return blockTypes[block.type]['slabs'][block.verticalAllignment]
-	return blockTypes[block.type]['directions'][block.direction][block.verticalAllignment]
+		identifier = blockTypes[block.type]['default']
+	elif not block.direction and block.verticalAllignment and blockTypes[block.type].get('slabs'):
+		identifier = blockTypes[block.type]['slabs'][block.verticalAllignment]
+	elif blockTypes[block.type].get('directions') and blockTypes[block.type]['directions'].get(block.direction):
+		identifier = blockTypes[block.type]['directions'][block.direction][block.verticalAllignment]
+	if not identifier:
+		identifier = blockTypes[block.type]['default']
+	return identifier
 
 def getBlock(id, data):
 	identifier = (id, data)
@@ -18,56 +25,40 @@ def getBlock(id, data):
 		# checking default
 		if blockType['default'] == identifier:
 			return Block(blockType['type'], None, None)
-		# checking slabs
-		if blockType['slabs']['top'] == identifier:
-			return Block(blockType['type'], None, 'top')
-		if blockType['slabs']['bottom'] == identifier:
-			return Block(blockType['type'], None, 'bottom')
-		# checking directions
-		# north
-		if blockType['directions']['north']['top'] == identifier:
-			return Block(blockType['type'], 'north', 'top')
-		if blockType['directions']['north']['bottom'] == identifier:
-			return Block(blockType['type'], 'north', 'bottom')
-		# east
-		if blockType['directions']['east']['top'] == identifier:
-			return Block(blockType['type'], 'east', 'top')
-		if blockType['directions']['east']['bottom'] == identifier:
-			return Block(blockType['type'], 'east', 'bottom')
-		# south
-		if blockType['directions']['south']['top'] == identifier:
-			return Block(blockType['type'], 'south', 'top')
-		if blockType['directions']['south']['bottom'] == identifier:
-			return Block(blockType['type'], 'south', 'bottom')
-		# west
-		if blockType['directions']['west']['top'] == identifier:
-			return Block(blockType['type'], 'west', 'top')
-		if blockType['directions']['west']['bottom'] == identifier:
-			return Block(blockType['type'], 'west', 'bottom')
+		# checking slabs if the blocktype includes slabs
+		if blockType.get('slabs'):
+			if blockType['slabs']['top'] == identifier:
+				return Block(blockType['type'], None, 'top')
+			if blockType['slabs']['bottom'] == identifier:
+				return Block(blockType['type'], None, 'bottom')
+		# checking directions if the blocktype includes directions
+		if blockType.get('directions'):
+			# north
+			if blockType['directions']['north']['top'] == identifier:
+				return Block(blockType['type'], 'north', 'top')
+			if blockType['directions']['north']['bottom'] == identifier:
+				return Block(blockType['type'], 'north', 'bottom')
+			# east
+			if blockType['directions']['east']['top'] == identifier:
+				return Block(blockType['type'], 'east', 'top')
+			if blockType['directions']['east']['bottom'] == identifier:
+				return Block(blockType['type'], 'east', 'bottom')
+			# south
+			if blockType['directions']['south']['top'] == identifier:
+				return Block(blockType['type'], 'south', 'top')
+			if blockType['directions']['south']['bottom'] == identifier:
+				return Block(blockType['type'], 'south', 'bottom')
+			# west
+			if blockType['directions']['west']['top'] == identifier:
+				return Block(blockType['type'], 'west', 'top')
+			if blockType['directions']['west']['bottom'] == identifier:
+				return Block(blockType['type'], 'west', 'bottom')
 	return None
 
 blockTypes = {
 	'stone': {
 	'type': 'stone',
 	'default': (1, 0),
-	'directions': {
-		'north': {
-			'top': (1, 0),
-			'bottom': (1, 0)
-		},
-		'east': {
-			'top': (1, 0),
-			'bottom': (1, 0)
-		},
-		'south': {
-			'top': (1, 0),
-			'bottom': (1, 0)
-		},
-		'west': {
-			'top': (1, 0),
-			'bottom': (1, 0)
-		}
-	},
 	'slabs': {
 		'top': (44, 8),
 		'bottom': (44, 0)
@@ -171,10 +162,6 @@ blockTypes = {
 			'top': (17, 4),
 			'bottom': (17, 4)
 		}
-	},
-	'slabs': {
-		'top': (17, 0),
-		'bottom': (17, 0)
 	}
 },
 'spruce_wood': {
@@ -197,10 +184,6 @@ blockTypes = {
 			'top': (17, 5),
 			'bottom': (17, 5)
 		}
-	},
-	'slabs': {
-		'top': (17, 1),
-		'bottom': (17, 1)
 	}
 },
 'birch_wood': {
@@ -223,10 +206,6 @@ blockTypes = {
 			'top': (17, 6),
 			'bottom': (17, 6)
 		}
-	},
-	'slabs': {
-		'top': (17, 2),
-		'bottom': (17, 2)
 	}
 },
 'jungle_wood': {
@@ -249,10 +228,6 @@ blockTypes = {
 			'top': (17, 7),
 			'bottom': (17, 7)
 		}
-	},
-	'slabs': {
-		'top': (17, 3),
-		'bottom': (17, 3)
 	}
 },
 'acacia_wood': {
@@ -275,10 +250,6 @@ blockTypes = {
 			'top': (162, 4),
 			'bottom': (162, 4)
 		}
-	},
-	'slabs': {
-		'top': (162, 0),
-		'bottom': (162, 0)
 	}
 },
 'dark_oak_wood': {
@@ -301,10 +272,6 @@ blockTypes = {
 			'top': (162, 5),
 			'bottom': (162, 5)
 		}
-	},
-	'slabs': {
-		'top': (162, 1),
-		'bottom': (162, 1)
 	}
 },
 'oak_wood_planks': {
@@ -483,10 +450,6 @@ blockTypes = {
 			'top': (64, 2),
 			'bottom': (64, 2)
 		}
-	},
-	'slabs': {
-		'top': (64, 3),
-		'bottom': (64, 3)
 	}
 },
 'wooden_trapdoor': {
@@ -535,10 +498,6 @@ blockTypes = {
 			'top': (65, 4),
 			'bottom': (65, 4)
 		}
-	},
-	'slabs': {
-		'top': (65, 2),
-		'bottom': (65, 2)
 	}
 },
 'torch': {
@@ -561,9 +520,5 @@ blockTypes = {
 			'top': (50, 2),
 			'bottom': (50, 2)
 		}
-	},
-	'slabs': {
-		'top': (50, 5),
-		'bottom': (50, 5)
 	}
 }}
