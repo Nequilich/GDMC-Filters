@@ -2,7 +2,7 @@ from Common import setBlock
 from RemoveTree import removeTree
 
 def buildPatch(level, surface, prop):
-	if prop.xLength < 5 or prop.zLength < 5:
+	if prop.xLength < 5 or prop.zLength < 5 or prop.height > 90:
 		return
 	buildField(level, surface, prop)
 	buildSides(level, surface, prop)
