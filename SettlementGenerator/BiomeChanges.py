@@ -3,12 +3,12 @@ defaultBiomeChanges = {
         "oak_wood_planks": "birch_wood_planks"
     },
     "birchForest": {
-        "oak_wood": "oak_wood",
+        "oak_wood": "birch_wood",
         "oak_wood_planks": "birch_wood_planks"
     },
     "darkForest": {
-        "oak_wood": "dark_wood",
-        "oak_wood_planks": "dark_wood_planks"
+        "oak_wood": "dark_oak_wood",
+        "oak_wood_planks": "dark_oak_wood_planks"
     },
     "swamp": {
         "cobblestone": "brick",
