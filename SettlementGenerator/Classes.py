@@ -92,6 +92,7 @@ class Section:
 		self.points = []
 		self.size = 0
 		self.layerDepth = 0
+		self.averageHeight = 0
 		self.xMid = 0
 		self.zMid = 0
 		self.isWater = False
