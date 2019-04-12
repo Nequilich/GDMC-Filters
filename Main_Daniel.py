@@ -20,6 +20,8 @@ from RoadBuilder import buildTestRoad
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from RemoveTree import removeTree
 from HouseBuilder import buildHouse
+from FarmBuilder import buildPatch
+from FarmBuilder import clearPatchProperty
 
 def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
@@ -53,6 +55,12 @@ def perform(level, box, options):
 	buildProperties(level, surface, properties)
 
 	buildTowers(level, surface, towerSections)
+
+	patchProperties = getPatchProperties(surface, paths)
+	clearPatchProperties(level, surface, patchProperties)
+	buildPatchProperties(level, surface, patchProperties)
+
+
 
 def calculateSectionMids(surface, sections):
 	for section in sections:
@@ -152,7 +160,7 @@ def getPathsInSections(surface, bigLandSections):
 def getProperties(surface, paths):
 	properties = []
 	for path in paths:
-		properties.extend(getPropertiesAlongPath(surface, path))
+		properties.extend(getPropertiesAlongPath(surface, path, 7, 11, 7))
 	return properties
 
 def removeTreesFromProperties(level, surface, properties):
@@ -163,6 +171,20 @@ def buildProperties(level, surface, properties):
 	for p in properties:
 		buildHouse(level, surface, p)
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
+
+def getPatchProperties(surface, paths):
+	patchProperties = []
+	for path in paths:
+		patchProperties.extend(getPropertiesAlongPath(surface, path, 5, 11, 16))
+	return patchProperties
+
+def clearPatchProperties(level, surface, patchProperties):
+	for p in patchProperties:
+		clearPatchProperty(level, surface, p)
+
+def buildPatchProperties(level, surface, patchProperties):
+	for p in patchProperties:
+		buildPatch(level, surface, p)
 
 # fra Lasse
 
