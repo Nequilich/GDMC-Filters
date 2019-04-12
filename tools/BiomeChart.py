@@ -3,7 +3,6 @@ from Classes import Surface
 from SurfaceManager import calculateHeightMapAdv
 from BiomeFinder import findBiomes
 import Biomes
-import time
 
 inputs = (
 	("Chart height", 100),
