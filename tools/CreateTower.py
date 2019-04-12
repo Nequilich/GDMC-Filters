@@ -2,15 +2,21 @@ from Classes import Point
 from Classes import Surface
 from SurfaceManager import calculateHeightMapAdv
 from TowerBuilder import buildMediumTower
-from Biomes import biomes
+from Biomes import biomes, getBiomeDict
+from BiomeFinder import findBiomes
 
-inputs = (
-	("Biome", tuple(biomes.keys())),
-)
+# inputs = (
+# 	("Biome", tuple(biomes.keys())),
+# )
 
 def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
 	calculateHeightMapAdv(level, surface)
+	findBiomes(level, surface)
+
+	point = Point(box.minx, box.minz)
+	surfaceX = point.x - surface.xStart
+	surfaceZ = point.z - surface.zStart
 
 	specialBiomeChanges = {
 		'jungle': {
@@ -20,6 +26,8 @@ def perform(level, box, options):
 		}
 	}
 
-	biome = options["Biome"]
+	# biome = options["Biome"]
+	biomeDict = getBiomeDict()
+	biome = biomeDict[surface.surfaceMap[surfaceX][surfaceZ].biomeId]
 
-	buildMediumTower(level, Point(box.minx, box.minz), box.miny, 'east', True, None, biome)
+	buildMediumTower(level, point, box.miny, 'east', True, None, biome)
