@@ -2,6 +2,11 @@ from Classes import Point
 from Classes import Surface
 from SurfaceManager import calculateHeightMapAdv
 from TowerBuilder import buildMediumTower
+from Biomes import biomes
+
+inputs = (
+	("Biome", tuple(biomes.keys())),
+)
 
 def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
@@ -15,4 +20,6 @@ def perform(level, box, options):
 		}
 	}
 
-	buildMediumTower(level, Point(box.minx, box.minz), box.miny, 'east', True, specialBiomeChanges, 'jungle')
+	biome = options["Biome"]
+
+	buildMediumTower(level, Point(box.minx, box.minz), box.miny, 'east', True, None, biome)

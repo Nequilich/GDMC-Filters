@@ -36,7 +36,8 @@ defaultBiomeChanges = {
     "desert": {
         "cobblestone": "sandstone",
         "stone": "smooth_sandstone",
-        "stone_brick": "chiseled_sandstone"
+        "stone_brick": "chiseled_sandstone",
+        "oak_wood": "sandstone"
     },
     "savanna": {
         "oak_wood": "acacia_wood",

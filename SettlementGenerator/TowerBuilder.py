@@ -3,6 +3,7 @@ import json
 import math
 from Classes import Point
 from Common import setBlock
+from BiomeChanges import defaultBiomeChanges
 
 directions = ['north', 'east', 'south', 'west']
 
@@ -88,7 +89,10 @@ def moveToPositive(blockRegister):
 		block['z'] += abs(zMin)
 
 def calculateBiomeChanges(blockRegister, specialBiomeChanges, biome):
-	biomeChanges = getBiomeChanges(specialBiomeChanges, biome)
+	if (specialBiomeChanges == None):
+		biomeChanges = getBiomeChanges(defaultBiomeChanges, biome)
+	else:
+		biomeChanges = getBiomeChanges(specialBiomeChanges, biome)
 	for block in blockRegister:
 		if biomeChanges.get(block['type']):
 			block['type'] = biomeChanges[block['type']]
