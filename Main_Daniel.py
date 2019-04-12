@@ -38,34 +38,16 @@ def perform(level, box, options):
 
 	smallLandSectionHeap = heapifySectionsByAverageHeight(smallLandSections)
 
-	towerSections = []
-	for element in smallLandSectionHeap:
-		section = element[1]
-		if section.averageHeight < averageSurfaceHeight:
-			break
-		tooClose = False
-		sectionMid = Point(section.xMid, section.zMid)
-		for towerSection in towerSections:
-			towerSectionMid = Point(towerSection.xMid, towerSection.zMid)
-			distance = getEuclideanDistance(surface, towerSectionMid, sectionMid)
-			if distance < 50:
-				tooClose = True
-		if tooClose:
-			continue
-		towerSections.append(section)
+	towerSections = getTowerSections(surface, averageSurfaceHeight, smallLandSectionHeap)
 	
-	habitatSections = []
-	habitatSections.extend(towerSections)
-	habitatSections.extend(mediumLandSections)
-	habitatSections.extend(bigLandSections)
-
+	habitatSections = getHabitatSections(towerSections, mediumLandSections, bigLandSections)
+	
 	paths = getPathBetweenSections(surface, habitatSections)
 
 	for section in bigLandSections:
 		paths.extend(getPathsInSection(surface, section))
 
-	for path in paths:
-		buildTestRoad(level, surface, path)
+	buildPaths(level, surface, paths)
 
 def calculateSectionMids(surface, sections):
 	for section in sections:
@@ -111,7 +93,34 @@ def heapifySectionsByAverageHeight(sections):
 		heapq.heappush(heap, (-section.averageHeight, section))
 	return heap
 
+def getTowerSections(surface, averageSurfaceHeight, sectionHeap):
+	towerSections = []
+	for element in sectionHeap:
+		section = element[1]
+		if section.averageHeight < averageSurfaceHeight:
+			break
+		tooClose = False
+		sectionMid = Point(section.xMid, section.zMid)
+		for towerSection in towerSections:
+			towerSectionMid = Point(towerSection.xMid, towerSection.zMid)
+			distance = getEuclideanDistance(surface, towerSectionMid, sectionMid)
+			if distance < 50:
+				tooClose = True
+		if tooClose:
+			continue
+		towerSections.append(section)
+	return towerSections
 
+def getHabitatSections(towerSections, mediumLandSections, bigLandSections):
+	habitatSections = []
+	habitatSections.extend(towerSections)
+	habitatSections.extend(mediumLandSections)
+	habitatSections.extend(bigLandSections)
+	return habitatSections
+
+def buildPaths(level, surface, paths):
+	for path in paths:
+		buildTestRoad(level, surface, path)
 
 
 
@@ -124,7 +133,7 @@ def heapifySectionsByAverageHeight(sections):
 
 def getPathsInSection(surface, section):
 	amountOfPoints = len(section.points)
-	amountOfNewNodes = amountOfPoints / 3000 - 1
+	amountOfNewNodes = amountOfPoints / 4000 - 1
 	if amountOfNewNodes < 1:
 		return []
 	points = [Point(section.xMid, section.zMid)]
