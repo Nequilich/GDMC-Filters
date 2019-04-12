@@ -42,7 +42,7 @@ def perform(level, box, options):
 	averageSurfaceHeight = calculateAverageSurfaceHeight(surface)
 	calculateAverageSectionHeights(surface, sections)
 
-	towerSections = getTowerSections(surface, averageSurfaceHeight, smallLandSections)
+	towerSections = getTowerSections(surface, averageSurfaceHeight, bigLandSections, mediumLandSections, smallLandSections)
 	
 	habitatSections = getHabitatSections(towerSections, mediumLandSections, bigLandSections)
 	
@@ -106,24 +106,42 @@ def heapifySectionsByAverageHeight(sections):
 		heapq.heappush(heap, (-section.averageHeight, section))
 	return heap
 
-def getTowerSections(surface, averageSurfaceHeight, sections):
-	sectionHeap = heapifySectionsByAverageHeight(sections)
+def getTowerSections(surface, averageSurfaceHeight, bigLandSections, mediumLandSections, smallLandSections):
+	sectionHeap = heapifySectionsByAverageHeight(smallLandSections)
 	towerSections = []
 	for element in sectionHeap:
 		section = element[1]
-		if section.averageHeight < averageSurfaceHeight:
+		averageSectionHeight = section.averageHeight
+		if averageSectionHeight < averageSurfaceHeight:
 			break
-		tooClose = False
 		sectionMid = Point(section.xMid, section.zMid)
-		for towerSection in towerSections:
-			towerSectionMid = Point(towerSection.xMid, towerSection.zMid)
-			distance = getEuclideanDistance(surface, towerSectionMid, sectionMid)
-			if distance < 50:
-				tooClose = True
-		if tooClose:
+		if tooCloseToOtherTowers(surface, sectionMid, towerSections) or tooCloseToBiggerHigherSections(surface, sectionMid, averageSectionHeight, bigLandSections, mediumLandSections):
 			continue
 		towerSections.append(section)
 	return towerSections
+
+def tooCloseToOtherTowers(surface, sectionMid, towerSections):
+	for towerSection in towerSections:
+		towerSectionMid = Point(towerSection.xMid, towerSection.zMid)
+		distance = getEuclideanDistance(surface, towerSectionMid, sectionMid)
+		if distance < 50:
+			return True
+	return False
+
+def tooCloseToBiggerHigherSections(surface, sectionMid, averageSectionHeight, bigLandSections, mediumLandSections):
+	biggerSections = []
+	biggerSections.extend(bigLandSections)
+	biggerSections.extend(mediumLandSections)
+	for s in biggerSections:
+		if s.averageHeight < averageSectionHeight + 10:
+			continue
+		for p in s.points:
+			if surface.surfaceMap[p.x][p.z].layer != 0:
+				continue
+			distance = getEuclideanDistance(surface, p, sectionMid)
+			if distance < 30:
+				return True
+	return False
 
 def getHabitatSections(towerSections, mediumLandSections, bigLandSections):
 	habitatSections = []
