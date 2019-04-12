@@ -1,78 +1,164 @@
-from BridgeBuilder import buildBridge
+import heapq
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
 from GetPathBetweenSections import getPathBetweenSections
-from RoadBuilder import buildTestRoad
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
+from TowerBuilder import buildMediumTower
+
+from Kruskal import getMinimumSpanningTree
+from GetPath import getPath
+from Classes import Node
+from random import randint
+from Classes import Edge
+from RoadBuilder import buildTestRoad
 
 def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
-	sections = calculateSections(surface, 1, 40)
 
-	newSections = []
-	for section in sections:
-		if section.isWater:
+	sections = calculateSections(surface, 1, 15)
+	calculateSectionMids(surface, sections)
+	
+	smallLandSections = []
+	mediumLandSections = []
+	bigLandSections = []
+	waterSections = []
+
+	arrangeSections(sections, waterSections, bigLandSections, mediumLandSections, smallLandSections)
+
+	averageSurfaceHeight = calculateAverageSurfaceHeight(surface)
+	calculateAverageSectionHeights(surface, sections)
+
+	smallLandSectionHeap = heapifySectionsByAverageHeight(smallLandSections)
+
+	towerSections = []
+	for element in smallLandSectionHeap:
+		section = element[1]
+		if section.averageHeight < averageSurfaceHeight:
+			break
+		tooClose = False
+		sectionMid = Point(section.xMid, section.zMid)
+		for towerSection in towerSections:
+			towerSectionMid = Point(towerSection.xMid, towerSection.zMid)
+			distance = getEuclideanDistance(surface, towerSectionMid, sectionMid)
+			if distance < 50:
+				tooClose = True
+		if tooClose:
 			continue
-		newSections.append(section)
-	sections = newSections
-
-	for section in sections:
-		calculateSectionMid(surface, section)
+		towerSections.append(section)
 	
-	paths = getPathBetweenSections(surface, sections)
-	
-	bridges = []
-	newPaths = []
-	for path in paths:
-		bridge = []
-		newPath = []
-		for p in path:
-			if surface.surfaceMap[p.x][p.z].isWater:
-				bridge.append(p)
-				if newPath:
-					newPaths.append(newPath)
-					newPath = []
-			else:
-				newPath.append(p)
-				if bridge:
-					bridges.append(bridge)
-					bridge = []
-		if newPath:
-			newPaths.append(newPath)
-		if bridge:
-			bridges.append(bridge)
+	habitatSections = []
+	habitatSections.extend(towerSections)
+	habitatSections.extend(mediumLandSections)
+	habitatSections.extend(bigLandSections)
 
-	paths = newPaths
+	paths = getPathBetweenSections(surface, habitatSections)
+
+	for section in bigLandSections:
+		paths.extend(getPathsInSection(surface, section))
 
 	for path in paths:
 		buildTestRoad(level, surface, path)
 
-	oakMaterial = {
-    "normal": (17, 0),
-    "upper slab": (126, 8),
-    "lower slab": (126, 0),
-    "fence": 85.0,
-    "torch": 50
-	}
-	
-	for bridge in bridges:
-		startPoint = bridge[0]
-		endPoint = bridge[len(bridge) - 1]
-		height = surface.surfaceMap[startPoint.x][startPoint.z].height + 1
-		startPointTuple = (startPoint.x + surface.xStart, startPoint.z + surface.zStart)
-		endPointTuple = (endPoint.x + surface.xStart, endPoint.z + surface.zStart)
-		buildBridge(level, startPointTuple, endPointTuple, height, 4, oakMaterial)
-
-def getSection(sections, id):
+def calculateSectionMids(surface, sections):
 	for section in sections:
-		if section.id == id:
-			return section
+		calculateSectionMid(surface, section)
+
+def arrangeSections(sections, waterSections, bigLandSections, mediumLandSections, smallLandSections):
+	for section in sections:
+		if section.layerDepth < 2:
+			continue
+		if section.isWater:
+			waterSections.append(section)
+			continue
+		if len(section.points) < 250:
+			smallLandSections.append(section)
+			continue
+		if len(section.points) < 1000:
+			mediumLandSections.append(section)
+			continue
+		bigLandSections.append(section)
+
+def calculateAverageSurfaceHeight(surface):
+	cumulativeHeight = 0
+	for x in range(surface.xLength):
+		for z in range(surface.zLength):
+			cumulativeHeight += surface.surfaceMap[x][z].height
+	return cumulativeHeight / (surface.xLength * surface.zLength)
+
+def calculateAverageSectionHeights(surface, sections):
+	for section in sections:
+		section.averageHeight = calculateAverageSectionHeight(surface, section)
+
+def calculateAverageSectionHeight(surface, section):
+	cumulativeHeight = 0
+	for point in section.points:
+		x = point.x
+		z = point.z
+		cumulativeHeight += surface.surfaceMap[x][z].height
+	return cumulativeHeight / len(section.points)
+
+def heapifySectionsByAverageHeight(sections):
+	heap = []
+	for section in sections:
+		heapq.heappush(heap, (-section.averageHeight, section))
+	return heap
+
+
+
+
+
+
+
+
+
+
+# fra Lasse
+
+def getPathsInSection(surface, section):
+	amountOfPoints = len(section.points)
+	amountOfNewNodes = amountOfPoints / 3000 - 1
+	if amountOfNewNodes < 1:
+		return []
+	points = [Point(section.xMid, section.zMid)]
+	for _ in range(amountOfNewNodes):
+		i = randint(0, amountOfPoints - 1)
+		p = section.points[i]
+		points.append(Point(p.x, p.z))
+
+	nodes = []
+	for i, point in enumerate(points):
+		nodes.append(Node(i, point))
+
+	edges = []
+	for node in nodes:
+		for otherNode in nodes:
+			if otherNode.id <= node.id:
+				continue
+			point1 = node.data
+			point2 = otherNode.data
+			cost = getEuclideanDistance(surface, point1, point2)
+			edges.append(Edge(cost, node.id, otherNode.id))
+
+	minimumSpanningTree = getMinimumSpanningTree(nodes, edges)
+
+	paths = []
+	for edge in minimumSpanningTree:
+		point1 = getNode(nodes, edge.nodeId1).data
+		point2 = getNode(nodes, edge.nodeId2).data
+		path = getPath(surface, point1.x, point1.z, point2.x, point2.z)
+		paths.append(path)
+	return paths
+
+def getNode(nodes, id):
+	for node in nodes:
+		if node.id == id:
+			return node
 	return None
