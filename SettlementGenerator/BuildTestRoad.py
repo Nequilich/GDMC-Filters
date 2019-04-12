@@ -32,11 +32,17 @@ def findRoadsAndBridges(surface, path, roads, bridges):
 		bridges.append(bridge)
 
 def buildRoads(level, surface, roads):
+	streetLightInterval = 8
 	for road in roads:
+		streetLightCounter = 0
 		for point in road:
 			y = surface.surfaceMap[point.x][point.z].height
 			point = Point(point.x + surface.xStart, point.z + surface.zStart)
 			buildPathPoint(level, surface, point, y)
+			if (streetLightCounter % streetLightInterval == 0):
+				for p in [(point.x - 2, point.z), (point.x + 2, point.z), (point.x, point.z - 2), (point.x, point.z + 2)]:
+					placeStreetLight(level, surface, Point(p[0], p[1]), y)
+			streetLightCounter += 1
 
 def buildBridges(level, surface, bridges):
 	oakMaterial = {
@@ -66,15 +72,15 @@ def buildCenterPathTile(level, surface, point, height):
 
 def buildOuterPathTile(level, surface, point, height):
 	if not isWithinBorder(surface, point.x - surface.xStart, point.z - surface.zStart):
-		return
+		return False
 	surface.surfaceMap[point.x - surface.xStart][point.z - surface.zStart].isOccupied = True
 	if level.blockAt(point.x, height, point.z) == 43:
-		return
+		return False
 	if level.blockAt(point.x, height, point.z) == 0:
 		i = 0
 		while level.blockAt(point.x, height - i, point.z) == 0:
 			if level.blockAt(point.x, height - 1 - i, point.z) == 43:
-				return
+				return False
 			i += 1
 	
 	if level.blockAt(point.x, height + 1, point.z) == 4:
@@ -88,7 +94,16 @@ def buildOuterPathTile(level, surface, point, height):
 	while level.blockAt(point.x, height - i, point.z) == 0:
 		setBlock(level, None, point.x, height - i, point.z, 98, 0)
 		i += 1
+	return True
 
 def clearAboveTile(level, point, height):
 	for i in range(1, 3):
 		removeTree(level, point.x, height + i, point.z)
+		setBlock(level, None, point.x, height + i, point.z, 0, 0)
+
+def placeStreetLight(level, surface, point, height):
+	buildablePoint = buildOuterPathTile(level, surface, point, height)
+	if buildablePoint:  # Tries to place a tile and if successful place a street light.
+		print(buildablePoint)
+		setBlock(level, None, point.x, height + 1, point.z, 139, 0)
+		setBlock(level, None, point.x, height + 2, point.z, 50, 5)

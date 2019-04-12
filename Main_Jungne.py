@@ -79,7 +79,7 @@ def perform(level, box, options):
     # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, materials)
 
     # BiomeFinder adds biome data to surfaceMap
-    findBiomes(level, box, surface)
+    findBiomes(level, surface)
 
     # Makes a colored map of biomes in the sky
     biomeIds = Biomes.getBiomeDict()
