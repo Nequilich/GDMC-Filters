@@ -2,6 +2,7 @@ import heapq
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
+from Common import setBlock
 from GetPathBetweenSections import getPathBetweenSections
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
@@ -16,6 +17,9 @@ from Classes import Node
 from random import randint
 from Classes import Edge
 from RoadBuilder import buildTestRoad
+from GetPropertiesAlongPath import getPropertiesAlongPath
+from RemoveTree import removeTree
+from HouseBuilder import buildHouse
 
 def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
@@ -36,18 +40,19 @@ def perform(level, box, options):
 	averageSurfaceHeight = calculateAverageSurfaceHeight(surface)
 	calculateAverageSectionHeights(surface, sections)
 
-	smallLandSectionHeap = heapifySectionsByAverageHeight(smallLandSections)
-
-	towerSections = getTowerSections(surface, averageSurfaceHeight, smallLandSectionHeap)
+	towerSections = getTowerSections(surface, averageSurfaceHeight, smallLandSections)
 	
 	habitatSections = getHabitatSections(towerSections, mediumLandSections, bigLandSections)
 	
 	paths = getPathBetweenSections(surface, habitatSections)
-
-	for section in bigLandSections:
-		paths.extend(getPathsInSection(surface, section))
-
+	paths.extend(getPathsInSections(surface, bigLandSections))
 	buildPaths(level, surface, paths)
+
+	properties = getProperties(surface, paths)
+	removeTreesFromProperties(level, surface, properties)
+	buildProperties(level, surface, properties)
+
+	buildTowers(level, surface, towerSections)
 
 def calculateSectionMids(surface, sections):
 	for section in sections:
@@ -93,7 +98,8 @@ def heapifySectionsByAverageHeight(sections):
 		heapq.heappush(heap, (-section.averageHeight, section))
 	return heap
 
-def getTowerSections(surface, averageSurfaceHeight, sectionHeap):
+def getTowerSections(surface, averageSurfaceHeight, sections):
+	sectionHeap = heapifySectionsByAverageHeight(sections)
 	towerSections = []
 	for element in sectionHeap:
 		section = element[1]
@@ -122,12 +128,41 @@ def buildPaths(level, surface, paths):
 	for path in paths:
 		buildTestRoad(level, surface, path)
 
+def buildTowers(level, surface, towerSections):
+	for section in towerSections:
+		height = surface.surfaceMap[section.xMid][section.zMid].height
+		buildMediumTower(level, Point(surface.xStart + section.xMid, surface.zStart + section.zMid), height, 'north')
 
 
 
 
 
 
+
+
+
+
+
+def getPathsInSections(surface, bigLandSections):
+	paths = []
+	for section in bigLandSections:
+		paths.extend(getPathsInSection(surface, section))
+	return paths
+
+def getProperties(surface, paths):
+	properties = []
+	for path in paths:
+		properties.extend(getPropertiesAlongPath(surface, path))
+	return properties
+
+def removeTreesFromProperties(level, surface, properties):
+	for p in properties:
+		removeTrees(level, surface, p)
+
+def buildProperties(level, surface, properties):
+	for p in properties:
+		buildHouse(level, surface, p)
+		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
 # fra Lasse
 
@@ -171,3 +206,17 @@ def getNode(nodes, id):
 		if node.id == id:
 			return node
 	return None
+
+def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
+	path = getPath(surface, xStart, zStart, xEnd, zEnd)
+	for p in path:
+		if surface.surfaceMap[p.x][p.z].isOccupied:
+			continue
+		height = surface.surfaceMap[p.x][p.z].height
+		setBlock(level, surface, p.x, height, p.z, 4)
+
+def removeTrees(level, surface, prop):
+	for x in range(prop.xStart, prop.xEnd):
+		for z in range(prop.zStart, prop.zEnd):
+			y = surface.surfaceMap[x][z].height + 2
+			removeTree(level, x + surface.xStart, y, z + surface.zStart)
