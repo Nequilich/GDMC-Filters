@@ -51,7 +51,7 @@ def buildNorthSide(level, surface, prop):
 			if isSurfaceBlock(level, x + surface.xStart, y, prop.zStart - 1 + surface.zStart):
 				setBlock(level, surface, x, y, prop.zStart, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
 			else:
-				setBlock(level, surface, x, y, prop.zStart, materials["wood_plans"]["directions"]["south"]["bottom"][0], materials["wood_plans"]["directions"]["south"]["bottom"][1])
+				setBlock(level, surface, x, y, prop.zStart, materials["wood_planks"]["directions"]["south"]["bottom"][0], materials["wood_planks"]["directions"]["south"]["bottom"][1])
 	else:
 		for x in range(prop.xStart + 1, prop.xEnd - 1):
 			setBlock(level, surface, x, y, prop.zStart, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
@@ -68,7 +68,7 @@ def buildEastSide(level, surface, prop):
 			if isSurfaceBlock(level, prop.xEnd + surface.xStart, y, z + surface.zStart):
 				setBlock(level, surface, prop.xEnd - 1, y, z, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
 			else:
-				setBlock(level, surface, prop.xEnd - 1, y, z, materials["wood_plans"]["directions"]["west"]["bottom"][0], materials["wood_plans"]["directions"]["west"]["bottom"][1])
+				setBlock(level, surface, prop.xEnd - 1, y, z, materials["wood_planks"]["directions"]["west"]["bottom"][0], materials["wood_planks"]["directions"]["west"]["bottom"][1])
 	else:
 		for z in range(prop.zStart + 1, prop.zEnd - 1):
 			setBlock(level, surface, prop.xEnd - 1, y, z, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
@@ -85,7 +85,7 @@ def buildSouthSide(level, surface, prop):
 			if isSurfaceBlock(level, x + surface.xStart, y, prop.zEnd + surface.zStart):
 				setBlock(level, surface, x, y, prop.zEnd - 1, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
 			else:
-				setBlock(level, surface, x, y, prop.zEnd - 1, materials["wood_plans"]["directions"]["north"]["bottom"][0], materials["wood_plans"]["directions"]["north"]["bottom"][1])
+				setBlock(level, surface, x, y, prop.zEnd - 1, materials["wood_planks"]["directions"]["north"]["bottom"][0], materials["wood_planks"]["directions"]["north"]["bottom"][1])
 	else:
 		for x in range(prop.xStart + 1, prop.xEnd - 1):
 			setBlock(level, surface, x, y, prop.zEnd - 1, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
@@ -102,7 +102,7 @@ def buildWestSide(level, surface, prop):
 			if isSurfaceBlock(level, prop.xStart - 1 + surface.xStart, y, z + surface.zStart):
 				setBlock(level, surface, prop.xStart, y, z, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
 			else:
-				setBlock(level, surface, prop.xStart, y, z, materials["wood_plans"]["directions"]["east"]["bottom"][0], materials["wood_plans"]["directions"]["east"]["bottom"][1])
+				setBlock(level, surface, prop.xStart, y, z, materials["wood_planks"]["directions"]["east"]["bottom"][0], materials["wood_planks"]["directions"]["east"]["bottom"][1])
 	else:
 		for z in range(prop.zStart + 1, prop.zEnd - 1):
 			setBlock(level, surface, prop.xStart, y, z, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
