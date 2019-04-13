@@ -1,4 +1,4 @@
-from BiomeFinder import findBIomes
+from BiomeFinder import findBiomes
 from Classes import Surface
 from Common import setBlock
 from FarmBuilder import buildPatch
