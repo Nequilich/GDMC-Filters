@@ -14,15 +14,33 @@ def getPathsBetweenSections(surface, sections):
 
 def getPathsInSection(surface, section):
 	points = [Point(section.xMid, section.zMid)]
-	amountOfPoints = len(section.points)
-	amountOfNewNodes = amountOfPoints / 5000 - 1
-	if amountOfNewNodes < 1:
+	pointPool = section.points
+	poolSize = len(pointPool)
+	expectedPoints = poolSize / 4000 - 1
+
+	if expectedPoints < 1:
 		return []
-	for _ in range(amountOfNewNodes):
-		i = randint(0, amountOfPoints - 1)
-		p = section.points[i]
-		points.append(Point(p.x, p.z))
+
+	while expectedPoints > 0:
+		p = getUniquePoint(pointPool, poolSize, points)
+		points.append(p)
+		expectedPoints -= 1
+	
 	return getPathBetweenPoints(surface, points)
+
+def getUniquePoint(pointPool, poolSize, points):
+	i = randint(0, poolSize - 1)
+	p = pointPool[i]
+	while contain(points, p):
+		i = randint(0, poolSize - 1)
+		p = pointPool[i]
+	return p
+
+def contain(points, point):
+	for p in points:
+		if p.x == point.x and p.z == point.z:
+			return True
+	return False
 
 def getPathBetweenPoints(surface, points):
 	nodes = []
