@@ -126,9 +126,7 @@ def getSectionPairs(surface, sections):
 				continue
 			section1 = node.data
 			section2 = otherNode.data
-			point1 = Point(section1.xMid, section1.zMid)
-			point2 = Point(section2.xMid, section2.zMid)
-			cost = getEuclideanDistance(surface, point1, point2)
+			cost = getShortestIntersectionPathLength(surface, section1, section2)
 			edges.append(Edge(cost, node.id, otherNode.id))
 
 	minimumSpanningTree = getMinimumSpanningTree(nodes, edges)
@@ -160,3 +158,19 @@ def getShortestIntersectionPath(surface, section1, section2):
 				point1 = p1
 				point2 = p2
 	return getPath(surface, point1.x, point1.z, point2.x, point2.z)
+
+def getShortestIntersectionPathLength(surface, section1, section2):
+	points1 = section1.pathConnectionPoints
+	points2 = section2.pathConnectionPoints
+	if not points1:
+		points1.append(Point(section1.xMid, section1.zMid))
+	if not points2:
+		points2.append(Point(section2.xMid, section2.zMid))
+
+	length = sys.maxint
+	for p1 in points1:
+		for p2 in points2:
+			l = getDistance(p1.x, p1.z, p2.x, p2.z)
+			if l < length:
+				length = l
+	return length
