@@ -9,15 +9,13 @@ from Common import getEuclideanDistance
 from GetPath import getPath
 from Kruskal import getMinimumSpanningTree
 
-from Common import setBlock
-
-def getPathsInSections(level, surface, sections):
+def getPathsInSections(surface, sections):
 	paths = []
 	for section in sections:
-		paths.extend(getPathsInSection(level, surface, section))
+		paths.extend(getPathsInSection(surface, section))
 	return paths
 
-def getPathsInSection(level, surface, section):
+def getPathsInSection(surface, section):
 	attempts = 5
 	points = [Point(section.xMid, section.zMid)]
 	pointPool = section.points
@@ -37,8 +35,6 @@ def getPathsInSection(level, surface, section):
 			if l > length:
 				length = l
 				point = p
-		h = surface.surfaceMap[point.x][point.z].height
-		setBlock(level, surface, point.x, h + 3, point.z, 57)
 		points.append(point)
 	
 	section.pathConnectionPoints.extend(points)

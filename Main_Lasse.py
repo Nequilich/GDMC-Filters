@@ -23,7 +23,7 @@ def perform(level, box, options):
 			calculateSectionMid(surface, section)
 			landSections.append(section)
 
-	paths = getPathsInSections(level, surface, landSections)
+	paths = getPathsInSections(surface, landSections)
 	intersectionPaths = getPathsBetweenSections(surface, landSections)
 
 	for x in range(surface.xLength):
