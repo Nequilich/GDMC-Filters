@@ -1,4 +1,6 @@
+from Biomes import biomes
 from BridgeBuilder import buildBridge
+from Classes import Bridge
 from Classes import Point
 from Common import isWithinBorder
 from Common import setBlock
@@ -15,8 +17,13 @@ def buildTestRoad(level, surface, path):
 def findRoadsAndBridges(surface, path, roads, bridges):
 	bridge = []
 	road = []
-	for p in path:
+	biomeId = 1
+	for i, p in enumerate(path):
+		if surface.surfaceMap[p.x][p.z].biomeId not in biomes["riverBeach"] and surface.surfaceMap[p.x][p.z].biomeId not in biomes["aquatic"]:
+			biomeId = surface.surfaceMap[p.x][p.z].biomeId
 		if surface.surfaceMap[p.x][p.z].isWater:
+			if not bridge and i > 0:
+				bridge.append(path[i-1])
 			bridge.append(p)
 			if road:
 				roads.append(road)
@@ -24,12 +31,13 @@ def findRoadsAndBridges(surface, path, roads, bridges):
 		else:
 			road.append(p)
 			if bridge:
-				bridges.append(bridge)
+				bridge.append(p)
+				bridges.append(Bridge(bridge, biomeId))
 				bridge = []
 	if road:
 		roads.append(road)
 	if bridge:
-		bridges.append(bridge)
+		bridges.append(Bridge(bridge, biomeId))
 
 def buildRoads(level, surface, roads):
 	streetLightInterval = 8
@@ -46,13 +54,13 @@ def buildRoads(level, surface, roads):
 
 def buildBridges(level, surface, bridges):
 	for bridge in bridges:
-		startPoint = bridge[0]
-		endPoint = bridge[len(bridge) - 1]
+		print(bridge.biomeId)
+		startPoint = bridge.bridgePoints[0]
+		endPoint = bridge.bridgePoints[-1]
 		height = surface.surfaceMap[startPoint.x][startPoint.z].height + 1
 		startPointTuple = (startPoint.x + surface.xStart, startPoint.z + surface.zStart)
 		endPointTuple = (endPoint.x + surface.xStart, endPoint.z + surface.zStart)
-		biomeId = surface.surfaceMap[startPoint.x][startPoint.z].biomeId
-		buildBridge(level, startPointTuple, endPointTuple, height, 4, biomeId)
+		buildBridge(level, startPointTuple, endPointTuple, height, 4, bridge.biomeId)
 
 def buildPathPoint(level, surface, point, height):
 	buildCenterPathTile(level, surface, point, height)

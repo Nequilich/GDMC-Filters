@@ -137,3 +137,9 @@ class Property:
 		self.zPathwayStart = 0
 		self.xPathwayEnd = 0
 		self.zPathwayEnd = 0
+
+class Bridge:
+
+	def __init__(self, bridgePoints, biomeId):
+		self.bridgePoints = bridgePoints
+		self.biomeId = biomeId

@@ -1,4 +1,7 @@
 defaultBiomeChanges = {
+    "plains": {
+
+    },
     "forest": {
         "oak_wood_planks": "birch_wood_planks",
         "oak_wood_fence": "birch_wood_fence"

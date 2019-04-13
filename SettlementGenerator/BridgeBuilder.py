@@ -26,7 +26,6 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, biomeId):
     offsetNext = False
     offsetInterval = bridgeLength/float(bridgeSkew)
     currentOffset = 0
-    # TODO WIP handle offset intervals smaller than 2.
 
     # place bridge heads
     if (offsetInterval >= 2):
@@ -49,6 +48,8 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, biomeId):
                       (startPoint[1] + (headLength-1) * bridgeMainDirectionZ))
         endPoint = ((endPoint[0] + (headLength-1) * bridgeMainDirectionX * -1),
                     (endPoint[1] + (headLength-1) * bridgeMainDirectionZ * -1))
+        newBridgeLength = bridgeLength - headLength
+        newBridgeSkew = bridgeSkew
 
     else:
         diagonal = True
@@ -65,23 +66,17 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, biomeId):
                       (startPoint[1] + offsetMain*bridgeMainDirectionZ + offsetSecondaryStart*bridgeSecondaryDirectionZ))
         endPoint = ((endPoint[0] + (offsetMain*bridgeMainDirectionX + offsetSecondaryEnd*bridgeSecondaryDirectionX) * -1),
                     (endPoint[1] + (offsetMain*bridgeMainDirectionZ + offsetSecondaryEnd*bridgeSecondaryDirectionZ) * -1))
+        newBridgeLength = bridgeLength - offsetMain * 2
+        newBridgeSkew = bridgeSkew - tempWidth + int(tempWidth / offsetInterval)
 
-        # Marks the new points
-        # setBlock(level, startPoint[0], bridgeY, startPoint[1],
-        #          materials["normal"][0], materials["normal"][1])
-        # setBlock(level, endPoint[0], bridgeY, endPoint[1],
-        #          materials["normal"][0], materials["normal"][1])
+    # Update offset interval after placing bridgeheads
+    offsetInterval = newBridgeLength/float(newBridgeSkew)
 
-    # Update offset variables after placing bridgeheads
-    setBridgeDirections(startPoint, endPoint)
-    offsetInterval = bridgeLength/float(bridgeSkew)
     # place main part of bridge
     if (diagonal):
         if offsetInterval < 2:
             offsetNext = True
-            # if offsetInterval >' 1:
-            #     width = width+1'
-    for i in range(1, bridgeLength-1):
+    for i in range(1, newBridgeLength-1):
         x = startPoint[0]+(i*bridgeMainDirectionX) + \
             (currentOffset*bridgeSecondaryDirectionX)
         z = startPoint[1]+(i*bridgeMainDirectionZ) + \
@@ -158,7 +153,8 @@ def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):
     else:
         flipped = -1
 
-    # Pillars with torches TODO scale with width
+    # Pillars with torches 
+    # TODO scale with width
     placePillarWithTorch(level, (x + flipped*2*(bridgeMainDirectionX + bridgeSecondaryDirectionX)),
                          y, (z + flipped*-1*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
     placePillarWithTorch(level, (x + flipped*-1*(bridgeMainDirectionX + bridgeSecondaryDirectionX)),
@@ -219,7 +215,6 @@ def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):
 def setBridgeDirections(startPoint, endPoint):
     xLength = abs(endPoint[0] - startPoint[0])+1
     zLength = abs(endPoint[1] - startPoint[1])+1
-    # bridgeLength = max(xLength, xLength)
 
     global bridgeMainDirectionX
     global bridgeMainDirectionZ
@@ -261,7 +256,6 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
     width = 3
     currentOffset = 0
     offsetInterval = bridgeLength/float(bridgeSkew)
-    offsetNext = False
 
     # Offset points of bridge to center.
     startPoint = (startPoint[0]-((width/2)*bridgeSecondaryDirectionX),
@@ -274,7 +268,7 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
             (currentOffset*bridgeSecondaryDirectionX)
         z = startPoint[1]+(i*bridgeMainDirectionZ) + \
             (currentOffset*bridgeSecondaryDirectionZ)
-        if ((i+1) % offsetInterval < 1):
+        if (i % offsetInterval < 1):
             placeBridgeSection(level, x, bridgeY, z, width+1, materials["lower slab"],
                                False, False, False)
             currentOffset += 1
