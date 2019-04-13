@@ -63,30 +63,30 @@ blockTypes = {
         'type': 'stone',
         'default': (1, 0),
         'slabs': {
-                'top': (44, 8),
-                'bottom': (44, 0)
+            'top': (44, 8),
+            'bottom': (44, 0)
         }
     },
     'cobblestone': {
         'type': 'cobblestone',
         'default': (4, 0),
         'directions': {
-                'north': {
-                    'top': (67, 7),
-                    'bottom': (67, 3)
-                },
+            'north': {
+                'top': (67, 7),
+                'bottom': (67, 3)
+            },
             'east': {
-                    'top': (67, 4),
-                    'bottom': (67, 0)
-                },
+                'top': (67, 4),
+                'bottom': (67, 0)
+            },
             'south': {
-                    'top': (67, 6),
-                    'bottom': (67, 2)
-                },
+                'top': (67, 6),
+                'bottom': (67, 2)
+            },
             'west': {
-                    'top': (67, 5),
-                    'bottom': (67, 1)
-                }
+                'top': (67, 5),
+                'bottom': (67, 1)
+            }
         },
         'slabs': {
             'top': (44, 11),
@@ -97,22 +97,22 @@ blockTypes = {
         'type': 'stone_brick',
         'default': (98, 0),
         'directions': {
-                'north': {
-                    'top': (109, 7),
-                    'bottom': (109, 3)
-                },
+            'north': {
+                'top': (109, 7),
+                'bottom': (109, 3)
+            },
             'east': {
-                    'top': (109, 4),
-                    'bottom': (109, 0)
-                },
+                'top': (109, 4),
+                'bottom': (109, 0)
+            },
             'south': {
-                    'top': (109, 6),
-                    'bottom': (109, 2)
-                },
+                'top': (109, 6),
+                'bottom': (109, 2)
+            },
             'west': {
-                    'top': (109, 5),
-                    'bottom': (109, 1)
-                }
+                'top': (109, 5),
+                'bottom': (109, 1)
+            }
         },
         'slabs': {
             'top': (44, 13),
@@ -123,22 +123,22 @@ blockTypes = {
         'type': 'brick',
         'default': (45, 0),
         'directions': {
-                'north': {
-                    'top': (108, 7),
-                    'bottom': (108, 3)
-                },
+            'north': {
+                'top': (108, 7),
+                'bottom': (108, 3)
+            },
             'east': {
-                    'top': (108, 4),
-                    'bottom': (108, 0)
-                },
+                'top': (108, 4),
+                'bottom': (108, 0)
+            },
             'south': {
-                    'top': (108, 6),
-                    'bottom': (108, 2)
-                },
+                'top': (108, 6),
+                'bottom': (108, 2)
+            },
             'west': {
-                    'top': (108, 5),
-                    'bottom': (108, 1)
-                }
+                'top': (108, 5),
+                'bottom': (108, 1)
+            }
         },
         'slabs': {
             'top': (44, 12),
@@ -149,44 +149,44 @@ blockTypes = {
         'type': 'oak_wood',
         'default': (17, 0),
         'directions': {
-                'north': {
-                    'top': (17, 8),
-                    'bottom': (17, 8)
-                },
+            'north': {
+                'top': (17, 8),
+                'bottom': (17, 8)
+            },
             'east': {
-                    'top': (17, 4),
-                    'bottom': (17, 4)
-                },
+                'top': (17, 4),
+                'bottom': (17, 4)
+            },
             'south': {
-                    'top': (17, 8),
-                    'bottom': (17, 8)
-                },
+                'top': (17, 8),
+                'bottom': (17, 8)
+            },
             'west': {
-                    'top': (17, 4),
-                    'bottom': (17, 4)
-                }
+                'top': (17, 4),
+                'bottom': (17, 4)
+            }
         }
     },
     'spruce_wood': {
         'type': 'spruce_wood',
         'default': (17, 1),
         'directions': {
-                'north': {
-                    'top': (17, 9),
-                    'bottom': (17, 9)
-                },
+            'north': {
+                'top': (17, 9),
+                'bottom': (17, 9)
+            },
             'east': {
-                    'top': (17, 5),
-                    'bottom': (17, 5)
-                },
+                'top': (17, 5),
+                'bottom': (17, 5)
+            },
             'south': {
-                    'top': (17, 9),
-                    'bottom': (17, 9)
-                },
+                'top': (17, 9),
+                'bottom': (17, 9)
+            },
             'west': {
-                    'top': (17, 5),
-                    'bottom': (17, 5)
-                }
+                'top': (17, 5),
+                'bottom': (17, 5)
+            }
         }
     },
     'birch_wood': {
@@ -237,66 +237,66 @@ blockTypes = {
         'type': 'acacia_wood',
         'default': (162, 0),
         'directions': {
-                'north': {
-                    'top': (162, 8),
-                    'bottom': (162, 8)
-                },
+            'north': {
+                'top': (162, 8),
+                'bottom': (162, 8)
+            },
             'east': {
-                    'top': (162, 4),
-                    'bottom': (162, 4)
-                },
+                'top': (162, 4),
+                'bottom': (162, 4)
+            },
             'south': {
-                    'top': (162, 8),
-                    'bottom': (162, 8)
-                },
+                'top': (162, 8),
+                'bottom': (162, 8)
+            },
             'west': {
-                    'top': (162, 4),
-                    'bottom': (162, 4)
-                }
+                'top': (162, 4),
+                'bottom': (162, 4)
+            }
         }
     },
     'dark_oak_wood': {
         'type': 'dark_oak_wood',
         'default': (162, 1),
         'directions': {
-                'north': {
-                    'top': (162, 9),
-                    'bottom': (162, 9)
-                },
+            'north': {
+                'top': (162, 9),
+                'bottom': (162, 9)
+            },
             'east': {
-                    'top': (162, 5),
-                    'bottom': (162, 5)
-                },
+                'top': (162, 5),
+                'bottom': (162, 5)
+            },
             'south': {
-                    'top': (162, 9),
-                    'bottom': (162, 9)
-                },
+                'top': (162, 9),
+                'bottom': (162, 9)
+            },
             'west': {
-                    'top': (162, 5),
-                    'bottom': (162, 5)
-                }
+                'top': (162, 5),
+                'bottom': (162, 5)
+            }
         }
     },
     'oak_wood_planks': {
         'type': 'oak_wood_planks',
         'default': (5, 0),
         'directions': {
-                'north': {
-                    'top': (53, 7),
-                    'bottom': (53, 3)
-                },
+            'north': {
+                'top': (53, 7),
+                'bottom': (53, 3)
+            },
             'east': {
-                    'top': (53, 4),
-                    'bottom': (53, 0)
-                },
+                'top': (53, 4),
+                'bottom': (53, 0)
+            },
             'south': {
-                    'top': (53, 6),
-                    'bottom': (53, 2)
-                },
+                'top': (53, 6),
+                'bottom': (53, 2)
+            },
             'west': {
-                    'top': (53, 5),
-                    'bottom': (53, 1)
-                }
+                'top': (53, 5),
+                'bottom': (53, 1)
+            }
         },
         'slabs': {
             'top': (126, 8),
@@ -307,22 +307,22 @@ blockTypes = {
         'type': 'spruce_wood_planks',
         'default': (5, 1),
         'directions': {
-                'north': {
-                    'top': (134, 7),
-                    'bottom': (134, 3)
-                },
+            'north': {
+                'top': (134, 7),
+                'bottom': (134, 3)
+            },
             'east': {
-                    'top': (134, 4),
-                    'bottom': (134, 0)
-                },
+                'top': (134, 4),
+                'bottom': (134, 0)
+            },
             'south': {
-                    'top': (134, 6),
-                    'bottom': (134, 2)
-                },
+                'top': (134, 6),
+                'bottom': (134, 2)
+            },
             'west': {
-                    'top': (134, 5),
-                    'bottom': (134, 1)
-                }
+                'top': (134, 5),
+                'bottom': (134, 1)
+            }
         },
         'slabs': {
             'top': (126, 9),
@@ -333,22 +333,22 @@ blockTypes = {
         'type': 'birch_wood_planks',
         'default': (5, 2),
         'directions': {
-                'north': {
-                    'top': (135, 7),
-                    'bottom': (135, 3)
-                },
+            'north': {
+                'top': (135, 7),
+                'bottom': (135, 3)
+            },
             'east': {
-                    'top': (135, 4),
-                    'bottom': (135, 0)
-                },
+                'top': (135, 4),
+                'bottom': (135, 0)
+            },
             'south': {
-                    'top': (135, 6),
-                    'bottom': (135, 2)
-                },
+                'top': (135, 6),
+                'bottom': (135, 2)
+            },
             'west': {
-                    'top': (135, 5),
-                    'bottom': (135, 1)
-                }
+                'top': (135, 5),
+                'bottom': (135, 1)
+            }
         },
         'slabs': {
             'top': (126, 10),
@@ -359,22 +359,22 @@ blockTypes = {
         'type': 'jungle_wood_planks',
         'default': (5, 3),
         'directions': {
-                'north': {
-                    'top': (136, 7),
-                    'bottom': (136, 3)
-                },
+            'north': {
+                'top': (136, 7),
+                'bottom': (136, 3)
+            },
             'east': {
-                    'top': (136, 4),
-                    'bottom': (136, 0)
-                },
+                'top': (136, 4),
+                'bottom': (136, 0)
+            },
             'south': {
-                    'top': (136, 6),
-                    'bottom': (136, 2)
-                },
+                'top': (136, 6),
+                'bottom': (136, 2)
+            },
             'west': {
-                    'top': (136, 5),
-                    'bottom': (136, 1)
-                }
+                'top': (136, 5),
+                'bottom': (136, 1)
+            }
         },
         'slabs': {
             'top': (126, 11),
@@ -385,22 +385,22 @@ blockTypes = {
         'type': 'acacia_wood_planks',
         'default': (5, 4),
         'directions': {
-                'north': {
-                    'top': (163, 7),
-                    'bottom': (163, 3)
-                },
+            'north': {
+                'top': (163, 7),
+                'bottom': (163, 3)
+            },
             'east': {
-                    'top': (163, 4),
-                    'bottom': (163, 0)
-                },
+                'top': (163, 4),
+                'bottom': (163, 0)
+            },
             'south': {
-                    'top': (163, 6),
-                    'bottom': (163, 2)
-                },
+                'top': (163, 6),
+                'bottom': (163, 2)
+            },
             'west': {
-                    'top': (163, 5),
-                    'bottom': (163, 1)
-                }
+                'top': (163, 5),
+                'bottom': (163, 1)
+            }
         },
         'slabs': {
             'top': (126, 12),
@@ -411,22 +411,22 @@ blockTypes = {
         'type': 'dark_oak_wood_planks',
         'default': (5, 5),
         'directions': {
-                'north': {
-                    'top': (164, 7),
-                    'bottom': (164, 3)
-                },
+            'north': {
+                'top': (164, 7),
+                'bottom': (164, 3)
+            },
             'east': {
-                    'top': (164, 4),
-                    'bottom': (164, 0)
-                },
+                'top': (164, 4),
+                'bottom': (164, 0)
+            },
             'south': {
-                    'top': (164, 6),
-                    'bottom': (164, 2)
-                },
+                'top': (164, 6),
+                'bottom': (164, 2)
+            },
             'west': {
-                    'top': (164, 5),
-                    'bottom': (164, 1)
-                }
+                'top': (164, 5),
+                'bottom': (164, 1)
+            }
         },
         'slabs': {
             'top': (126, 13),
@@ -437,44 +437,44 @@ blockTypes = {
         'type': 'oak_door',
         'default': (64, 3),
         'directions': {
-                'north': {
-                    'top': (64, 3),
-                    'bottom': (64, 3)
-                },
+            'north': {
+                'top': (64, 3),
+                'bottom': (64, 3)
+            },
             'east': {
-                    'top': (64, 0),
-                    'bottom': (64, 0)
-                },
+                'top': (64, 0),
+                'bottom': (64, 0)
+            },
             'south': {
-                    'top': (64, 1),
-                    'bottom': (64, 1)
-                },
+                'top': (64, 1),
+                'bottom': (64, 1)
+            },
             'west': {
-                    'top': (64, 2),
-                    'bottom': (64, 2)
-                }
+                'top': (64, 2),
+                'bottom': (64, 2)
+            }
         }
     },
     'wooden_trapdoor': {
         'type': 'wooden_trapdoor',
         'default': (96, 0),
         'directions': {
-                'north': {
-                    'top': (96, 8),
-                    'bottom': (96, 0)
-                },
+            'north': {
+                'top': (96, 8),
+                'bottom': (96, 0)
+            },
             'east': {
-                    'top': (96, 11),
-                    'bottom': (96, 3)
-                },
+                'top': (96, 11),
+                'bottom': (96, 3)
+            },
             'south': {
-                    'top': (96, 9),
-                    'bottom': (96, 1)
-                },
+                'top': (96, 9),
+                'bottom': (96, 1)
+            },
             'west': {
-                    'top': (96, 10),
-                    'bottom': (96, 2)
-                }
+                'top': (96, 10),
+                'bottom': (96, 2)
+            }
         },
         'slabs': {
             'top': (96, 8),
@@ -485,44 +485,44 @@ blockTypes = {
         'type': 'ladder',
         'default': (65, 2),
         'directions': {
-                'north': {
-                    'top': (65, 2),
-                    'bottom': (65, 2)
-                },
+            'north': {
+                'top': (65, 2),
+                'bottom': (65, 2)
+            },
             'east': {
-                    'top': (65, 5),
-                    'bottom': (65, 5)
-                },
+                'top': (65, 5),
+                'bottom': (65, 5)
+            },
             'south': {
-                    'top': (65, 3),
-                    'bottom': (65, 3)
-                },
+                'top': (65, 3),
+                'bottom': (65, 3)
+            },
             'west': {
-                    'top': (65, 4),
-                    'bottom': (65, 4)
-                }
+                'top': (65, 4),
+                'bottom': (65, 4)
+            }
         }
     },
     'torch': {
         'type': 'torch',
         'default': (50, 5),
         'directions': {
-                'north': {
-                    'top': (50, 4),
-                    'bottom': (50, 4)
-                },
+            'north': {
+                'top': (50, 4),
+                'bottom': (50, 4)
+            },
             'east': {
-                    'top': (50, 1),
-                    'bottom': (50, 1)
-                },
+                'top': (50, 1),
+                'bottom': (50, 1)
+            },
             'south': {
-                    'top': (50, 3),
-                    'bottom': (50, 3)
-                },
+                'top': (50, 3),
+                'bottom': (50, 3)
+            },
             'west': {
-                    'top': (50, 2),
-                    'bottom': (50, 2)
-                }
+                'top': (50, 2),
+                'bottom': (50, 2)
+            }
         }
     },
     'sandstone': {
@@ -555,7 +555,7 @@ blockTypes = {
         'type': 'smooth_sandstone',
         'default': (24, 2)
     },
-	'chiseled_sandstone': {
+    'chiseled_sandstone': {
         'type': 'chiseled_sandstone',
         'default': (24, 1)
     },
@@ -589,7 +589,7 @@ blockTypes = {
         'type': 'smooth_sandstone',
         'default': (179, 2)
     },
-	'red_chiseled_sandstone': {
+    'red_chiseled_sandstone': {
         'type': 'chiseled_sandstone',
         'default': (179, 1)
     },
