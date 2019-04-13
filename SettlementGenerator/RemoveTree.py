@@ -22,7 +22,7 @@ def removeTree(level, x, y, z):
 		blocks.extend([Block(x + 1, y + 1, z), Block(x - 1, y + 1, z), Block(x, y + 1, z + 1), Block(x, y + 1, z - 1)])
 		blocks.extend([Block(x + 1, y - 1, z), Block(x - 1, y - 1, z), Block(x, y - 1, z + 1), Block(x, y - 1, z - 1)])
 
-treeBlocks = [17, 18, 99, 100, 161, 162]
+treeBlocks = [17, 18, 99, 100, 106, 161, 162]
 def isTreeBlock(level, x, y, z):
 		for block in treeBlocks:
 			if (level.blockAt(x, y, z) == block):
