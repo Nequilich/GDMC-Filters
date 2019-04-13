@@ -1,3 +1,4 @@
+from BiomeFinder import findBiomes
 from Classes import Surface
 from Common import setBlock
 from FarmBuilder import buildPatch
@@ -20,6 +21,7 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
+	findBiomes(level, surface)
 	sections = calculateSections(surface, 1, 100)
 	landSections = []
 	for section in sections:
