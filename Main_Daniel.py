@@ -5,7 +5,7 @@ from Classes import Surface
 from Common import getEuclideanDistance
 from Common import setBlock
 from PathManager import getPathsBetweenSections
-from PathManager import getPathsInSection
+from PathManager import getPathsInSections
 from StructureBuilder import buildStructure
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
@@ -46,8 +46,9 @@ def perform(level, box, options):
 	
 	habitatSections = getHabitatSections(towerSections, mediumLandSections, bigLandSections)
 	
-	paths = getPathsBetweenSections(surface, habitatSections)
-	paths.extend(getPathsInSections(surface, bigLandSections))
+	paths = getPathsInSections(surface, bigLandSections)
+	paths.extend(getPathsBetweenSections(surface, habitatSections))
+	
 	buildPaths(level, surface, paths)
 
 	properties = getProperties(surface, paths)
@@ -169,11 +170,6 @@ def buildTowers(level, surface, towerSections):
 
 
 
-def getPathsInSections(surface, bigLandSections):
-	paths = []
-	for section in bigLandSections:
-		paths.extend(getPathsInSection(surface, section))
-	return paths
 
 def getProperties(surface, paths):
 	properties = []
