@@ -45,20 +45,14 @@ def buildRoads(level, surface, roads):
 			streetLightCounter += 1
 
 def buildBridges(level, surface, bridges):
-	oakMaterial = {
-    "normal": (17, 0),
-    "upper slab": (126, 8),
-    "lower slab": (126, 0),
-    "fence": 85.0,
-    "torch": (50, 5)
-	}
 	for bridge in bridges:
 		startPoint = bridge[0]
 		endPoint = bridge[len(bridge) - 1]
 		height = surface.surfaceMap[startPoint.x][startPoint.z].height + 1
 		startPointTuple = (startPoint.x + surface.xStart, startPoint.z + surface.zStart)
 		endPointTuple = (endPoint.x + surface.xStart, endPoint.z + surface.zStart)
-		buildBridge(level, startPointTuple, endPointTuple, height, 4, oakMaterial)
+		biomeId = surface.surfaceMap[startPoint.x][startPoint.z].biomeId
+		buildBridge(level, startPointTuple, endPointTuple, height, 4, biomeId)
 
 def buildPathPoint(level, surface, point, height):
 	buildCenterPathTile(level, surface, point, height)
@@ -89,7 +83,8 @@ def buildOuterPathTile(level, surface, point, height):
 		setBlock(level, None, point.x, height, point.z, 44, 3)
 	else:
 		setBlock(level, None, point.x, height, point.z, 4, 0)
-	
+		clearAboveTile(level, point, height)
+		
 	i = 1
 	while level.blockAt(point.x, height - i, point.z) == 0:
 		setBlock(level, None, point.x, height - i, point.z, 98, 0)
@@ -97,13 +92,12 @@ def buildOuterPathTile(level, surface, point, height):
 	return True
 
 def clearAboveTile(level, point, height):
-	for i in range(1, 3):
+	for i in range(1, 4):
 		removeTree(level, point.x, height + i, point.z)
 		setBlock(level, None, point.x, height + i, point.z, 0, 0)
 
 def placeStreetLight(level, surface, point, height):
 	buildablePoint = buildOuterPathTile(level, surface, point, height)
 	if buildablePoint:  # Tries to place a tile and if successful place a street light.
-		print(buildablePoint)
 		setBlock(level, None, point.x, height + 1, point.z, 139, 0)
 		setBlock(level, None, point.x, height + 2, point.z, 50, 5)

@@ -1,3 +1,4 @@
+from BiomeFinder import findBiomes
 from Classes import Edge
 from Classes import Node
 from Classes import Point
@@ -24,6 +25,7 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
+	findBiomes(level, surface)
 	sections = calculateSections(surface, 1, 100)
 	landSections = []
 	for section in sections:
