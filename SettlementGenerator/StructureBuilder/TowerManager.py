@@ -1,7 +1,7 @@
 import json
 
-from StructureBuilder import Base
-from StructureBuilder import Blueprint
+from Classes import Base
+from Classes import Blueprint
 
 def getTowerBlueprint(point, baseHeight):
 	filePath = "./stock-filters/SettlementGenerator/StructureBuilder/structures/tower_medium.json"
