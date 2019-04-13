@@ -54,7 +54,6 @@ def buildRoads(level, surface, roads):
 
 def buildBridges(level, surface, bridges):
 	for bridge in bridges:
-		print(bridge.biomeId)
 		startPoint = bridge.bridgePoints[0]
 		endPoint = bridge.bridgePoints[-1]
 		height = surface.surfaceMap[startPoint.x][startPoint.z].height + 1
