@@ -1,7 +1,7 @@
 from Classes import Surface
 from Common import setBlock
 from GetPath import getPath
-from GetPathBetweenSections import getPathBetweenSections
+from PathManager import getPathsBetweenSections
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from HouseBuilder import buildHouse
 from SurfaceManager import calculateHeightMapAdv
@@ -21,7 +21,7 @@ def perform(level, box, options):
 		if not section.isWater:
 			calculateSectionMid(surface, section)
 			landSections.append(section)
-	paths = getPathBetweenSections(surface, landSections)
+	paths = getPathsBetweenSections(surface, landSections)
 
 	for path in paths:
 		buildRoad(level, surface, path)
