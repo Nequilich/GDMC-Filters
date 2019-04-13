@@ -5,12 +5,12 @@ from Common import getEuclideanDistance
 from Common import setBlock
 from PathManager import getPathsBetweenSections
 from PathManager import getPathsInSection
+from StructureBuilder import buildStructure
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
-from TowerBuilder import buildMediumTower
 
 from RoadBuilder import buildTestRoad
 from GetPropertiesAlongPath import getPropertiesAlongPath
@@ -155,7 +155,7 @@ def buildPaths(level, surface, paths):
 def buildTowers(level, surface, towerSections):
 	for section in towerSections:
 		height = surface.surfaceMap[section.xMid][section.zMid].height
-		buildMediumTower(level, Point(surface.xStart + section.xMid, surface.zStart + section.zMid), height, 'north')
+		buildStructure(level, Point(surface.xStart + section.xMid - 5, surface.zStart + section.zMid - 5), height, 'tower', 'north')
 
 
 
