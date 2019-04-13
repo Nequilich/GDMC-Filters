@@ -31,7 +31,7 @@ def perform(level, box, options):
 			landSections.append(section)
 
 	paths = getPathsInSections(surface, landSections)
-	paths.extends(getPathsBetweenSections(surface, landSections))
+	paths.extend(getPathsBetweenSections(surface, landSections))
 
 	for path in paths:
 		buildTestRoad(level, surface, path)

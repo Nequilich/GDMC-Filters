@@ -620,5 +620,141 @@ blockTypes = {
     'glass': {
         'type': 'glass',
         'default': (20, 0)
+    },
+    'glass_pane': {
+        'type': 'glass_pane',
+        'default': (102, 0)
+    },
+    'oak_wood_door': {
+        'type': 'oak_wood_door',
+        'default': (64, 0),
+        'directions': {
+            'north': {
+                'top': (64, 9),
+                'bottom': (64, 3)
+            },
+            'east': {
+                'top': (64, 9),
+                'bottom': (64, 0)
+            },
+            'south': {
+                'top': (64, 9),
+                'bottom': (64, 1)
+            },
+            'west': {
+                'top': (64, 9),
+                'bottom': (64, 2)
+            }
+        }
+    },
+    'spruce_wood_door': {
+        'type': 'spruce_wood_door',
+        'default': (193, 0),
+        'directions': {
+            'north': {
+                'top': (193, 9),
+                'bottom': (193, 3)
+            },
+            'east': {
+                'top': (193, 9),
+                'bottom': (193, 0)
+            },
+            'south': {
+                'top': (193, 9),
+                'bottom': (193, 1)
+            },
+            'west': {
+                'top': (193, 9),
+                'bottom': (193, 2)
+            }
+        }
+    },
+    'birch_wood_door': {
+        'type': 'birch_wood_door',
+        'default': (194, 0),
+        'directions': {
+            'north': {
+                'top': (194, 9),
+                'bottom': (194, 3)
+            },
+            'east': {
+                'top': (194, 9),
+                'bottom': (194, 0)
+            },
+            'south': {
+                'top': (194, 9),
+                'bottom': (194, 1)
+            },
+            'west': {
+                'top': (194, 9),
+                'bottom': (194, 2)
+            }
+        }
+    },
+    'jungle_wood_door': {
+        'type': 'jungle_wood_door',
+        'default': (195, 0),
+        'directions': {
+            'north': {
+                'top': (195, 9),
+                'bottom': (195, 3)
+            },
+            'east': {
+                'top': (195, 9),
+                'bottom': (195, 0)
+            },
+            'south': {
+                'top': (195, 9),
+                'bottom': (195, 1)
+            },
+            'west': {
+                'top': (195, 9),
+                'bottom': (195, 2)
+            }
+        }
+    },
+    'acacia_wood_door': {
+        'type': 'acacia_wood_door',
+        'default': (196, 0),
+        'directions': {
+            'north': {
+                'top': (196, 9),
+                'bottom': (196, 3)
+            },
+            'east': {
+                'top': (196, 9),
+                'bottom': (196, 0)
+            },
+            'south': {
+                'top': (196, 9),
+                'bottom': (196, 1)
+            },
+            'west': {
+                'top': (196, 9),
+                'bottom': (196, 2)
+            }
+        }
+    },
+    'dark_oak_wood_door': {
+        'type': 'dark_oak_wood_door',
+        'default': (197, 0),
+        'directions': {
+            'north': {
+                'top': (197, 9),
+                'bottom': (197, 3)
+            },
+            'east': {
+                'top': (197, 9),
+                'bottom': (197, 0)
+            },
+            'south': {
+                'top': (197, 9),
+                'bottom': (197, 1)
+            },
+            'west': {
+                'top': (197, 9),
+                'bottom': (197, 2)
+            }
+        }
     }
 }

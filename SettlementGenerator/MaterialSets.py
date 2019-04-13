@@ -6,7 +6,9 @@ default = {
     "wood_planks": blockTypes["oak_wood_planks"],
     "fence": blockTypes["oak_wood_fence"],
     "torch": blockTypes["torch"],
-    "glass": blockTypes["glass"]
+    "glass": blockTypes["glass"],
+    "glass_pane": blockTypes["glass_pane"],
+    "door": blockTypes["oak_wood_door"]
 }
 
 oak = {
