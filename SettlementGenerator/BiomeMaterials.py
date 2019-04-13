@@ -1,35 +1,26 @@
-from MaterialSets import *
+import MaterialSets
 from Biomes import getBiomeDict
+from BlockDictionary import blockTypes as block_dictionary
+from BiomeChanges import defaultBiomeChanges
 
-default = {
-    "torch": (50, 0),
-    "window": (102, 0)
-}
 
-plains = {
-    "foundation": stone["normal"],
-    "wood beam": oak["normal"],
-    "plank": oak["secondary"],
-    "fence": oak["fence"],
-    "fence gate": oak["fence gate"],
-    "door": oak["door"]
-}
-
-def getBiomeMaterials(biomeID = 1):
-    biomeID = 1  # TODO Remove line when implementing more material sets.
-    # Merges the default materials with the biome materials.
-    materials = addDefaultMaterials(biomeMaterials[biomeID])
+def get_biome_materials(biome_id=1):
+    biome_dict = getBiomeDict()
+    biome_name = biome_dict[biome_id]
+    materials = apply_biome_changes_to_material_set(
+        MaterialSets.default, biome_name)
 
     return materials
 
-def testMaterials():
-    global biomeMaterials
-    biomeMaterials = getBiomeDict()
-    # materials = getBiomeMaterials(1)
-    # print(materials.keys())
-    print(biomeMaterials[1])
 
-def addDefaultMaterials(materials):
-    dflt = default.copy()
-    dflt.update(materials)
-    return dflt
+def apply_biome_changes_to_material_set(material_set, biome):
+    biomeChanges = defaultBiomeChanges[biome]
+    return_materials = {}
+
+    for key, value in material_set.items():
+        if biomeChanges.get(value['type']):
+            value = block_dictionary[biomeChanges[value['type']]]
+
+        return_materials[key] = value
+
+    return return_materials

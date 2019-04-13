@@ -1,10 +1,18 @@
 from Common import setBlock as setBlockWithSurface
 from Classes import Surface
+from BiomeMaterials import get_biome_materials
 
 
-def buildBridge(level, startPoint, endPoint, bridgeY, width, blocks):
+def buildBridge(level, startPoint, endPoint, bridgeY, width, biomeId):
+    blocks = get_biome_materials(biomeId)
     global materials
-    materials = blocks
+    materials = {
+        "normal": blocks["wood"]["default"],
+        "upper slab": blocks["wood_planks"]["slabs"]["top"],
+        "lower slab": blocks["wood_planks"]["slabs"]["bottom"],
+        "fence": blocks["fence"]["default"],
+        "torch": blocks["torch"]["default"]
+    }
 
     # Sets the direction variables
     setBridgeDirections(startPoint, endPoint)
@@ -105,15 +113,15 @@ def placeBridgeSection(level, x, y, z, width, bridgeMaterial, extraFenceLeft=Fal
 
     # Place fencing
     if (placeFence):
-        setBlock(level, x, y+1, z, materials["fence"])
+        setBlock(level, x, y+1, z, materials["fence"][0])
         setBlock(level, x+(width-1)*bridgeSecondaryDirectionX, y+1, z +
-                 (width-1)*bridgeSecondaryDirectionZ, materials["fence"])
+                 (width-1)*bridgeSecondaryDirectionZ, materials["fence"][0])
         if (extraFenceLeft):
             setBlock(level, x+bridgeSecondaryDirectionX, y+1, z +
-                     bridgeSecondaryDirectionZ, materials["fence"])
+                     bridgeSecondaryDirectionZ, materials["fence"][0])
         if (extraFenceRight):
             setBlock(level, x+(width-2)*bridgeSecondaryDirectionX, y+1, z +
-                     (width-2)*bridgeSecondaryDirectionZ, materials["fence"])
+                     (width-2)*bridgeSecondaryDirectionZ, materials["fence"][0])
 
 
 def placeOrthogonalBridgeHead(level, x, y, z, width, headLength, flipped=False):
@@ -177,8 +185,8 @@ def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):
         for j in range(i, -1, -1):
             setBlock(level, tempX+flipped*(-1*j*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y, tempZ+flipped*(-1*j*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ),
                      materials["upper slab"][0], materials["upper slab"][1])
-    setBlock(level, x + flipped*tempWidth, y+1, z, materials["fence"])
-    setBlock(level, x, y+1, z + flipped*tempWidth, materials["fence"])
+    setBlock(level, x + flipped*tempWidth, y+1, z, materials["fence"][0])
+    setBlock(level, x, y+1, z + flipped*tempWidth, materials["fence"][0])
 
     # Priming platform for main part of bridge
     offsetMain = -1*(tempWidth-2)
@@ -199,10 +207,10 @@ def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):
         for j in range(flapSize):
             if (j == flapSize-1):
                 setBlock(level, tempX+flipped*(j*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y+1,
-                         tempZ+flipped*(j*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ), materials["fence"])
+                         tempZ+flipped*(j*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ), materials["fence"][0])
                 if (extraFence):
                     setBlock(level, tempX+flipped*((j-1)*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y+1,
-                             tempZ+flipped*((j-1)*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ), materials["fence"])
+                             tempZ+flipped*((j-1)*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ), materials["fence"][0])
                     extraFence = False
             setBlock(level, tempX+flipped*(j*bridgeSecondaryDirectionX+offsetMain*bridgeMainDirectionX), y, tempZ+flipped*(j*bridgeSecondaryDirectionZ + offsetMain * bridgeMainDirectionZ),
                      materials["upper slab"][0], materials["upper slab"][1])

@@ -1,3 +1,14 @@
+from BlockDictionary import blockTypes
+
+default = {
+    "stone": blockTypes["cobblestone"],
+    "wood": blockTypes["oak_wood"],
+    "wood_planks": blockTypes["oak_wood_planks"],
+    "fence": blockTypes["oak_wood_fence"],
+    "torch": blockTypes["torch"],
+    "glass": blockTypes["glass"]
+}
+
 oak = {
     "normal": (17, 0),  # Wood block
     "secondary": (5, 0),  # Plank

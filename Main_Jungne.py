@@ -7,47 +7,15 @@ from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
 from SurfaceManager import calculateSections
 from VillagerSpawner import spawnVillager
-from BiomeMaterials import testMaterials
-import Biomes
+from BiomeMaterials import get_biome_materials
+from Biomes import biomes
 import time
 
 inputs = (
     ("Width", 4),
-    ("Material", ("Oak", "Cobblestone", "Birch")),
+    ("Biome", tuple(biomes.keys())),
     ("Creator: Jungne Losang", "label")
 )
-
-oakMaterial = {
-    "normal": (17, 0),
-    "upper slab": (126, 8),
-    "lower slab": (126, 0),
-    "fence": 85.0,
-    "torch": 50
-}
-
-cobblestoneMaterial = {
-    "normal": (4, 0),
-    "upper slab": (44, 11),
-    "lower slab": (44, 3),
-    "fence": 139,
-    "torch": 50
-}
-
-birchMaterial = {
-    "normal": (17, 2),
-    "upper slab": (126, 10),
-    "lower slab": (126, 2),
-    "fence": 189,
-    "torch": 50
-}
-
-glass = {
-    "green": (95, 5),
-    "yellow": (95, 4),
-    "orange": (95, 1),
-    "red": (95, 14),
-    "blue": (95, 11)
-}
 
 
 def perform(level, box, options):
@@ -58,13 +26,13 @@ def perform(level, box, options):
     # spawnVillager(level, box)
 
     # BridgeBuilder
-    # bridgeWidth = options["Width"]
+    bridgeWidth = options["Width"]
 
     surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
     calculateHeightMapAdv(level, surface)
-    # startPoint = (box.minx, box.minz)
-    # endPoint = (box.maxx-1, box.maxz-1)
-    # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
+    startPoint = (box.minx, box.minz)
+    endPoint = (box.maxx-1, box.maxz-1)
+    bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
 
     # chosenMaterial = options["Material"]
     # if (chosenMaterial == "Oak"):
@@ -76,21 +44,23 @@ def perform(level, box, options):
     # else:
     #   materials = oakMaterial
 
-    # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, materials)
-
     # BiomeFinder adds biome data to surfaceMap
     findBiomes(level, surface)
+    # Test of biome material changes.
+    biomeId = surface.surfaceMap[0][0].biomeId
 
-    # Makes a colored map of biomes in the sky
-    biomeIds = Biomes.getBiomeDict()
-    biomeNameList = Biomes.biomes.keys()
-    for x in range(surface.xLength):
-        for z in range(surface.zLength):
-            biomeName = biomeIds[surface.surfaceMap[x][z].biomeId]
+    buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, biomeId)
 
-            for i in range(len(biomeNameList)):
-                if (biomeName == biomeNameList[i]):
-                    setBlock(level, surface, x, 100, z, 35, i)
+    # # Makes a colored map of biomes in the sky
+    # biomeIds = Biomes.getBiomeDict()
+    # biomeNameList = Biomes.biomes.keys()
+    # for x in range(surface.xLength):
+    #     for z in range(surface.zLength):
+    #         biomeName = biomeIds[surface.surfaceMap[x][z].biomeId]
+
+    #         for i in range(len(biomeNameList)):
+    #             if (biomeName == biomeNameList[i]):
+    #                 setBlock(level, surface, x, 100, z, 35, i)
 
     # Topographic marker
     # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)

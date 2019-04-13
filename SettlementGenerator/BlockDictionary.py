@@ -592,5 +592,33 @@ blockTypes = {
 	'red_chiseled_sandstone': {
         'type': 'chiseled_sandstone',
         'default': (179, 1)
+    },
+    'oak_wood_fence': {
+        'type': 'oak_wood_fence',
+        'default': (85, 0)
+    },
+    'spruce_wood_fence': {
+        'type': 'spruce_wood_fence',
+        'default': (188, 0)
+    },
+    'birch_wood_fence': {
+        'type': 'birch_wood_fence',
+        'default': (189, 0)
+    },
+    'jungle_wood_fence': {
+        'type': 'jungle_wood_fence',
+        'default': (190, 0)
+    },
+    'dark_oak_wood_fence': {
+        'type': 'dark_oak_wood_fence',
+        'default': (191, 0)
+    },
+    'acacia_wood_fence': {
+        'type': 'acacia_wood_fence',
+        'default': (192, 0)
+    },
+    'glass': {
+        'type': 'glass',
+        'default': (20, 0)
     }
 }
