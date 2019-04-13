@@ -1,16 +1,17 @@
 import heapq
+from BiomeFinder import findBiomes
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
 from Common import setBlock
 from PathManager import getPathsBetweenSections
-from PathManager import getPathsInSection
+from PathManager import getPathsInSections
+from StructureBuilder import buildStructure
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
-from TowerBuilder import buildMediumTower
 
 from RoadBuilder import buildTestRoad
 from GetPropertiesAlongPath import getPropertiesAlongPath
@@ -26,6 +27,7 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
+	findBiomes(level, surface)
 
 	sections = calculateSections(surface, 1, 15)
 	calculateSectionMids(surface, sections)
@@ -44,8 +46,9 @@ def perform(level, box, options):
 	
 	habitatSections = getHabitatSections(towerSections, mediumLandSections, bigLandSections)
 	
-	paths = getPathsBetweenSections(surface, habitatSections)
-	paths.extend(getPathsInSections(surface, bigLandSections))
+	paths = getPathsInSections(surface, bigLandSections)
+	paths.extend(getPathsBetweenSections(surface, habitatSections))
+	
 	buildPaths(level, surface, paths)
 
 	properties = getProperties(surface, paths)
@@ -155,7 +158,7 @@ def buildPaths(level, surface, paths):
 def buildTowers(level, surface, towerSections):
 	for section in towerSections:
 		height = surface.surfaceMap[section.xMid][section.zMid].height
-		buildMediumTower(level, Point(surface.xStart + section.xMid, surface.zStart + section.zMid), height, 'north')
+		buildStructure(level, Point(surface.xStart + section.xMid - 5, surface.zStart + section.zMid - 5), height, 'tower', 'north')
 
 
 
@@ -167,11 +170,6 @@ def buildTowers(level, surface, towerSections):
 
 
 
-def getPathsInSections(surface, bigLandSections):
-	paths = []
-	for section in bigLandSections:
-		paths.extend(getPathsInSection(surface, section))
-	return paths
 
 def getProperties(surface, paths):
 	properties = []

@@ -2,7 +2,7 @@ from Classes import Surface
 from Common import setBlock
 from GetPath import getPath
 from PathManager import getPathsBetweenSections
-from PathManager import getPathsInSection
+from PathManager import getPathsInSections
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from HouseBuilder import buildHouse
 from SurfaceManager import calculateHeightMapAdv
@@ -22,10 +22,9 @@ def perform(level, box, options):
 		if not section.isWater:
 			calculateSectionMid(surface, section)
 			landSections.append(section)
-	bigPaths = getPathsBetweenSections(surface, landSections)
-	smallPaths = []
-	for section in landSections:
-		smallPaths.extend(getPathsInSection(surface, section))
+
+	paths = getPathsInSections(surface, landSections)
+	intersectionPaths = getPathsBetweenSections(surface, landSections)
 
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
@@ -38,12 +37,12 @@ def perform(level, box, options):
 				i = surface.surfaceMap[x][z].sectionId
 				setBlock(level, surface, x, height, z, 35, i % 15)
 
-	for path in smallPaths:
+	for path in paths:
 		for p in path:
 			height = surface.surfaceMap[p.x][p.z].height
-			setBlock(level, surface, p.x, height, p.z, 41)
+			setBlock(level, surface, p.x, height + 1, p.z, 41)
 
-	for path in bigPaths:
+	for path in intersectionPaths:
 		for p in path:
 			height = surface.surfaceMap[p.x][p.z].height
-			setBlock(level, surface, p.x, height, p.z, 57)
+			setBlock(level, surface, p.x, height + 2, p.z, 57)
