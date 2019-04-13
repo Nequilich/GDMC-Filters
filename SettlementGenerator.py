@@ -8,7 +8,7 @@ from GetPropertiesAlongPath import getPropertiesAlongPath
 from HouseBuilder import buildHouse
 from HouseBuilder import clearHouseProperty
 from PathManager import getPathsBetweenSections
-from PathManager import getPathsInSection
+from PathManager import getPathsInSections
 from RoadBuilder import buildTestRoad
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSteepnessMap
@@ -23,15 +23,15 @@ def perform(level, box, options):
 	calculateWaterPlacement(level, surface)
 	findBiomes(level, surface)
 	sections = calculateSections(surface, 1, 100)
+
 	landSections = []
 	for section in sections:
 		if not section.isWater:
 			calculateSectionMid(surface, section)
 			landSections.append(section)
-	paths = getPathsBetweenSections(surface, landSections)
 
-	for section in landSections:
-		paths.extend(getPathsInSection(surface, section))
+	paths = getPathsInSections(surface, landSections)
+	paths.extends(getPathsBetweenSections(surface, landSections))
 
 	for path in paths:
 		buildTestRoad(level, surface, path)
@@ -62,7 +62,8 @@ def perform(level, box, options):
 def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
 	path = getPath(surface, xStart, zStart, xEnd, zEnd)
 	for p in path:
-		if surface.surfaceMap[p.x][p.z].isOccupied:
-			continue
 		height = surface.surfaceMap[p.x][p.z].height
-		setBlock(level, surface, p.x, height, p.z, 4)
+		setBlock(level, surface, p.x, height + 1, p.z, 0)
+		setBlock(level, surface, p.x, height + 2, p.z, 0)
+		if not surface.surfaceMap[p.x][p.z].isOccupied:
+			setBlock(level, surface, p.x, height, p.z, 4)

@@ -2,25 +2,10 @@ import BlockDictionary
 import math
 
 from BiomeChanges import defaultBiomeChanges
+from Classes import Base
+from Classes import Blueprint
 from Common import setBlock
 from TowerManager import getTowerBlueprint
-
-class Blueprint:
-
-	def __init__(self, point, blockRegister, baseHeight, base = None, buildFoundation = False):
-		self.point = point
-		self.blockRegister = blockRegister
-		self.baseHeight = baseHeight
-		self.base = base
-		self.buildFoundation = buildFoundation
-
-class Base:
-	
-	def __init__(self, xStart, zStart, xLength, zLength, height):
-		self.xStart = xStart
-		self.zStart = zStart
-		self.xLength = xLength
-		self.zLength = zLength
 
 directions = ['north', 'east', 'south', 'west']
 

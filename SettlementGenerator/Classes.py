@@ -144,3 +144,20 @@ class Bridge:
 	def __init__(self, bridgePoints, biomeId):
 		self.bridgePoints = bridgePoints
 		self.biomeId = biomeId
+
+class Blueprint:
+
+	def __init__(self, point, blockRegister, baseHeight, base = None, buildFoundation = False):
+		self.point = point
+		self.blockRegister = blockRegister
+		self.baseHeight = baseHeight
+		self.base = base
+		self.buildFoundation = buildFoundation
+
+class Base:
+	
+	def __init__(self, xStart, zStart, xLength, zLength, height):
+		self.xStart = xStart
+		self.zStart = zStart
+		self.xLength = xLength
+		self.zLength = zLength
