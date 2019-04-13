@@ -69,10 +69,10 @@ def moveToPositive(blockRegister):
 def calculateBiomeChanges(blockRegister, specialBiomeChanges, biome):
 	for block in blockRegister:
 		if specialBiomeChanges and specialBiomeChanges.get(biome) and specialBiomeChanges.get(biome).get(block['type']):
-			block['type'] = specialBiomeChanges[block['type']]
+			block['type'] = specialBiomeChanges[biome][block['type']]
 			continue
-		if defaultBiomeChanges.get(block['type']):
-			block['type'] = defaultBiomeChanges[block['type']]
+		if defaultBiomeChanges.get(biome) and defaultBiomeChanges.get(biome).get(block['type']):
+			block['type'] = defaultBiomeChanges[biome][block['type']]
 	return blockRegister
 
 def build(level, blueprint):

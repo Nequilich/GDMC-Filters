@@ -1,5 +1,6 @@
 import heapq
 from BiomeFinder import findBiomes
+from Biomes import getBiomeDict
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
@@ -158,7 +159,9 @@ def buildPaths(level, surface, paths):
 def buildTowers(level, surface, towerSections):
 	for section in towerSections:
 		height = surface.surfaceMap[section.xMid][section.zMid].height
-		buildStructure(level, Point(surface.xStart + section.xMid - 5, surface.zStart + section.zMid - 5), height, 'tower', 'north')
+		biomeId = surface.surfaceMap[section.xMid][section.zMid].biomeId
+		biome = getBiomeDict()[biomeId]
+		buildStructure(level, Point(surface.xStart + section.xMid - 5, surface.zStart + section.zMid - 5), height, 'tower', 'north', biome)
 
 
 
