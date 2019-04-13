@@ -95,6 +95,7 @@ class Section:
 		self.averageHeight = 0
 		self.xMid = 0
 		self.zMid = 0
+		self.pathConnectionPoints = []
 		self.isWater = False
 
 class Point:
