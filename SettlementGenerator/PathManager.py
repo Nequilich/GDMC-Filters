@@ -27,16 +27,16 @@ def getPathsInSection(surface, section):
 		return []
 
 	for _ in range(expectedPoints):
-		length = 0
-		point = None
+		greatestLength = 0
+		nextPoint = None
 		for _ in range(attempts):
-			p = getRandomPoint(pointPool, poolSize, points)
-			l = getLengthToNearestPoint(surface, points, p)
-			if l > length:
-				length = l
-				point = p
-		points.append(point)
-	
+			point = getRandomPoint(pointPool, poolSize, points)
+			length = getLengthToNearestPoint(surface, points, point)
+			if length > greatestLength:
+				greatestLength = length
+				nextPoint = point
+		points.append(nextPoint)
+
 	section.pathConnectionPoints.extend(points)
 	return getPathBetweenPoints(surface, points)
 
@@ -95,7 +95,7 @@ def getPathBetweenPoints(surface, points):
 				continue
 			point1 = node.data
 			point2 = otherNode.data
-			cost = getEuclideanDistance(surface, point1, point2)
+			cost = getDistance(point1.x, point1.z, point2.x, point2.z)
 			edges.append(Edge(cost, node.id, otherNode.id))
 
 	minimumSpanningTree = getMinimumSpanningTree(nodes, edges)
