@@ -7,6 +7,7 @@ from Classes import Surface
 from Common import setBlock
 from HouseBuilder import buildHouse
 from HouseBuilder import clearHouseProperty
+from NameGenerator import getCityName
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
@@ -24,6 +25,9 @@ inputs = (
 
 def perform(level, box, options):
     startTime = time.time()
+
+    for i in range(10):
+        print(getCityName())
 
     # Places a boat 
     # boat = TAG_Compound()
@@ -58,23 +62,23 @@ def perform(level, box, options):
     # spawnVillager(level, box)
 
     # BridgeBuilder
-    bridgeWidth = options["Width"]
+    # bridgeWidth = options["Width"]
 
-    surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
-    calculateHeightMapAdv(level, surface)
-    calculateSteepnessMap(surface)
-    calculateWaterPlacement(level, surface)
-    findBiomes(level, surface)
-    sections = calculateSections(surface, 1, 100)
+    # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+    # calculateHeightMapAdv(level, surface)
+    # calculateSteepnessMap(surface)
+    # calculateWaterPlacement(level, surface)
+    # findBiomes(level, surface)
+    # sections = calculateSections(surface, 1, 100)
 
     # prop = Property(2, 2, surface.xLength-2, surface.zLength-2, surface.surfaceMap[0][0].height)
     # prop.doorDirection = "SOUTH"
     # print(surface.xStart, surface.zStart, prop.xStart, prop.zStart)
     # buildHouse(level, surface, prop)
 
-    startPoint = (box.minx, box.minz)
-    endPoint = (box.maxx-1, box.maxz-1)
-    bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
+    # startPoint = (box.minx, box.minz)
+    # endPoint = (box.maxx-1, box.maxz-1)
+    # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
 
     # chosenMaterial = options["Material"]
     # if (chosenMaterial == "Oak"):
@@ -89,9 +93,9 @@ def perform(level, box, options):
     # # BiomeFinder adds biome data to surfaceMap
     # findBiomes(level, surface)
     # # Test of biome material changes.
-    biomeId = surface.surfaceMap[0][0].biomeId
+    # biomeId = surface.surfaceMap[0][0].biomeId
 
-    buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, biomeId)
+    # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, biomeId)
 
     # # Makes a colored map of biomes in the sky
     # biomeIds = Biomes.getBiomeDict()
