@@ -33,6 +33,7 @@ def addWalls(point, prop, blockRegister):
 			if x == prop.xLength - 4:
 				appendAdjustedBlockToRegister(blockRegister, block, x + 1, y, 1)
 				appendAdjustedBlockToRegister(blockRegister, block, prop.xLength - 2 - x, y, prop.zLength - 2)
+	segmentRegister = rotateRegister(segmentRegister, directions.index('EAST'))
 	# East and West default wall segments
 	for z in range(2, prop.zLength - 2, 2):
 		for block in segmentRegister:
@@ -62,6 +63,7 @@ def addWalls(point, prop, blockRegister):
 				appendAdjustedBlockToRegister(blockRegister, block, x, y, 1)
 			if not skipSouth:
 				appendAdjustedBlockToRegister(blockRegister, block, prop.xLength - 1 - x, y, prop.zLength - 2)
+	segmentRegister = rotateRegister(segmentRegister, directions.index('EAST'))
 	# East and West windows and maybe door
 	for z in range(3, prop.zLength - 3, 2):
 		skipEast = False
@@ -103,32 +105,32 @@ def addRoof(point, prop, blockRegister):
 	for z in range(0, longest):
 		if z == 0:
 			roofRegister.append({'type': 'stone_brick', 'direction': 'south', 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': 0, 'y': y, 'z': z})
-			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': 0, 'y': y + 1, 'z': z})
-			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': 0, 'y': y + 2, 'z': z})
+			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 85, 'data': 0, 'x': 0, 'y': y + 1, 'z': z})
+			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 50, 'data': 5, 'x': 0, 'y': y + 2, 'z': z})
 			roofRegister.append({'type': 'stone_brick', 'direction': 'south', 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y, 'z': z})
-			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y + 1, 'z': z})
-			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y + 2, 'z': z})
+			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 85, 'data': 0, 'x': shortest - 1, 'y': y + 1, 'z': z})
+			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 50, 'data': 5, 'x': shortest - 1, 'y': y + 2, 'z': z})
 		elif z == longest - 1:
 			roofRegister.append({'type': 'stone_brick', 'direction': 'north', 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': 0, 'y': y, 'z': z})
-			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': 0, 'y': y + 1, 'z': z})
-			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': 0, 'y': y + 2, 'z': z})
+			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 85, 'data': 0, 'x': 0, 'y': y + 1, 'z': z})
+			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 50, 'data': 5, 'x': 0, 'y': y + 2, 'z': z})
 			roofRegister.append({'type': 'stone_brick', 'direction': 'north', 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y, 'z': z})
-			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y + 1, 'z': z})
-			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y + 2, 'z': z})
+			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 85, 'data': 0, 'x': shortest - 1, 'y': y + 1, 'z': z})
+			roofRegister.append({'type': 'torch', 'direction': None, 'verticalAllignment': None, 'id': 50, 'data': 5, 'x': shortest - 1, 'y': y + 2, 'z': z})
 		else:
 			roofRegister.append({'type': 'oak_wood', 'direction': 'north', 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': 0, 'y': y, 'z': z})
 			roofRegister.append({'type': 'oak_wood', 'direction': 'north', 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y, 'z': z})
-			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': 0, 'y': y + 1, 'z': z})
-			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': shortest - 1, 'y': y + 1, 'z': z})
+			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 85, 'data': 0, 'x': 0, 'y': y + 1, 'z': z})
+			roofRegister.append({'type': 'oak_wood_fence', 'direction': None, 'verticalAllignment': None, 'id': 85, 'data': 0, 'x': shortest - 1, 'y': y + 1, 'z': z})
 		xHalfRounded = int(shortest / 2)
 		for x in range(1, xHalfRounded):
 			if z == 0 or z == longest - 1:
 				roofRegister.append({'type': 'stone_brick', 'direction': 'east', 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': x, 'y': y + x, 'z': z})
 				roofRegister.append({'type': 'stone_brick', 'direction': 'west', 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': shortest - 1 - x, 'y': y + x, 'z': z})
-				roofRegister.append({'type': 'stone', 'direction': None, 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': x, 'y': y + x - 1, 'z': z})
-				roofRegister.append({'type': 'stone', 'direction': None, 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': shortest - 1 - x, 'y': y + x - 1, 'z': z})
+				roofRegister.append({'type': 'stone', 'direction': None, 'verticalAllignment': 'top', 'id': 44, 'data': 8, 'x': x, 'y': y + x - 1, 'z': z})
+				roofRegister.append({'type': 'stone', 'direction': None, 'verticalAllignment': 'top', 'id': 44, 'data': 8, 'x': shortest - 1 - x, 'y': y + x - 1, 'z': z})
 				if x == xHalfRounded - 2 and shortest % 2 == 1:
-					roofRegister.append({'type': 'stone', 'direction': None, 'verticalAllignment': 'top', 'id': 5, 'data': 0, 'x': xHalfRounded, 'y': y + xHalfRounded - 1, 'z': z})
+					roofRegister.append({'type': 'stone', 'direction': None, 'verticalAllignment': 'top', 'id': 44, 'data': 8, 'x': xHalfRounded, 'y': y + xHalfRounded - 1, 'z': z})
 					if z == 0:
 						roofRegister.append({'type': 'stone_brick', 'direction': 'north', 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': xHalfRounded, 'y': y + xHalfRounded, 'z': z})
 					else:
@@ -141,13 +143,13 @@ def addRoof(point, prop, blockRegister):
 				roofRegister.append({'type': 'oak_wood_planks', 'direction': 'west', 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': shortest - 1 - x, 'y': y + x, 'z': z})
 				if x == xHalfRounded - 2 and shortest % 2 == 1:
 					for i in range(1, xHalfRounded):
-						roofRegister.append({'type': 'oak_wood', 'direction': None, 'verticalAllignment': None, 'id': 5, 'data': 0, 'x': xHalfRounded, 'y': y + xHalfRounded - i, 'z': z})
-					roofRegister.append({'type': 'stone_brick', 'direction': None, 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': xHalfRounded, 'y': y + xHalfRounded, 'z': z})
+						roofRegister.append({'type': 'oak_wood', 'direction': None, 'verticalAllignment': None, 'id': 17, 'data': 0, 'x': xHalfRounded, 'y': y + xHalfRounded - i, 'z': z})
+					roofRegister.append({'type': 'stone_brick', 'direction': None, 'verticalAllignment': 'bottom', 'id': 44, 'data': 5, 'x': xHalfRounded, 'y': y + xHalfRounded, 'z': z})
 			else:
 				roofRegister.append({'type': 'oak_wood_planks', 'direction': 'east', 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': x, 'y': y + x, 'z': z})
 				roofRegister.append({'type': 'oak_wood_planks', 'direction': 'west', 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': shortest - 1 - x, 'y': y + x, 'z': z})
 				if x == xHalfRounded - 2 and shortest % 2 == 1:
-					roofRegister.append({'type': 'stone_brick', 'direction': None, 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': xHalfRounded, 'y': y + xHalfRounded, 'z': z})
+					roofRegister.append({'type': 'stone_brick', 'direction': None, 'verticalAllignment': 'bottom', 'id': 44, 'data': 5, 'x': xHalfRounded, 'y': y + xHalfRounded, 'z': z})
 	if prop.xLength > prop.zLength:
 		roofRegister = rotateRegister(roofRegister, 1)
 	blockRegister.extend(roofRegister)
