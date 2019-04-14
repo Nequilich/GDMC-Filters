@@ -5,10 +5,10 @@ from Common import setBlock
 from RemoveTree import removeTree
 
 def buildFarm(level, surface, prop):
-	if prop.xLength < 5 or prop.zLength < 5 or prop.height > 90:
+	if prop.height > 90:
 		return
 	getMaterials(surface, prop)
-	if randint(0, 1) == 0:
+	if randint(0, 9) < 6:
 		buildPatch(level, surface, prop)
 	else:
 		buildAnimalPen(level, surface, prop)

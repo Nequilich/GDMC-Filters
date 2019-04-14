@@ -55,9 +55,9 @@ def perform(level, box, options):
 	clearHouseProperties(level, surface, properties)
 	buildProperties(level, surface, properties)
 
-	patchProperties = getPatchProperties(surface, paths)
-	clearPatchProperties(level, surface, patchProperties)
-	buildPatchProperties(level, surface, patchProperties)
+	farmProperties = getFarmProperties(surface, paths)
+	clearFarmProperties(level, surface, farmProperties)
+	buildFarmProperties(level, surface, farmProperties)
 
 	buildTowers(level, surface, towerSections)
 
@@ -191,18 +191,18 @@ def buildProperties(level, surface, properties):
 		buildStructure(level, point, p.height, 'house', 'north', biome, prop=p)
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
-def getPatchProperties(surface, paths):
-	patchProperties = []
+def getFarmProperties(surface, paths):
+	farmProperties = []
 	for path in paths:
-		patchProperties.extend(getPropertiesAlongPath(surface, path, 5, 11, 16))
-	return patchProperties
+		farmProperties.extend(getPropertiesAlongPath(surface, path, 7, 11, 16))
+	return farmProperties
 
-def clearPatchProperties(level, surface, patchProperties):
-	for p in patchProperties:
+def clearFarmProperties(level, surface, farmProperties):
+	for p in farmProperties:
 		clearFarmProperty(level, surface, p)
 
-def buildPatchProperties(level, surface, patchProperties):
-	for p in patchProperties:
+def buildFarmProperties(level, surface, farmProperties):
+	for p in farmProperties:
 		buildFarm(level, surface, p)
 
 # fra Lasse

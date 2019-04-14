@@ -51,7 +51,7 @@ def perform(level, box, options):
 	# Builds farms
 	patchProperties = []
 	for path in paths:
-		patchProperties.extend(getPropertiesAlongPath(surface, path, 5, 11, 16))
+		patchProperties.extend(getPropertiesAlongPath(surface, path, 7, 11, 16))
 
 	for p in patchProperties:
 		clearFarmProperty(level, surface, p)
