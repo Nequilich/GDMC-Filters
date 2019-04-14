@@ -1,9 +1,9 @@
 [
   {
-    "data": 0, 
+    "data": 5, 
     "direction": null, 
-    "id": 17, 
-    "type": "oak_wood", 
+    "id": 97, 
+    "type": null, 
     "verticalAllignment": null, 
     "x": 0, 
     "y": 0, 
@@ -27,6 +27,16 @@
     "verticalAllignment": null, 
     "x": 0, 
     "y": 2, 
+    "z": 0
+  }, 
+  {
+    "data": 0, 
+    "direction": null, 
+    "id": 17, 
+    "type": "oak_wood", 
+    "verticalAllignment": null, 
+    "x": 0, 
+    "y": 3, 
     "z": 0
   }
 ]
