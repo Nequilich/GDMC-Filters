@@ -5,23 +5,33 @@ from BiomeChanges import defaultBiomeChanges
 from Classes import Base
 from Classes import Blueprint
 from Common import setBlock
+from HouseManager import getHouseBlueprint
 from TowerManager import getTowerBlueprint
 
 directions = ['north', 'east', 'south', 'west']
 
-def buildStructure(level, point, baseHeight, type='tower', direction='north', biome='plains', applyBiomeChanges=True, specialBiomeChanges=None):
-	blueprint = getBlueprint(type, point, baseHeight)
-	blueprint.blockRegister = rotateRegister(blueprint.blockRegister, directions.index(direction))
-	if applyBiomeChanges and biome != 'plains':
-		blueprint.blockRegister = calculateBiomeChanges(blueprint.blockRegister, specialBiomeChanges, biome)
+def buildStructure(level, point, baseHeight, type='tower', direction='north', biome='plains', applyBiomeChanges=True, specialBiomeChanges=None, prop=None):
+	blueprint = getBlueprint(type, point, baseHeight, prop)
+	applyChangesToBlueprintBlockRegister(blueprint, direction, biome, applyBiomeChanges, specialBiomeChanges)
 	build(level, blueprint)
 
-def getBlueprint(type, point, baseHeight):
+def getBlueprint(type, point, baseHeight, prop):
+	if type == 'house':
+		return getHouseBlueprint(point, prop)
 	if type == 'tower':
 		return getTowerBlueprint(point, baseHeight)
 
+def applyChangesToBlueprintBlockRegister(blueprint, direction, biome, applyBiomeChanges, specialBiomeChanges):
+	if not blueprint.blockRegister:
+		return
+	blueprint.blockRegister = rotateRegister(blueprint.blockRegister, directions.index(direction))
+	if applyBiomeChanges and biome != 'plains':
+		blueprint.blockRegister = calculateBiomeChanges(blueprint.blockRegister, specialBiomeChanges, biome)
+
 def rotateRegister(blockRegister, rotations):
 	rotations = rotations % 4
+	if rotations == 0:
+		return blockRegister
 	rotatedRegister = []
 	for block in blockRegister:
 		np = rotateBlock(0, 0, 1.57079632679 * rotations, (block['x'], block['z']))
