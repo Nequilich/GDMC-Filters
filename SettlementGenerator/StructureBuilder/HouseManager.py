@@ -96,6 +96,28 @@ def addWalls(point, prop, blockRegister):
 	segmentRegister = rotateRegister(segmentRegister, directions.index(prop.doorDirection))
 	for block in segmentRegister:
 		appendAdjustedBlockToRegister(blockRegister, block, doorPoint.x, y, doorPoint.z)
+	addDoorStep(blockRegister, doorPoint, prop, y)
+
+def addDoorStep(blockRegister, doorPoint, prop, height):
+	direction = prop.doorDirection
+	doorStepPoint = None
+	if direction == 'NORTH':
+		doorStepPoint = Point(doorPoint.x, doorPoint.z - 1)
+		prop.xPathwayStart = prop.xStart + doorPoint.x
+		prop.zPathwayStart = prop.zStart + doorPoint.z - 2
+	elif direction == 'EAST':
+		doorStepPoint = Point(doorPoint.x + 1, doorPoint.z)
+		prop.xPathwayStart = prop.xStart + doorPoint.x + 2
+		prop.zPathwayStart = prop.zStart + doorPoint.z
+	elif direction == 'SOUTH':
+		doorStepPoint = Point(doorPoint.x, doorPoint.z + 1)
+		prop.xPathwayStart = prop.xStart + doorPoint.x
+		prop.zPathwayStart = prop.zStart + doorPoint.z + 2
+	elif direction == 'WEST':
+		doorStepPoint = Point(doorPoint.x - 1, doorPoint.z)
+		prop.xPathwayStart = prop.xStart + doorPoint.x - 2
+		prop.zPathwayStart = prop.zStart + doorPoint.z
+	blockRegister.append({'type': 'cobblestone', 'direction': None, 'verticalAllignment': 'bottom', 'id': 5, 'data': 0, 'x': doorStepPoint.x, 'y': height, 'z': doorStepPoint.z})
 
 def addRoof(point, prop, blockRegister):
 	shortest = min([prop.xLength, prop.zLength])
@@ -152,8 +174,9 @@ def addRoof(point, prop, blockRegister):
 					roofRegister.append({'type': 'stone_brick', 'direction': None, 'verticalAllignment': 'bottom', 'id': 44, 'data': 5, 'x': xHalfRounded, 'y': y + xHalfRounded, 'z': z})
 	if prop.xLength > prop.zLength:
 		roofRegister = rotateRegister(roofRegister, 1)
+	elif prop.xLength == prop.zLength:
+		roofRegister = rotateRegister(roofRegister, directions.index(prop.doorDirection))
 	blockRegister.extend(roofRegister)
-
 
 def loadSegmentRegister(segment):
 	filePath = './stock-filters/SettlementGenerator/StructureBuilder/structures/house/' + segment + '.json'
