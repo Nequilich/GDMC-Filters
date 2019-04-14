@@ -10,21 +10,21 @@
     "z": 0
   }, 
   {
-    "data": 0, 
-    "direction": null, 
-    "id": 4, 
-    "type": "cobblestone", 
-    "verticalAllignment": null, 
+    "data": 1, 
+    "direction": "south", 
+    "id": 64, 
+    "type": "oak_door", 
+    "verticalAllignment": "top", 
     "x": 0, 
     "y": 1, 
     "z": 0
   }, 
   {
-    "data": 0, 
+    "data": 8, 
     "direction": null, 
-    "id": 44, 
-    "type": "red_sandstone", 
-    "verticalAllignment": "bottom", 
+    "id": 64, 
+    "type": null, 
+    "verticalAllignment": null, 
     "x": 0, 
     "y": 2, 
     "z": 0
@@ -32,8 +32,8 @@
   {
     "data": 0, 
     "direction": null, 
-    "id": 160, 
-    "type": null, 
+    "id": 5, 
+    "type": "oak_wood_planks", 
     "verticalAllignment": null, 
     "x": 0, 
     "y": 3, 
