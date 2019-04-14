@@ -17,7 +17,6 @@ from SurfaceManager import calculateWaterPlacement
 from RoadBuilder import buildTestRoad
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from RemoveTree import removeTree
-from HouseBuilder import buildHouse
 from HouseBuilder import clearHouseProperty
 from FarmBuilder import buildPatch
 from FarmBuilder import clearPatchProperty
@@ -186,7 +185,10 @@ def clearHouseProperties(level, surface, houseProperties):
 
 def buildProperties(level, surface, properties):
 	for p in properties:
-		buildHouse(level, surface, p)
+		biomeId = surface.surfaceMap[p.xStart][p.zStart].biomeId
+		biome = getBiomeDict()[biomeId]
+		point = Point(surface.xStart + p.xStart, surface.zStart + p.zStart)
+		buildStructure(level, point, p.height, 'house', 'north', biome, prop=p)
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
 def getPatchProperties(surface, paths):

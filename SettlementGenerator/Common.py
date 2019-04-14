@@ -2,6 +2,9 @@ import math
 import json
 
 def setBlock(level, surface, x, y, z, block, data = 0):
+	if type(block) is tuple:
+		data = block[1]
+		block = block[0]
 	if surface == None:
 		level.setBlockAt(x, y, z, block)
 		level.setBlockDataAt(x, y, z, data)

@@ -1,4 +1,4 @@
-from Biomes import biomes
+from Biomes import biomes, getBiomeDict
 from BiomeFinder import findBiomes
 from BiomeMaterials import get_biome_materials
 from BridgeBuilder import buildBridge
@@ -23,6 +23,20 @@ inputs = (
 
 def perform(level, box, options):
     startTime = time.time()
+    # biomeList = []
+    # biomeDict = getBiomeDict()
+    # for key in biomeDict.keys():
+    #     biomeList.append(key)
+    # biomeList.sort()
+
+    # missingBiomeIds = []
+
+    # for i in range(biomeList[-1]+1):
+    #     if i not in biomeList:
+    #         missingBiomeIds.append(i)
+
+    # print(missingBiomeIds)
+
 
     # testMaterials()
 
