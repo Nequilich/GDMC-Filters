@@ -107,9 +107,12 @@ def heapifySectionsByAverageHeight(sections):
 	return heap
 
 def getTowerSections(surface, averageSurfaceHeight, bigLandSections, mediumLandSections, smallLandSections):
+	maxAmount = (surface.xLength * surface.zLength) / 25000 + 1
 	sectionHeap = heapifySectionsByAverageHeight(smallLandSections)
 	towerSections = []
-	for element in sectionHeap:
+	for i, element in enumerate(sectionHeap):
+		if i >= maxAmount:
+			break
 		section = element[1]
 		averageSectionHeight = section.averageHeight
 		if averageSectionHeight < averageSurfaceHeight:
