@@ -156,7 +156,7 @@ class Blueprint:
 
 class Base:
 	
-	def __init__(self, xStart, zStart, xLength, zLength, height):
+	def __init__(self, xStart, zStart, xLength, zLength):
 		self.xStart = xStart
 		self.zStart = zStart
 		self.xLength = xLength
