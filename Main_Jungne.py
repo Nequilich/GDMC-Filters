@@ -13,6 +13,7 @@ from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
 from VillagerSpawner import spawnVillager
 import time
+from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 
 inputs = (
     ("Width", 4),
@@ -23,6 +24,20 @@ inputs = (
 
 def perform(level, box, options):
     startTime = time.time()
+
+    # Places a boat 
+    # boat = TAG_Compound()
+    # boat["id"] = TAG_String("boat")
+    # boat["Type"] = TAG_String("spruce")
+    # boat["Pos"] = TAG_List([TAG_Double(box.minx), TAG_Double(box.miny), TAG_Double(box.minz)])
+    # boat["Motion"] = TAG_List([TAG_Double(0.0), TAG_Double(0.0), TAG_Double(0.0)])
+    # boat["Rotation"] = TAG_List([TAG_Float(0.0), TAG_Float(0.0)])
+    
+    # chunk = level.getChunk(box.minx / 16, box.minz / 16)
+    # chunk.Entities.append(boat)
+    # chunk.dirty = True
+
+
     # biomeList = []
     # biomeDict = getBiomeDict()
     # for key in biomeDict.keys():
@@ -42,8 +57,8 @@ def perform(level, box, options):
 
     # spawnVillager(level, box)
 
-    # # BridgeBuilder
-    # bridgeWidth = options["Width"]
+    # BridgeBuilder
+    bridgeWidth = options["Width"]
 
     surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
     calculateHeightMapAdv(level, surface)
@@ -52,14 +67,14 @@ def perform(level, box, options):
     findBiomes(level, surface)
     sections = calculateSections(surface, 1, 100)
 
-    prop = Property(2, 2, surface.xLength-2, surface.zLength-2, surface.surfaceMap[0][0].height)
-    prop.doorDirection = "SOUTH"
-    print(surface.xStart, surface.zStart, prop.xStart, prop.zStart)
-    buildHouse(level, surface, prop)
+    # prop = Property(2, 2, surface.xLength-2, surface.zLength-2, surface.surfaceMap[0][0].height)
+    # prop.doorDirection = "SOUTH"
+    # print(surface.xStart, surface.zStart, prop.xStart, prop.zStart)
+    # buildHouse(level, surface, prop)
 
-    # startPoint = (box.minx, box.minz)
-    # endPoint = (box.maxx-1, box.maxz-1)
-    # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
+    startPoint = (box.minx, box.minz)
+    endPoint = (box.maxx-1, box.maxz-1)
+    bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
 
     # chosenMaterial = options["Material"]
     # if (chosenMaterial == "Oak"):
@@ -74,9 +89,9 @@ def perform(level, box, options):
     # # BiomeFinder adds biome data to surfaceMap
     # findBiomes(level, surface)
     # # Test of biome material changes.
-    # biomeId = surface.surfaceMap[0][0].biomeId
+    biomeId = surface.surfaceMap[0][0].biomeId
 
-    # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, biomeId)
+    buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, biomeId)
 
     # # Makes a colored map of biomes in the sky
     # biomeIds = Biomes.getBiomeDict()

@@ -1,6 +1,7 @@
 from Common import setBlock as setBlockWithSurface
 from Classes import Surface
 from BiomeMaterials import get_biome_materials
+from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 
 
 def buildBridge(level, startPoint, endPoint, bridgeY, width, biomeId):
@@ -19,7 +20,13 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, biomeId):
 
     # Builds small bridge if distance is short.
     if (bridgeLength < 6):
-        buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks)
+        buildSmallBridge(level, startPoint, endPoint, bridgeY, width)
+        return
+
+    # Builds docks instead of bridge if bridge is very long.
+    if (bridgeLength > 50):
+        length = bridgeLength / 5
+        buildDocks(level, startPoint, endPoint, bridgeY, width, length, blocks)
         return
 
     # Offset variables
@@ -67,7 +74,8 @@ def buildBridge(level, startPoint, endPoint, bridgeY, width, biomeId):
         endPoint = ((endPoint[0] + (offsetMain*bridgeMainDirectionX + offsetSecondaryEnd*bridgeSecondaryDirectionX) * -1),
                     (endPoint[1] + (offsetMain*bridgeMainDirectionZ + offsetSecondaryEnd*bridgeSecondaryDirectionZ) * -1))
         newBridgeLength = bridgeLength - offsetMain * 2
-        newBridgeSkew = bridgeSkew - tempWidth + int(tempWidth / offsetInterval)
+        newBridgeSkew = bridgeSkew - tempWidth + \
+            int(tempWidth / offsetInterval)
 
     # Update offset interval after placing bridgeheads
     offsetInterval = newBridgeLength/float(newBridgeSkew)
@@ -137,7 +145,8 @@ def placeOrthogonalBridgeHead(level, x, y, z, width, headLength, flipped=False):
     for i in rangeList:
         sectionX = x + (i*bridgeMainDirectionX)
         sectionZ = z + (i*bridgeMainDirectionZ)
-        placeBridgeSection(level, sectionX, y, sectionZ, width, materials["upper slab"])
+        placeBridgeSection(level, sectionX, y, sectionZ,
+                           width, materials["upper slab"])
 
 
 def placePillarWithTorch(level, x, y, z):
@@ -153,7 +162,7 @@ def placeDiagonalBridgeHead(level, x, y, z, width, flipped=False):
     else:
         flipped = -1
 
-    # Pillars with torches 
+    # Pillars with torches
     # TODO scale with width
     placePillarWithTorch(level, (x + flipped*2*(bridgeMainDirectionX + bridgeSecondaryDirectionX)),
                          y, (z + flipped*-1*(bridgeMainDirectionZ + bridgeSecondaryDirectionZ)))
@@ -252,7 +261,7 @@ def setBridgeDirections(startPoint, endPoint):
             bridgeSecondaryDirectionX = -1
 
 
-def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
+def buildSmallBridge(level, startPoint, endPoint, bridgeY, width):
     width = 3
     currentOffset = 0
     offsetInterval = bridgeLength/float(bridgeSkew)
@@ -276,5 +285,87 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width, blocks):
             placeBridgeSection(level, x, bridgeY, z, width, materials["lower slab"],
                                False, False, False)
 
-def setBlock(level, x, y , z, block, data = 0):
+
+def buildDocks(level, startPoint, endPoint, bridgeY, width, length, blocks):
+    dockLength = length
+
+    # Offset points of bridge to center.
+    startPoint = (startPoint[0]-((width/2)*bridgeSecondaryDirectionX),
+                  startPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
+    endPoint = (endPoint[0]-((width/2)*bridgeSecondaryDirectionX),
+                endPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
+
+    # Places docks.
+    placeDock(
+        level, startPoint[0], bridgeY, startPoint[1], width, dockLength, blocks)  # First dock
+    placeDock(
+        level, endPoint[0], bridgeY, endPoint[1], width, dockLength, blocks, True)  # Second dock
+
+
+def placeDock(level, x, y, z, width, dockLength, blocks, flipped=False):
+    boatDistance = 3
+    pillarInterval = 5
+    placePillarWithTorch(level, x, y, z)
+
+    for i in range(1, width-1):
+        setBlock(level, x+i*bridgeSecondaryDirectionX, y, z+i*bridgeSecondaryDirectionZ,
+                 materials["lower slab"], materials["lower slab"])
+
+    placePillarWithTorch(level, x+(width-1)*bridgeSecondaryDirectionX,
+                         y, z+(width-1)*bridgeSecondaryDirectionZ)
+
+    if not flipped:
+        rangeList = range(1, dockLength+1)
+        flip = 1
+    else:
+        rangeList = range(-1, (dockLength+1)*-1, -1)
+        flip = -1
+
+    for i in rangeList:
+        sectionX = x + (i*bridgeMainDirectionX)
+        sectionZ = z + (i*bridgeMainDirectionZ)
+        placeBridgeSection(level, sectionX, y, sectionZ,
+                           width, materials["upper slab"], False, False, False)
+        if (i % pillarInterval == 0 and i not in rangeList[-2:-1]):
+            placePillarInWater(level, sectionX, y, sectionZ)
+            placePillarInWater(level, sectionX + ((width-1)*bridgeSecondaryDirectionX), y, sectionZ + ((width-1)*bridgeSecondaryDirectionZ))
+        if (i % boatDistance == 0):
+            if (not flipped):
+                sectionX = sectionX + (width + 1)*bridgeSecondaryDirectionX
+                sectionZ = sectionZ + (width + 1)*bridgeSecondaryDirectionZ
+            else:
+                sectionX = sectionX + (width/4)*bridgeSecondaryDirectionX*-1
+                sectionZ = sectionZ + (width/4)*bridgeSecondaryDirectionZ*-1
+            placeBoat(level, sectionX, y+2, sectionZ, blocks)
+        
+    # Place final pillars
+    placePillarInWater(level, x + (dockLength*bridgeMainDirectionX*flip), y, z + (dockLength*bridgeMainDirectionZ*flip))
+    placePillarInWater(level, x + (dockLength*bridgeMainDirectionX*flip) + ((width-1)*bridgeSecondaryDirectionX), y, z + (dockLength*bridgeMainDirectionZ*flip) + ((width-1)*bridgeSecondaryDirectionZ))
+
+def placeBoat(level, x, y, z, blocks):
+    boatType = blocks["wood"]["type"].split("_")[0]  # Kinda janky, but works 
+
+    boat = TAG_Compound()
+    boat["id"] = TAG_String("boat")
+    boat["Type"] = TAG_String(boatType)
+    boat["Pos"] = TAG_List([TAG_Double(x), TAG_Double(y), TAG_Double(z)])
+    boat["Motion"] = TAG_List([TAG_Double(0.0), TAG_Double(0.0), TAG_Double(0.0)])
+    boat["Rotation"] = TAG_List([TAG_Float(0.0), TAG_Float(0.0)])
+    
+    chunk = level.getChunk(x / 16, z / 16)
+    chunk.Entities.append(boat)
+    chunk.dirty = True
+
+
+def placePillarInWater(level, x, y, z):
+    setBlock(level, x, y, z, materials["normal"])
+    setBlock(level, x, y+1, z, materials["normal"])
+    setBlock(level, x, y+2, z, materials["torch"])
+    i = 1
+    while (level.blockAt(x, y-i, z) == 9):  # If water block
+        setBlock(level, x, y-i, z, materials["normal"])
+        i += 1
+
+
+def setBlock(level, x, y, z, block, data=0):
     setBlockWithSurface(level, None, x, y, z, block, data)
