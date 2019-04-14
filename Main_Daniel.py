@@ -18,8 +18,8 @@ from RoadBuilder import buildTestRoad
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from RemoveTree import removeTree
 from HouseBuilder import clearHouseProperty
-from FarmBuilder import buildPatch
-from FarmBuilder import clearPatchProperty
+from FarmBuilder import buildFarm
+from FarmBuilder import clearFarmProperty
 from GetPath import getPath
 
 def perform(level, box, options):
@@ -199,11 +199,11 @@ def getPatchProperties(surface, paths):
 
 def clearPatchProperties(level, surface, patchProperties):
 	for p in patchProperties:
-		clearPatchProperty(level, surface, p)
+		clearFarmProperty(level, surface, p)
 
 def buildPatchProperties(level, surface, patchProperties):
 	for p in patchProperties:
-		buildPatch(level, surface, p)
+		buildFarm(level, surface, p)
 
 # fra Lasse
 
