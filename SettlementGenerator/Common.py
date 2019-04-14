@@ -1,4 +1,5 @@
 import math
+import json
 
 def setBlock(level, surface, x, y, z, block, data = 0):
 	if surface == None:
@@ -40,3 +41,7 @@ def calculateAverage(list):
 	for n in list:
 		total += n
 	return total / len(list)
+
+def loadFile(filePath):
+	with open(filePath) as f:
+		return json.load(f)
