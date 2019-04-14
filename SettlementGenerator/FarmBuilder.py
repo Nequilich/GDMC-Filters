@@ -120,3 +120,55 @@ def getMaterials(surface, prop):
 
 	global materials
 	materials = get_biome_materials(biomeId)
+
+def buildAnimalPen(level, surface, prop):
+	# Grass
+	y = prop.height + 1
+	for x in range(prop.xStart + 1, prop.xEnd - 1):
+		for z in range(prop.zStart + 1, prop.zEnd - 1):
+			setBlock(level, surface, x, y, z, 2)
+	# Fence
+	for x in range(prop.xStart, prop.xEnd):
+		setBlock(level, surface, x, y, prop.zStart, 4)
+		setBlock(level, surface, x, y + 1, prop.zStart, 85)
+		setBlock(level, surface, x, y, prop.zEnd - 1, 4)
+		setBlock(level, surface, x, y + 1, prop.zEnd - 1, 85)
+	for z in range(prop.zStart + 1, prop.zEnd - 1):
+		setBlock(level, surface, prop.xStart, y, z, 4)
+		setBlock(level, surface, prop.xStart, y + 1, z, 85)
+		setBlock(level, surface, prop.xEnd - 1, y, z, 4)
+		setBlock(level, surface, prop.xEnd - 1, y + 1, z, 85)
+	# Torches
+	setBlock(level, surface, prop.xStart, y + 2, prop.zStart, 50, 5)
+	setBlock(level, surface, prop.xStart, y + 2, prop.zEnd - 1, 50, 5)
+	setBlock(level, surface, prop.xEnd - 1, y + 2, prop.zStart, 50, 5)
+	setBlock(level, surface, prop.xEnd - 1, y + 2, prop.zEnd - 1, 50, 5)
+	# Gate
+	if prop.doorDirection == "North":
+		x = prop.xStart + prop.xLength / 2
+		setBlock(level, surface, x, y + 1, prop.zStart, 107, 0)
+		if isSurfaceBlock(level, x + surface.xStart, y, prop.zStart - 1 + surface.zStart):
+			setBlock(level, surface, x, y, prop.zStart, 4)
+		else:
+			setBlock(level, surface, x, y, prop.zStart, 67, 0)
+	if prop.doorDirection == "East":
+		z = prop.zStart + prop.zLength / 2
+		setBlock(level, surface, prop.xEnd - 1, y + 1, z, 107, 1)
+		if isSurfaceBlock(level, prop.xEnd + surface.xStart, y, z + surface.zStart):
+			setBlock(level, surface, prop.xEnd - 1, y, z, 4)
+		else:
+			setBlock(level, surface, prop.xEnd - 1, y, z, 67, 1)
+	if prop.doorDirection == "South":
+		x = prop.xStart + prop.xLength / 2
+		setBlock(level, surface, x, y + 1, prop.zEnd - 1, 107, 2)
+		if isSurfaceBlock(level, x + surface.xStart, y, prop.zEnd + surface.zStart):
+			setBlock(level, surface, x, y, prop.zEnd - 1, 4)
+		else:
+			setBlock(level, surface, x, y, prop.zEnd - 1, 67, 3)
+	if prop.doorDirection == "West":
+		z = prop.zStart + prop.zLength / 2
+		setBlock(level, surface, prop.xEnd - 1, y + 1, z, 107, 1)
+		if isSurfaceBlock(level, prop.xEnd + surface.xStart, y, z + surface.zStart):
+			setBlock(level, surface, prop.xEnd - 1, y, z, 4)
+		else:
+			setBlock(level, surface, prop.xEnd - 1, y, z, 67, 1)
