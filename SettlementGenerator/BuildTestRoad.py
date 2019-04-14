@@ -143,7 +143,6 @@ def placeStreetLights(level, surface, point, height, angle):
             point.x - 1, point.z - 1), height)
         placeStreetLight(level, surface, Point(
             point.x + 1, point.z + 1), height)
-    print(angle)
 
 
 def placeStreetLight(level, surface, point, height):

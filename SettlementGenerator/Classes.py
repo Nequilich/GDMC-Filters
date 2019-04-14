@@ -97,6 +97,8 @@ class Section:
 		self.zMid = 0
 		self.pathConnectionPoints = []
 		self.isWater = False
+		self.exitPoints = []
+		self.name = ""
 
 class Point:
 

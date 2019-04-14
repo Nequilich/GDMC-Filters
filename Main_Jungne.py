@@ -15,6 +15,7 @@ from SurfaceManager import calculateWaterPlacement
 from VillagerSpawner import spawnVillager
 import time
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
+from pymclevel.entity import TileEntity
 
 inputs = (
     ("Width", 4),
@@ -25,6 +26,41 @@ inputs = (
 
 def perform(level, box, options):
     startTime = time.time()
+
+    x = box.minx
+    y = box.miny
+    z = box.minz
+
+    level.setBlockAt(x, y, z, 63)
+    
+    # sign = TileEntity.Create("Sign", (x,y,z))
+    # print(sign)
+
+    # boat = TAG_Compound()
+    # boat["id"] = TAG_String("boat")
+    # boat["Pos"] = TAG_List([TAG_Double(x), TAG_Double(y), TAG_Double(z)])
+    # boat["Motion"] = TAG_List([TAG_Double(0.0), TAG_Double(0.0), TAG_Double(0.0)])
+    # boat["Rotation"] = TAG_List([TAG_Float(0.0), TAG_Float(0.0)])
+
+    # print(boat)
+    sign = TAG_Compound()
+    sign["id"] = TAG_String('minecraft:sign')
+    sign["x"] = TAG_Int(x)
+    sign["y"] = TAG_Int(y)
+    sign["z"] = TAG_Int(z)
+    sign["Text1"] = TAG_String("{'text':'hooohooo'}")
+    sign["Text2"] = TAG_String("{'text':'hooohooo'}")
+    sign["Text3"] = TAG_String("{'text':'hooohooo'}")
+    sign["Text4"] = TAG_String("{'text':'hooohooo'}")
+    
+    chunk = level.getChunk(x / 16, z / 16)
+    chunk.TileEntities.append(sign)
+    chunk.dirty = True
+
+    print(chunk.TileEntities)
+    print(level.blockAt(x,y,z))
+    print(level.blockDataAt(x,y,z))
+
 
     # for i in range(10):
     #     print(getCityName())
@@ -62,23 +98,23 @@ def perform(level, box, options):
     # spawnVillager(level, box)
 
     # BridgeBuilder
-    bridgeWidth = options["Width"]
+    # bridgeWidth = options["Width"]
 
-    surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
-    calculateHeightMapAdv(level, surface)
-    calculateSteepnessMap(surface)
-    calculateWaterPlacement(level, surface)
-    findBiomes(level, surface)
-    sections = calculateSections(surface, 1, 100)
+    # surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
+    # calculateHeightMapAdv(level, surface)
+    # calculateSteepnessMap(surface)
+    # calculateWaterPlacement(level, surface)
+    # findBiomes(level, surface)
+    # sections = calculateSections(surface, 1, 100)
 
     # prop = Property(2, 2, surface.xLength-2, surface.zLength-2, surface.surfaceMap[0][0].height)
     # prop.doorDirection = "SOUTH"
     # print(surface.xStart, surface.zStart, prop.xStart, prop.zStart)
     # buildHouse(level, surface, prop)
 
-    startPoint = (box.minx, box.minz)
-    endPoint = (box.maxx-1, box.maxz-1)
-    bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
+    # startPoint = (box.minx, box.minz)
+    # endPoint = (box.maxx-1, box.maxz-1)
+    # bridgeY = surface.surfaceMap[0][0].height + 1  #+1 to raise above the surface
 
     # chosenMaterial = options["Material"]
     # if (chosenMaterial == "Oak"):
@@ -93,9 +129,9 @@ def perform(level, box, options):
     # # BiomeFinder adds biome data to surfaceMap
     # findBiomes(level, surface)
     # # Test of biome material changes.
-    biomeId = surface.surfaceMap[0][0].biomeId
+    # biomeId = surface.surfaceMap[0][0].biomeId
 
-    buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, biomeId)
+    # buildBridge(level, startPoint, endPoint, bridgeY, bridgeWidth, biomeId)
 
     # # Makes a colored map of biomes in the sky
     # biomeIds = Biomes.getBiomeDict()

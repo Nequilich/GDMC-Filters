@@ -157,7 +157,15 @@ def getShortestIntersectionPath(surface, section1, section2):
 				length = l
 				point1 = p1
 				point2 = p2
-	return getPath(surface, point1.x, point1.z, point2.x, point2.z)
+	path = getPath(surface, point1.x, point1.z, point2.x, point2.z)
+
+	for point in path[:3]:
+		section1.exitPoints.append(point)
+
+	for point in path[-1:-4:-1]:
+		section2.exitPoints.append(point)
+
+	return path
 
 def getShortestIntersectionPathLength(surface, section1, section2):
 	points1 = section1.pathConnectionPoints
