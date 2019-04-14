@@ -3,8 +3,6 @@ from Common import setBlock
 from GetPath import getPath
 from PathManager import getPathsBetweenSections
 from PathManager import getPathsInSections
-from GetPropertiesAlongPath import getPropertiesAlongPath
-from HouseBuilder import buildHouse
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement

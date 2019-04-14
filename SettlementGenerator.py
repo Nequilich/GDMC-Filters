@@ -1,8 +1,8 @@
 from BiomeFinder import findBiomes
 from Classes import Surface
 from Common import setBlock
-from FarmBuilder import buildPatch
-from FarmBuilder import clearPatchProperty
+from FarmBuilder import buildFarm
+from FarmBuilder import clearFarmProperty
 from GetPath import getPath
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from HouseBuilder import buildHouse
@@ -48,16 +48,16 @@ def perform(level, box, options):
 		buildHouse(level, surface, p)
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
-	# Builds patches
+	# Builds farms
 	patchProperties = []
 	for path in paths:
 		patchProperties.extend(getPropertiesAlongPath(surface, path, 5, 11, 16))
 
 	for p in patchProperties:
-		clearPatchProperty(level, surface, p)
+		clearFarmProperty(level, surface, p)
 
 	for p in patchProperties:
-		buildPatch(level, surface, p)
+		buildFarm(level, surface, p)
 
 def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
 	path = getPath(surface, xStart, zStart, xEnd, zEnd)

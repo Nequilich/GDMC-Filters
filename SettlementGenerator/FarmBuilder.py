@@ -1,16 +1,23 @@
+from random import randint
+
 from BiomeMaterials import get_biome_materials
 from Common import setBlock
 from RemoveTree import removeTree
 
-def buildPatch(level, surface, prop):
+def buildFarm(level, surface, prop):
 	if prop.xLength < 5 or prop.zLength < 5 or prop.height > 90:
 		return
-
 	getMaterials(surface, prop)
+	if randint(0, 1) == 0:
+		buildPatch(level, surface, prop)
+	else:
+		buildAnimalPen(level, surface, prop)
+
+def buildPatch(level, surface, prop):
 	buildField(level, surface, prop)
 	buildSides(level, surface, prop)
 
-def clearPatchProperty(level, surface, prop):
+def clearFarmProperty(level, surface, prop):
 	for x in range(prop.xStart, prop.xEnd):
 		for z in range(prop.zStart, prop.zEnd):
 			for y in range(prop.height + 2, prop.height + 4):
@@ -144,31 +151,31 @@ def buildAnimalPen(level, surface, prop):
 	setBlock(level, surface, prop.xEnd - 1, y + 2, prop.zStart, 50, 5)
 	setBlock(level, surface, prop.xEnd - 1, y + 2, prop.zEnd - 1, 50, 5)
 	# Gate
-	if prop.doorDirection == "North":
+	if prop.doorDirection == "NORTH":
 		x = prop.xStart + prop.xLength / 2
 		setBlock(level, surface, x, y + 1, prop.zStart, 107, 0)
 		if isSurfaceBlock(level, x + surface.xStart, y, prop.zStart - 1 + surface.zStart):
 			setBlock(level, surface, x, y, prop.zStart, 4)
 		else:
-			setBlock(level, surface, x, y, prop.zStart, 67, 0)
-	if prop.doorDirection == "East":
+			setBlock(level, surface, x, y, prop.zStart, 67, 2)
+	if prop.doorDirection == "EAST":
 		z = prop.zStart + prop.zLength / 2
 		setBlock(level, surface, prop.xEnd - 1, y + 1, z, 107, 1)
 		if isSurfaceBlock(level, prop.xEnd + surface.xStart, y, z + surface.zStart):
 			setBlock(level, surface, prop.xEnd - 1, y, z, 4)
 		else:
 			setBlock(level, surface, prop.xEnd - 1, y, z, 67, 1)
-	if prop.doorDirection == "South":
+	if prop.doorDirection == "SOUTH":
 		x = prop.xStart + prop.xLength / 2
 		setBlock(level, surface, x, y + 1, prop.zEnd - 1, 107, 2)
 		if isSurfaceBlock(level, x + surface.xStart, y, prop.zEnd + surface.zStart):
 			setBlock(level, surface, x, y, prop.zEnd - 1, 4)
 		else:
 			setBlock(level, surface, x, y, prop.zEnd - 1, 67, 3)
-	if prop.doorDirection == "West":
+	if prop.doorDirection == "WEST":
 		z = prop.zStart + prop.zLength / 2
-		setBlock(level, surface, prop.xEnd - 1, y + 1, z, 107, 1)
-		if isSurfaceBlock(level, prop.xEnd + surface.xStart, y, z + surface.zStart):
-			setBlock(level, surface, prop.xEnd - 1, y, z, 4)
+		setBlock(level, surface, prop.xStart, y + 1, z, 107, 3)
+		if isSurfaceBlock(level, prop.xStart - 1 + surface.xStart, y, z + surface.zStart):
+			setBlock(level, surface, prop.xStart, y, z, 4)
 		else:
-			setBlock(level, surface, prop.xEnd - 1, y, z, 67, 1)
+			setBlock(level, surface, prop.xStart, y, z, 67, 0)
