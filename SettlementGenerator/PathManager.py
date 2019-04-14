@@ -30,7 +30,7 @@ def getPathsInSection(surface, section):
 		length = 0
 		point = None
 		for _ in range(attempts):
-			p = getUniquePoint(pointPool, poolSize, points)
+			p = getRandomPoint(pointPool, poolSize, points)
 			l = getLengthToNearestPoint(surface, points, p)
 			if l > length:
 				length = l
@@ -47,7 +47,7 @@ def getPathsBetweenSections(surface, sections):
 		paths.append(getShortestIntersectionPath(surface, sectionPair[0], sectionPair[1]))
 	return paths
 
-def getUniquePoint(pointPool, poolSize, points):
+def getRandomPoint(pointPool, poolSize, points):
 	i = randint(0, poolSize - 1)
 	p = pointPool[i]
 	while contain(points, p):

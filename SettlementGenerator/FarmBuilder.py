@@ -1,6 +1,7 @@
 from random import randint
 
 from BiomeMaterials import get_biome_materials
+from Classes import Point
 from Common import setBlock
 from RemoveTree import removeTree
 
@@ -179,3 +180,60 @@ def buildAnimalPen(level, surface, prop):
 			setBlock(level, surface, prop.xStart, y, z, 4)
 		else:
 			setBlock(level, surface, prop.xStart, y, z, 67, 0)
+	# Animals
+	amount = (prop.xLength * prop.zLength) / 12
+	kind = None
+	a = randint(0, 9)
+	if a < 1:
+		kind = "HORSE"
+	elif a < 4:
+		kind = "CHICKEN"
+	elif a < 7:
+		kind = "PIG"
+	else:
+		kind = "COW"
+
+	points = []
+	for _ in range(amount):
+		points.append(getRandomPoint(surface, prop, points))
+
+	if kind == "HORSE":
+		for p in points:
+			placeHorse(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+	elif kind == "CHICKEN":
+		for p in points:
+			placeChicken(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+	elif kind == "PIG":
+		for p in points:
+			placePig(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+	elif kind == "COW":
+		for p in points:
+			placeCow(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+
+def getRandomPoint(surface, prop, points):
+	x = randint(prop.xStart + 1, prop.xEnd - 2)
+	z = randint(prop.zStart + 1, prop.zEnd - 2)
+	p = Point(x, z)
+	while contain(points, p):
+		x = randint(prop.xStart + 1, prop.xEnd - 2)
+		z = randint(prop.zStart + 1, prop.zEnd - 2)
+		p = Point(x, z)
+	return p
+
+def contain(points, point):
+	for p in points:
+		if p.x == point.x and p.z == point.z:
+			return True
+	return False
+
+def placeHorse(level, x, y, z):
+	setBlock(level, None, x, y, z, 35, 5)
+
+def placeChicken(level, x, y, z):
+	setBlock(level, None, x, y, z, 35, 0)
+
+def placePig(level, x, y, z):
+	setBlock(level, None, x, y, z, 35, 6)
+
+def placeCow(level, x, y, z):
+	setBlock(level, None, x, y, z, 35, 11)
