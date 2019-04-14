@@ -176,7 +176,10 @@ def clearHouseProperties(level, surface, houseProperties):
 
 def buildHouseProperties(level, surface, properties):
 	for p in properties:
-		buildHouse(level, surface, p)
+		biomeId = surface.surfaceMap[p.xStart][p.zStart].biomeId
+		biome = getBiomeDict()[biomeId]
+		point = Point(surface.xStart + p.xStart, surface.zStart + p.zStart)
+		buildStructure(level, point, p.height, 'house', 'north', biome, prop=p)
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
 def getFarmProperties(surface, paths):
