@@ -1,0 +1,32 @@
+[
+  {
+    "data": 0, 
+    "direction": null, 
+    "id": 4, 
+    "type": "cobblestone", 
+    "verticalAllignment": null, 
+    "x": 0, 
+    "y": 0, 
+    "z": 0
+  }, 
+  {
+    "data": 0, 
+    "direction": null, 
+    "id": 44, 
+    "type": "red_sandstone", 
+    "verticalAllignment": "bottom", 
+    "x": 0, 
+    "y": 1, 
+    "z": 0
+  }, 
+  {
+    "data": 0, 
+    "direction": null, 
+    "id": 102, 
+    "type": "glass_pane", 
+    "verticalAllignment": null, 
+    "x": 0, 
+    "y": 2, 
+    "z": 0
+  }
+]
