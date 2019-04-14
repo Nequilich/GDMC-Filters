@@ -31,13 +31,13 @@ def buildWalls(level, surface, prop):
 	# North and south walls
 	for x in range(prop.xStart + 2, prop.xEnd - 2):
 		for y in range(prop.height + 2, prop.height + 5):
-			setBlock(level, surface, x, y, prop.zStart + 1, materials["wood_planks"]["default"][0], materials["door"]["directions"]["south"]["bottom"][1])
-			setBlock(level, surface, x, y, prop.zEnd - 2, materials["wood_planks"]["default"][0], materials["door"]["directions"]["south"]["bottom"][1])
+			setBlock(level, surface, x, y, prop.zStart + 1, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
+			setBlock(level, surface, x, y, prop.zEnd - 2, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
 	# East and west walls
 	for z in range(prop.zStart + 2, prop.zEnd - 2):
 		for y in range(prop.height + 2, prop.height + 5):
-			setBlock(level, surface, prop.xStart + 1, y, z, materials["wood_planks"]["default"][0], materials["door"]["directions"]["south"]["bottom"][1])
-			setBlock(level, surface, prop.xEnd - 2, y, z, materials["wood_planks"]["default"][0], materials["door"]["directions"]["south"]["bottom"][1])
+			setBlock(level, surface, prop.xStart + 1, y, z, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
+			setBlock(level, surface, prop.xEnd - 2, y, z, materials["wood_planks"]["default"][0], materials["wood_planks"]["default"][1])
 	# Corners
 	for y in range(prop.height + 2, prop.height + 5):
 		setBlock(level, surface, prop.xStart + 1, y, prop.zStart + 1, materials["wood"]["default"][0], materials["wood"]["default"][1])
@@ -59,7 +59,7 @@ def buildRoofNS(level, surface, prop):
 		setBlock(level, surface, prop.xEnd - 2, y + 1, z, materials["wood_planks"]["directions"]["west"]["bottom"][0], materials["wood_planks"]["directions"]["west"]["bottom"][1])
 		setBlock(level, surface, prop.xEnd - 2, y, z, materials["wood"]["directions"]["north"]["top"][0], materials["wood"]["directions"]["north"]["top"][1])
 		for x in range(prop.xStart + 2, prop.xEnd - 2):
-			setBlock(level, surface, x, y + 1, z, materials["wood_planks"]["default"][0], materials["door"]["directions"]["south"]["bottom"][1])
+			setBlock(level, surface, x, y + 1, z, materials["wood_planks"]["default"][0],materials["wood_planks"]["default"][1])
 
 def buildRoofEW(level, surface, prop):
 	y = prop.height + 5
