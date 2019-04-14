@@ -1,8 +1,10 @@
 from random import randint
 
 from BiomeMaterials import get_biome_materials
+from Classes import Point
 from Common import setBlock
 from RemoveTree import removeTree
+from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 
 def buildFarm(level, surface, prop):
 	if prop.height > 90:
@@ -134,6 +136,7 @@ def buildAnimalPen(level, surface, prop):
 	for x in range(prop.xStart + 1, prop.xEnd - 1):
 		for z in range(prop.zStart + 1, prop.zEnd - 1):
 			setBlock(level, surface, x, y, z, 2)
+
 	# Fence
 	for x in range(prop.xStart, prop.xEnd):
 		setBlock(level, surface, x, y, prop.zStart, 4)
@@ -145,11 +148,13 @@ def buildAnimalPen(level, surface, prop):
 		setBlock(level, surface, prop.xStart, y + 1, z, 85)
 		setBlock(level, surface, prop.xEnd - 1, y, z, 4)
 		setBlock(level, surface, prop.xEnd - 1, y + 1, z, 85)
+
 	# Torches
 	setBlock(level, surface, prop.xStart, y + 2, prop.zStart, 50, 5)
 	setBlock(level, surface, prop.xStart, y + 2, prop.zEnd - 1, 50, 5)
 	setBlock(level, surface, prop.xEnd - 1, y + 2, prop.zStart, 50, 5)
 	setBlock(level, surface, prop.xEnd - 1, y + 2, prop.zEnd - 1, 50, 5)
+
 	# Gate
 	if prop.doorDirection == "NORTH":
 		x = prop.xStart + prop.xLength / 2
@@ -179,3 +184,99 @@ def buildAnimalPen(level, surface, prop):
 			setBlock(level, surface, prop.xStart, y, z, 4)
 		else:
 			setBlock(level, surface, prop.xStart, y, z, 67, 0)
+
+	# Animals
+	amount = (prop.xLength * prop.zLength) / 12
+	kind = None
+	a = randint(0, 12)
+	if a < 1:
+		kind = "HORSE"
+	elif a < 4:
+		kind = "CHICKEN"
+	elif a < 7:
+		kind = "PIG"
+	elif a < 10:
+		kind = "COW"
+	else:
+		kind = "SHEEP"
+
+	points = []
+	for _ in range(amount):
+		points.append(getRandomPoint(surface, prop, points))
+
+	if kind == "HORSE":
+		for p in points:
+			placeHorse(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+	elif kind == "CHICKEN":
+		for p in points:
+			placeChicken(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+	elif kind == "PIG":
+		for p in points:
+			placePig(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+	elif kind == "COW":
+		for p in points:
+			placeCow(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+	elif kind == "SHEEP":
+		for p in points:
+			placeSheep(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
+
+def getRandomPoint(surface, prop, points):
+	x = randint(prop.xStart + 1, prop.xEnd - 2)
+	z = randint(prop.zStart + 1, prop.zEnd - 2)
+	p = Point(x, z)
+	while contain(points, p):
+		x = randint(prop.xStart + 1, prop.xEnd - 2)
+		z = randint(prop.zStart + 1, prop.zEnd - 2)
+		p = Point(x, z)
+	return p
+
+def contain(points, point):
+	for p in points:
+		if p.x == point.x and p.z == point.z:
+			return True
+	return False
+
+def placeHorse(level, x, y, z):
+    horse = TAG_Compound()
+    horse["id"] = TAG_String("horse")
+    horse["Pos"] = TAG_List([TAG_Double(x + 0.5), TAG_Double(y), TAG_Double(z + 0.5)])
+
+    chunk = level.getChunk(x / 16, z / 16)
+    chunk.Entities.append(horse)
+    chunk.dirty = True
+
+def placeChicken(level, x, y, z):
+    chicken = TAG_Compound()
+    chicken["id"] = TAG_String("chicken")
+    chicken["Pos"] = TAG_List([TAG_Double(x + 0.5), TAG_Double(y), TAG_Double(z + 0.5)])
+
+    chunk = level.getChunk(x / 16, z / 16)
+    chunk.Entities.append(chicken)
+    chunk.dirty = True
+
+def placePig(level, x, y, z):
+    pig = TAG_Compound()
+    pig["id"] = TAG_String("pig")
+    pig["Pos"] = TAG_List([TAG_Double(x + 0.5), TAG_Double(y), TAG_Double(z + 0.5)])
+
+    chunk = level.getChunk(x / 16, z / 16)
+    chunk.Entities.append(pig)
+    chunk.dirty = True
+
+def placeCow(level, x, y, z):
+    cow = TAG_Compound()
+    cow["id"] = TAG_String("cow")
+    cow["Pos"] = TAG_List([TAG_Double(x + 0.5), TAG_Double(y), TAG_Double(z + 0.5)])
+
+    chunk = level.getChunk(x / 16, z / 16)
+    chunk.Entities.append(cow)
+    chunk.dirty = True
+
+def placeSheep(level, x, y, z):
+    sheep = TAG_Compound()
+    sheep["id"] = TAG_String("sheep")
+    sheep["Pos"] = TAG_List([TAG_Double(x + 0.5), TAG_Double(y), TAG_Double(z + 0.5)])
+
+    chunk = level.getChunk(x / 16, z / 16)
+    chunk.Entities.append(sheep)
+    chunk.dirty = True
