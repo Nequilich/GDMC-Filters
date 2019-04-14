@@ -49,14 +49,14 @@ def perform(level, box, options):
 		buildPathway(level, surface, p.xPathwayStart, p.zPathwayStart, p.xPathwayEnd, p.zPathwayEnd)
 
 	# Builds farms
-	patchProperties = []
+	farmProperties = []
 	for path in paths:
-		patchProperties.extend(getPropertiesAlongPath(surface, path, 7, 11, 16))
+		farmProperties.extend(getPropertiesAlongPath(surface, path, 7, 11, 16))
 
-	for p in patchProperties:
+	for p in farmProperties:
 		clearFarmProperty(level, surface, p)
 
-	for p in patchProperties:
+	for p in farmProperties:
 		buildFarm(level, surface, p)
 
 def buildPathway(level, surface, xStart, zStart, xEnd, zEnd):
