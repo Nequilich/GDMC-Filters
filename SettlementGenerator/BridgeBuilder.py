@@ -265,7 +265,7 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width):
     width = 3
     currentOffset = 0
     offsetInterval = bridgeLength/float(bridgeSkew)
-
+    
     # Offset points of bridge to center.
     startPoint = (startPoint[0]-((width/2)*bridgeSecondaryDirectionX),
                   startPoint[1]-((width/2)*bridgeSecondaryDirectionZ))
@@ -277,7 +277,7 @@ def buildSmallBridge(level, startPoint, endPoint, bridgeY, width):
             (currentOffset*bridgeSecondaryDirectionX)
         z = startPoint[1]+(i*bridgeMainDirectionZ) + \
             (currentOffset*bridgeSecondaryDirectionZ)
-        if (i % offsetInterval < 1):
+        if ((i) % offsetInterval < 1 and (i != 0 or offsetInterval == 1)):
             placeBridgeSection(level, x, bridgeY, z, width+1, materials["lower slab"],
                                False, False, False)
             currentOffset += 1
