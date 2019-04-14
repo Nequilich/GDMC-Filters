@@ -56,11 +56,11 @@ def perform(level, box, options):
 	clearHouseProperties(level, surface, properties)
 	buildProperties(level, surface, properties)
 
-	buildTowers(level, surface, towerSections)
-
 	patchProperties = getPatchProperties(surface, paths)
 	clearPatchProperties(level, surface, patchProperties)
 	buildPatchProperties(level, surface, patchProperties)
+
+	buildTowers(level, surface, towerSections)
 
 
 
@@ -126,7 +126,7 @@ def tooCloseToOtherTowers(surface, sectionMid, towerSections):
 	for towerSection in towerSections:
 		towerSectionMid = Point(towerSection.xMid, towerSection.zMid)
 		distance = getEuclideanDistance(surface, towerSectionMid, sectionMid)
-		if distance < 50:
+		if distance < 100:
 			return True
 	return False
 
