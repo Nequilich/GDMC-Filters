@@ -56,7 +56,7 @@ def buildRoads(level, surface, roads):
                     road[i-1].x + surface.xStart, road[i-1].z + surface.zStart)
             if (i + 1 < len(road)):
                 nextPoint = Point(
-                    road[1+1].x + surface.xStart, road[i+1].z + surface.zStart)
+                    road[i+1].x + surface.xStart, road[i+1].z + surface.zStart)
             pointAngle = angleOfPoints(previousPoint, point, nextPoint)
             buildPathPoint(level, surface, point, y)
             if (streetLightCounter % streetLightInterval == 0):
