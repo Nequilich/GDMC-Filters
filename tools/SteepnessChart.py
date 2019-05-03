@@ -15,9 +15,11 @@ def perform(level, box, options):
 d = {
 	0: (35, 0),
 	1: (35, 8),
-	2: (35, 7)
+	2: (1, 3),
+	3: (4, 0),
+	4: (7, 0)
 	}
 def placeSteepnessBlocks(level, surface, x, z):
 	steepness = surface.surfaceMap[x][z].steepness
-	blockType = d.get(steepness, (14, 0))
+	blockType = d.get(steepness, (35, 15))
 	setBlock(level, surface, x, 250, z, blockType)
