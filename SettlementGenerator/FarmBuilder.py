@@ -1,4 +1,4 @@
-from random import randint
+import RandomNumberGenerator
 
 from BiomeMaterials import get_biome_materials
 from Classes import Point
@@ -6,11 +6,13 @@ from Common import setBlock
 from RemoveTree import removeTree
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 
+random = RandomNumberGenerator.SeededRandom.getInstance()
+
 def buildFarm(level, surface, prop):
 	if prop.height > 90:
 		return
 	getMaterials(surface, prop)
-	if randint(0, 9) < 6:
+	if random.randint(0, 9) < 6:
 		buildPatch(level, surface, prop)
 	else:
 		buildAnimalPen(level, surface, prop)
@@ -188,7 +190,7 @@ def buildAnimalPen(level, surface, prop):
 	# Animals
 	amount = (prop.xLength * prop.zLength) / 12
 	kind = None
-	a = randint(0, 12)
+	a = random.randint(0, 12)
 	if a < 1:
 		kind = "HORSE"
 	elif a < 4:
@@ -221,12 +223,12 @@ def buildAnimalPen(level, surface, prop):
 			placeSheep(level, p.x + surface.xStart, y + 1, p.z + surface.zStart)
 
 def getRandomPoint(surface, prop, points):
-	x = randint(prop.xStart + 1, prop.xEnd - 2)
-	z = randint(prop.zStart + 1, prop.zEnd - 2)
+	x = random.randint(prop.xStart + 1, prop.xEnd - 2)
+	z = random.randint(prop.zStart + 1, prop.zEnd - 2)
 	p = Point(x, z)
 	while contain(points, p):
-		x = randint(prop.xStart + 1, prop.xEnd - 2)
-		z = randint(prop.zStart + 1, prop.zEnd - 2)
+		x = random.randint(prop.xStart + 1, prop.xEnd - 2)
+		z = random.randint(prop.zStart + 1, prop.zEnd - 2)
 		p = Point(x, z)
 	return p
 
