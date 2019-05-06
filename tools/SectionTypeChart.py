@@ -22,25 +22,7 @@ def perform(level, box, options):
 
 	arrangeSections(sections, waterSections, bigLandSections, mediumLandSections, smallLandSections)
 
-	for x in range(surface.xLength):
-		for z in range(surface.zLength):
-			setBlock(level, surface, x, 160, z, 35, 15)
-
-	for s in smallLandSections:
-		for p in s.points:
-			setBlock(level, surface, p.x, 160, p.z, 35, 4)
-
-	for s in mediumLandSections:
-		for p in s.points:
-			setBlock(level, surface, p.x, 160, p.z, 35, 5)
-
-	for s in bigLandSections:
-		for p in s.points:
-			setBlock(level, surface, p.x, 160, p.z, 35, 13)
-
-	for s in waterSections:
-		for p in s.points:
-			setBlock(level, surface, p.x, 160, p.z, 35, 11)
+	paintSections(level, surface, smallLandSections, mediumLandSections, bigLandSections, waterSections)
 
 def calculateSectionMids(surface, sections):
 	for section in sections:
@@ -61,3 +43,23 @@ def arrangeSections(sections, waterSections, bigLandSections, mediumLandSections
 			continue
 		bigLandSections.append(section)
 
+def paintSections(level, surface, smallLandSections, mediumLandSections, bigLandSections, waterSections):
+	for x in range(surface.xLength):
+		for z in range(surface.zLength):
+			setBlock(level, surface, x, 250, z, 35, 15)
+
+	for s in smallLandSections:
+		for p in s.points:
+			setBlock(level, surface, p.x, 250, p.z, 35, 5)
+
+	for s in mediumLandSections:
+		for p in s.points:
+			setBlock(level, surface, p.x, 250, p.z, 2)
+
+	for s in bigLandSections:
+		for p in s.points:
+			setBlock(level, surface, p.x, 250, p.z, 35, 13)
+
+	for s in waterSections:
+		for p in s.points:
+			setBlock(level, surface, p.x, 250, p.z, 35, 11)
