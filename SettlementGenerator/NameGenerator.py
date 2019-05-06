@@ -1,4 +1,4 @@
-import random
+import RandomNumberGenerator
 
 cityName1 = [
     "Spring", "Summer", "Green", "Man", "Ports", "Wimble", "North", "Nor", "South", "West", "Wes", "East", "Hunts", "Ox", "Liver", "Bird", "Rad", "Ash", "Wor", "Tur", "Kirk", "Chester", "Beau", "Rich", "Bos", "Wat", "Por", "Kirk", "Gaston", "New", "Ax", "Jones", "Las", "Dan"
@@ -6,6 +6,8 @@ cityName1 = [
 cityName2 = [
     "ville", "town", "ton", "ing", "hill", "ford", "ham", "field", "sea", "chester", "bury", "stead", "dale", "pool", "wick", "worth", "port", "view", "cliffe", "ley"
 ]
+
+random = RandomNumberGenerator.SeededRandom.getInstance()
 
 def getCityName():
     cityName = random.choice(cityName1) + random.choice(cityName2)

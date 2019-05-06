@@ -1,6 +1,6 @@
 import math
 import sys
-from random import randint
+import RandomNumberGenerator
 
 from Classes import Edge
 from Classes import Node
@@ -8,6 +8,8 @@ from Classes import Point
 from Common import getEuclideanDistance
 from GetPath import getPath
 from Kruskal import getMinimumSpanningTree
+
+random = RandomNumberGenerator.SeededRandom.getInstance()
 
 def getPathsInSections(surface, sections):
 	paths = []
@@ -48,10 +50,10 @@ def getPathsBetweenSections(surface, sections):
 	return paths
 
 def getRandomPoint(pointPool, poolSize, points):
-	i = randint(0, poolSize - 1)
+	i = random.randint(0, poolSize - 1)
 	p = pointPool[i]
 	while contain(points, p):
-		i = randint(0, poolSize - 1)
+		i = random.randint(0, poolSize - 1)
 		p = pointPool[i]
 	return p
 

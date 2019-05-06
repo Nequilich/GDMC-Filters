@@ -27,11 +27,11 @@ inputs = (
 def perform(level, box, options):
     startTime = time.time()
 
-    x = box.minx
-    y = box.miny
-    z = box.minz
+    # x = box.minx
+    # y = box.miny
+    # z = box.minz
 
-    level.setBlockAt(x, y, z, 63)
+    # level.setBlockAt(x, y, z, 63)
     
     # sign = TileEntity.Create("Sign", (x,y,z))
     # print(sign)
@@ -42,28 +42,28 @@ def perform(level, box, options):
     # boat["Motion"] = TAG_List([TAG_Double(0.0), TAG_Double(0.0), TAG_Double(0.0)])
     # boat["Rotation"] = TAG_List([TAG_Float(0.0), TAG_Float(0.0)])
 
-    # print(boat)
-    sign = TAG_Compound()
-    sign["id"] = TAG_String('minecraft:sign')
-    sign["x"] = TAG_Int(x)
-    sign["y"] = TAG_Int(y)
-    sign["z"] = TAG_Int(z)
-    sign["Text1"] = TAG_String("{'text':'hooohooo'}")
-    sign["Text2"] = TAG_String("{'text':'hooohooo'}")
-    sign["Text3"] = TAG_String("{'text':'hooohooo'}")
-    sign["Text4"] = TAG_String("{'text':'hooohooo'}")
+    # # print(boat)
+    # sign = TAG_Compound()
+    # sign["id"] = TAG_String('minecraft:sign')
+    # sign["x"] = TAG_Int(x)
+    # sign["y"] = TAG_Int(y)
+    # sign["z"] = TAG_Int(z)
+    # sign["Text1"] = TAG_String("{'text':'hooohooo'}")
+    # sign["Text2"] = TAG_String("{'text':'hooohooo'}")
+    # sign["Text3"] = TAG_String("{'text':'hooohooo'}")
+    # sign["Text4"] = TAG_String("{'text':'hooohooo'}")
     
-    chunk = level.getChunk(x / 16, z / 16)
-    chunk.TileEntities.append(sign)
-    chunk.dirty = True
+    # chunk = level.getChunk(x / 16, z / 16)
+    # chunk.TileEntities.append(sign)
+    # chunk.dirty = True
 
-    print(chunk.TileEntities)
-    print(level.blockAt(x,y,z))
-    print(level.blockDataAt(x,y,z))
+    # print(chunk.TileEntities)
+    # print(level.blockAt(x,y,z))
+    # print(level.blockDataAt(x,y,z))
 
 
-    # for i in range(10):
-    #     print(getCityName())
+    for i in range(10):
+        print(getCityName())
 
     # Places a boat 
     # boat = TAG_Compound()
