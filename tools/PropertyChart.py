@@ -1,11 +1,14 @@
 import heapq
 
+from BiomeFinder import findBiomes
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
 from Common import setBlock
+from GetPropertiesAlongPath import getPropertiesAlongPath
 from PathManager import getPathsBetweenSections
 from PathManager import getPathsInSections
+from RoadBuilder import buildTestRoad
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
@@ -17,6 +20,7 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
+	findBiomes(level, surface)
 
 	sections = calculateSections(surface, 1, 15)
 	calculateSectionMids(surface, sections)
@@ -45,7 +49,16 @@ def perform(level, box, options):
 	intersectionPaths = getPathsBetweenSections(surface, habitatSections)
 	paths.extend(intersectionPaths)
 
+	buildPaths(level, surface, paths)
+
 	paintPaths(level, surface, intersectionPaths, (35, 2))
+
+	houseProperties = getHouseProperties(surface, paths)
+	farmProperties = getFarmProperties(surface, paths)
+
+	paintTowerProperties(level, surface, towerSections)
+	paintHouseProperties(level, surface, houseProperties)
+	paintFarmProperties(level, surface, farmProperties)
 
 def calculateSectionMids(surface, sections):
 	for section in sections:
@@ -159,6 +172,10 @@ def getHabitatSections(towerSections, mediumLandSections, bigLandSections):
 	habitatSections.extend(bigLandSections)
 	return habitatSections
 
+def buildPaths(level, surface, paths):
+	for path in paths:
+		buildTestRoad(level, surface, path)
+
 def paintPathPoints(level, surface, habitatSections):
 	for section in habitatSections:
 		for x in [section.xMid - 1, section.xMid, section.xMid + 1]:
@@ -175,3 +192,33 @@ def paintPaths(level, surface, paths, blockType):
 	for path in paths:
 		for point in path:
 			setBlock(level, surface, point.x, 250, point.z, blockType)
+
+def getHouseProperties(surface, paths):
+	properties = []
+	for path in paths:
+		properties.extend(getPropertiesAlongPath(surface, path, 7, 11, 7))
+	return properties
+
+def getFarmProperties(surface, paths):
+	farmProperties = []
+	for path in paths:
+		farmProperties.extend(getPropertiesAlongPath(surface, path, 7, 11, 16))
+	return farmProperties
+
+def paintTowerProperties(level, surface, towerSections):
+	for section in towerSections:
+		for x in range(section.xMid - 3, section.xMid + 4):
+			for z in range(section.zMid - 3, section.zMid + 4):
+				setBlock(level, surface, x, 252, z, 35, 10)
+
+def paintHouseProperties(level, surface, houseProperties):
+	for prop in houseProperties:
+		for x in range(prop.xStart, prop.xEnd):
+			for z in range(prop.zStart, prop.zEnd):
+				setBlock(level, surface, x, 250, z, 5)
+
+def paintFarmProperties(level, surface, farmProperties):
+	for prop in farmProperties:
+		for x in range(prop.xStart, prop.xEnd):
+			for z in range(prop.zStart, prop.zEnd):
+				setBlock(level, surface, x, 250, z, 41)
