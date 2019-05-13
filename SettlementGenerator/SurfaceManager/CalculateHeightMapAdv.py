@@ -1,5 +1,6 @@
 from collections import deque
 from Common import getMatrix
+from Common import isSurfaceBlock
 
 def calculateHeightMap(level, surface):
 	suggestedHeights = getMatrix(surface.xLength, surface.zLength, 0) #Matrix of the highest suggested height for each surface point
@@ -46,13 +47,6 @@ def calculateSurfacePointHeight(level, x, z, suggestedHeight):
 		while isSurfaceBlock(level, x, y, z):
 			y += 1
 		return y - 1
-
-aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
-def isSurfaceBlock(level, x, y, z):
-	for block in aboveSurfaceBlocks:
-		if level.blockAt(x, y, z) == block:
-			return False
-	return True
 
 def pushToQueue(queue, suggestedHeights, x, z, suggestedHeight):
 	#Checks if this height has been suggested before

@@ -4,6 +4,7 @@ from Biomes import getBiomeDict
 from Classes import Point
 from Classes import Surface
 from Common import getEuclideanDistance
+from Common import removeTree
 from Common import setBlock
 from FarmBuilder import buildFarm
 from FarmBuilder import clearFarmProperty
@@ -13,7 +14,6 @@ from HouseBuilder import buildHouse
 from HouseBuilder import clearHouseProperty
 from PathManager import getPathsBetweenSections
 from PathManager import getPathsInSections
-from RemoveTree import removeTree
 from RoadBuilder import buildRoad
 from StructureBuilder import buildStructure
 from SurfaceManager import calculateBiomeMap

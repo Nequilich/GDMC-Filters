@@ -2,8 +2,9 @@ import RandomNumberGenerator
 
 from BiomeMaterials import get_biome_materials
 from Classes import Point
+from Common import isSurfaceBlock
+from Common import removeTree
 from Common import setBlock
-from RemoveTree import removeTree
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 
 random = RandomNumberGenerator.SeededRandom.getInstance()
@@ -118,13 +119,6 @@ def buildWestSide(level, surface, prop):
 		for z in range(prop.zStart + 1, prop.zEnd - 1):
 			setBlock(level, surface, prop.xStart, y, z, materials["wood_planks"]["default"])
 			setBlock(level, surface, prop.xStart, y + 1, z, materials["fence"]["default"])
-
-aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
-def isSurfaceBlock(level, x, y, z):
-	for block in aboveSurfaceBlocks:
-		if level.blockAt(x, y, z) == block:
-			return False
-	return True
 
 def getMaterials(surface, prop):
 	biomeId = surface.surfaceMap[prop.xStart][prop.zStart].biomeId

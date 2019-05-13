@@ -1,4 +1,5 @@
 import math
+
 from Classes import Property
 from Common import isWithinBorder
 from GetRectangle import getRectangle

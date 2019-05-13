@@ -4,6 +4,7 @@ from BiomeChanges import defaultBiomeChanges
 from BlockRegisterRotater import rotateRegister
 from Classes import Base
 from Classes import Blueprint
+from Common import isSurfaceBlock
 from Common import setBlock
 from HouseManager import getHouseBlueprint
 from TowerManager import getTowerBlueprint
@@ -72,10 +73,3 @@ def buildFoundation(level, blueprint):
 					blockId = 98
 				setBlock(level, None, x, blueprint.baseHeight - i, z, blockId)
 				i += 1
-
-aboveSurfaceBlocks = [0, 2, 3, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
-def isSurfaceBlock(level, x, y, z):
-	for block in aboveSurfaceBlocks:
-		if level.blockAt(x, y, z) == block:
-			return False
-	return True

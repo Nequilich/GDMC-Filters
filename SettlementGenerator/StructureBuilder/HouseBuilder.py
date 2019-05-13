@@ -1,6 +1,7 @@
 from BiomeMaterials import get_biome_materials
+from Common import isSurfaceBlock
+from Common import removeTree
 from Common import setBlock
-from RemoveTree import removeTree
 
 def buildHouse(level, surface, prop):
 	if prop.xLength < 7 or prop.zLength < 7:
@@ -131,13 +132,6 @@ def buildDoor(level, surface, prop):
 		setBlock(level, surface, prop.xStart + 2, prop.height + 3, z + 1, materials["torch"]["directions"]["east"]["top"])
 		setBlock(level, surface, prop.xStart + 2, prop.height + 3, z - 1, materials["torch"]["directions"]["east"]["top"])
 
-aboveSurfaceBlocks = [0, 6, 17, 18, 31, 32, 37, 38, 39, 40, 59, 78, 81, 83, 99, 100, 103, 104, 105, 106, 111, 141, 142, 161, 162, 175]
-def isSurfaceBlock(level, x, y, z):
-	for block in aboveSurfaceBlocks:
-		if level.blockAt(x, y, z) == block:
-			return False
-	return True
-
 def buildWindows(level, surface, prop):
 	if prop.doorDirection != "NORTH":
 		x = prop.xStart + 3
@@ -171,7 +165,6 @@ def buildWindows(level, surface, prop):
 				setBlock(level, surface, prop.xStart + 1, prop.height + 3, z, materials["glass_pane"]["default"])
 			z += 1
 			i += 1
-
 
 def getMaterials(surface, prop):
 	biomeId = surface.surfaceMap[prop.xStart][prop.zStart].biomeId

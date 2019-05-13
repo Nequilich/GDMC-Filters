@@ -27,4 +27,6 @@ def calculateWaterPlacement(level, surface):
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):
 			y = surface.surfaceMap[x][z].height
-			surface.surfaceMap[x][z].isWater = (level.blockAt(x + surface.xStart, y, z + surface.zStart) == 9 and level.blockDataAt(x + surface.xStart, y, z + surface.zStart) == 0)
+			isWater = level.blockAt(x + surface.xStart, y, z + surface.zStart) == 9 and level.blockDataAt(x + surface.xStart, y, z + surface.zStart) == 0
+			isLava = level.blockAt(x + surface.xStart, y, z + surface.zStart) == 11 and level.blockDataAt(x + surface.xStart, y, z + surface.zStart) == 0
+			surface.surfaceMap[x][z].isWater = isWater or isLava

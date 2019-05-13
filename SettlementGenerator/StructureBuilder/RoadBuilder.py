@@ -3,8 +3,8 @@ from BridgeBuilder import buildBridge
 from Classes import Bridge
 from Classes import Point
 from Common import isWithinBorder
+from Common import removeTree
 from Common import setBlock
-from RemoveTree import removeTree
 
 def buildRoad(level, surface, path):
 	roads = []
@@ -22,7 +22,7 @@ def findRoadsAndBridges(surface, path, roads, bridges):
 			biomeId = surface.surfaceMap[p.x][p.z].biomeId
 		if surface.surfaceMap[p.x][p.z].isWater:
 			if not bridge and i > 0:
-				bridge.append(path[i-1])
+				bridge.append(path[i - 1])
 			bridge.append(p)
 			if road:
 				roads.append(road)
@@ -48,10 +48,9 @@ def buildRoads(level, surface, roads):
 			previousPoint = None
 			nextPoint = None
 			if i > 0:
-				previousPoint = Point(
-					road[i-1].x + surface.xStart, road[i-1].z + surface.zStart)
+				previousPoint = Point(road[i - 1].x + surface.xStart, road[i - 1].z + surface.zStart)
 			if i + 1 < len(road):
-				nextPoint = Point(road[i+1].x + surface.xStart, road[i+1].z + surface.zStart)
+				nextPoint = Point(road[i + 1].x + surface.xStart, road[i + 1].z + surface.zStart)
 			pointAngle = angleOfPoints(previousPoint, point, nextPoint)
 			buildPathPoint(level, surface, point, y)
 			if streetLightCounter % streetLightInterval == 0:
