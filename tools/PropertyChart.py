@@ -7,7 +7,7 @@ from Common import setBlock
 from GetPropertiesAlongPath import getPropertiesAlongPath
 from PathManager import getPathsBetweenSections
 from PathManager import getPathsInSections
-from RoadBuilder import buildTestRoad
+from RoadBuilder import buildRoad
 from SurfaceManager import calculateBiomeMap
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
@@ -174,7 +174,7 @@ def getHabitatSections(towerSections, mediumLandSections, bigLandSections):
 
 def buildPaths(level, surface, paths):
 	for path in paths:
-		buildTestRoad(level, surface, path)
+		buildRoad(level, surface, path)
 
 def paintPathPoints(level, surface, habitatSections):
 	for section in habitatSections:

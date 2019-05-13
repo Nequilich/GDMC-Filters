@@ -4,15 +4,12 @@ from BridgeBuilder import buildBridge
 from Classes import Property
 from Classes import Surface
 from Common import setBlock
-from HouseBuilder import buildHouse
-from HouseBuilder import clearHouseProperty
 from NameGenerator import getCityName
 from SurfaceManager import calculateBiomeMap
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
 from SurfaceManager import calculateWaterPlacement
-from VillagerSpawner import spawnVillager
 import time
 from pymclevel import TAG_Byte, TAG_Short, TAG_Int, TAG_Compound, TAG_List, TAG_String, TAG_Double, TAG_Float
 from pymclevel.entity import TileEntity

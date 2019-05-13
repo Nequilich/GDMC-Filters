@@ -14,7 +14,7 @@ from HouseBuilder import clearHouseProperty
 from PathManager import getPathsBetweenSections
 from PathManager import getPathsInSections
 from RemoveTree import removeTree
-from RoadBuilder import buildTestRoad
+from RoadBuilder import buildRoad
 from StructureBuilder import buildStructure
 from SurfaceManager import calculateBiomeMap
 from SurfaceManager import calculateHeightMapAdv
@@ -155,7 +155,7 @@ def getHabitatSections(towerSections, mediumLandSections, bigLandSections):
 
 def buildPaths(level, surface, paths):
 	for path in paths:
-		buildTestRoad(level, surface, path)
+		buildRoad(level, surface, path)
 
 def buildTowers(level, surface, towerSections):
 	for section in towerSections:
