@@ -1,7 +1,7 @@
-from BiomeFinder import findBiomes
 from Biomes import getBiomeDict
 from Classes import Surface
 from Common import setBlock
+from SurfaceManager import calculateBiomeMap
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
@@ -12,7 +12,7 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
-	findBiomes(level, surface)
+	calculateBiomeMap(level, surface)
 	sections = calculateSections(surface, 1, 15)
 
 	for x in range(surface.xLength):

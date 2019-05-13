@@ -1,6 +1,6 @@
-from BiomeFinder import findBiomes
 from Classes import Surface
 from Common import setBlock
+from SurfaceManager import calculateBiomeMap
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSteepnessMap
 
@@ -8,7 +8,7 @@ def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
-	findBiomes(level, surface)
+	calculateBiomeMap(level, surface)
 
 	for x in range(surface.xLength):
 		for z in range(surface.zLength):

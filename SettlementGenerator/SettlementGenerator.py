@@ -1,6 +1,5 @@
 import heapq
 
-from BiomeFinder import findBiomes
 from Biomes import getBiomeDict
 from Classes import Point
 from Classes import Surface
@@ -17,6 +16,7 @@ from PathManager import getPathsInSections
 from RemoveTree import removeTree
 from RoadBuilder import buildTestRoad
 from StructureBuilder import buildStructure
+from SurfaceManager import calculateBiomeMap
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSectionMid
 from SurfaceManager import calculateSections
@@ -28,7 +28,7 @@ def perform(level, box, options):
 	calculateHeightMapAdv(level, surface)
 	calculateSteepnessMap(surface)
 	calculateWaterPlacement(level, surface)
-	findBiomes(level, surface)
+	calculateBiomeMap(level, surface)
 
 	sections = calculateSections(surface, 1, 15)
 	calculateSectionMids(surface, sections)

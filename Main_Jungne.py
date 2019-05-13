@@ -1,5 +1,4 @@
 from Biomes import biomes, getBiomeDict
-from BiomeFinder import findBiomes
 from BiomeMaterials import get_biome_materials
 from BridgeBuilder import buildBridge
 from Classes import Property
@@ -8,6 +7,7 @@ from Common import setBlock
 from HouseBuilder import buildHouse
 from HouseBuilder import clearHouseProperty
 from NameGenerator import getCityName
+from SurfaceManager import calculateBiomeMap
 from SurfaceManager import calculateHeightMapAdv
 from SurfaceManager import calculateSections
 from SurfaceManager import calculateSteepnessMap
@@ -104,7 +104,7 @@ def perform(level, box, options):
     # calculateHeightMapAdv(level, surface)
     # calculateSteepnessMap(surface)
     # calculateWaterPlacement(level, surface)
-    # findBiomes(level, surface)
+    # calculateBiomeMap(level, surface)
     # sections = calculateSections(surface, 1, 100)
 
     # prop = Property(2, 2, surface.xLength-2, surface.zLength-2, surface.surfaceMap[0][0].height)
@@ -127,7 +127,7 @@ def perform(level, box, options):
     #   materials = oakMaterial
 
     # # BiomeFinder adds biome data to surfaceMap
-    # findBiomes(level, surface)
+    # calculateBiomeMap(level, surface)
     # # Test of biome material changes.
     # biomeId = surface.surfaceMap[0][0].biomeId
 

@@ -1,14 +1,14 @@
+from Biomes import biomes, getBiomeDict
 from Classes import Point
 from Classes import Surface
-from SurfaceManager import calculateHeightMapAdv
 from StructureBuilder import buildStructure
-from Biomes import biomes, getBiomeDict
-from BiomeFinder import findBiomes
+from SurfaceManager import calculateBiomeMap
+from SurfaceManager import calculateHeightMapAdv
 
 def perform(level, box, options):
 	surface = Surface(box.minx, box.minz, box.maxx, box.maxz)
 	calculateHeightMapAdv(level, surface)
-	findBiomes(level, surface)
+	calculateBiomeMap(level, surface)
 
 	point = Point(box.minx, box.minz)
 	surfaceX = point.x - surface.xStart

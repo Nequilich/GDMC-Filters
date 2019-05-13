@@ -1,4 +1,4 @@
-def findBiomes(level, surface):
+def calculateBiomeMap(level, surface):
 	for x in range(surface.xStart, surface.xEnd):
 		for z in range(surface.zStart, surface.zEnd):
 			chunk = level.getChunk(x / 16, z / 16)
