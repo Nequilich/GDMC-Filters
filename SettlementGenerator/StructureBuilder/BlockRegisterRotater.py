@@ -1,5 +1,6 @@
-import BlockDictionary
 import math
+
+import BlockDictionary
 
 directions = ['north', 'east', 'south', 'west']
 

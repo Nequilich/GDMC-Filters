@@ -13,9 +13,9 @@ class Surface:
 
 	def getNewSurfaceMap(self):
 		surfaceMap = []
-		for x in range(self.xLength):
+		for _ in range(self.xLength):
 			row = []
-			for z in range(self.zLength):
+			for _ in range(self.zLength):
 				row.append(SurfacePoint())
 			surfaceMap.append(row)
 		return surfaceMap

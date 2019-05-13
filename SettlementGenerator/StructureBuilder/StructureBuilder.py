@@ -11,7 +11,7 @@ from TowerManager import getTowerBlueprint
 
 directions = ['north', 'east', 'south', 'west']
 
-def buildStructure(level, point, baseHeight, type='tower', direction='north', biome='plains', applyBiomeChanges=True, specialBiomeChanges=None, prop=None):
+def buildStructure(level, point, baseHeight, type = 'tower', direction = 'north', biome = 'plains', applyBiomeChanges = True, specialBiomeChanges = None, prop = None):
 	blueprint = getBlueprint(type, point, baseHeight, prop)
 	applyChangesToBlueprintBlockRegister(blueprint, direction, biome, applyBiomeChanges, specialBiomeChanges)
 	build(level, blueprint)
